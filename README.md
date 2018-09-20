@@ -21,3 +21,5 @@ Roles :
  
  
 Zenhub: https://chrome.google.com/webstore/detail/zenhub-for-github/ogcgkffhplmphkaahpmffcafajaocjbd
+
+Next Meeting : Thursday 26th September 2018, 3 PM @ERC
