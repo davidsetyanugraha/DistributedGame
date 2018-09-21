@@ -2,8 +2,9 @@
 
 **IMPORTANT!!!**
 
-When you first start code, please follow this wiki:
-Code Style : https://github.com/lputra24/DistributedSystemProject2/wiki/Code-Style
+When you first start code, please follow this:
+
+[Code Style] (https://github.com/lputra24/DistributedSystemProject2/wiki/Code-Style)
 
 **IMPORTANT!!!**
 
