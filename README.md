@@ -1,8 +1,11 @@
 # DistributedSystemProject2
 
-Getting Started
+**IMPORTANT!!!**
+
 When you first start code, please follow this wiki:
 Code Style : https://github.com/lputra24/DistributedSystemProject2/wiki/Code-Style
+
+**IMPORTANT!!!**
 
 UI Example : https://stackoverflow.com/questions/21142686/making-a-robust-resizable-swing-chess-gui
 
