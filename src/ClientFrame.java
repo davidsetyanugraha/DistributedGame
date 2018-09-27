@@ -37,6 +37,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -109,7 +110,7 @@ public class ClientFrame
     this.popUpDialog.setModal(true);
     this.popUpDialog.setVisible(false);
     this.popUpMsg = new JTextArea();
-    this.popUpMsg.setColumns(20);
+    this.popUpMsg.setColumns(22);
     this.popUpMsg.setEditable(false);
     this.popUpMsg.setRows(3);
     
@@ -167,16 +168,16 @@ public class ClientFrame
     gbc_backPanel.weighty = 7.0D;
     gbc_backPanel.weightx = 7.0D;
     gbc_backPanel.insets = new Insets(0, 0, 0, 5);
-    gbc_backPanel.gridwidth = 9;
-    gbc_backPanel.gridheight = 9;
+    gbc_backPanel.gridwidth = 22;
+    gbc_backPanel.gridheight = 22;
     gbc_backPanel.fill = 1;
     gbc_backPanel.gridx = 0;
     gbc_backPanel.gridy = 1;
-    this.frmClient.getContentPane().add(this.backPanel, gbc_backPanel);
+
+    this.frmClient.getContentPane().add(this.backPanel.getGui(), gbc_backPanel);
     
     this.menuBar = new JMenuBar();
-    this.frmClient.setJMenuBar(this.menuBar);
-    
+    this.frmClient.setJMenuBar(this.menuBar);    
     JMenu mnFile = new JMenu("file");
     this.menuBar.add(mnFile);
     
