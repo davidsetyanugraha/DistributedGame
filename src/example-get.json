@@ -1,0 +1,38 @@
+{
+    "player": [
+        {
+            "name": "Andre",
+            "score": 10,
+            "turn": true,
+        },
+        {
+            "name": "Kelly",
+            "score": 10,
+            "turn": false,
+        }
+    ],
+    "word": [
+        {
+            "origin": {
+                "x": 0,
+                "y": 0
+            },
+            "end": {
+                "x": 3,
+                "y": 0
+            },
+            "word": "work"
+        },
+        {
+            "origin": {
+                "x": 1,
+                "y": 0
+            },
+            "end": {
+                "x": 1,
+                "y": 0
+            },
+            "word": "work"
+        }
+    ]
+}
