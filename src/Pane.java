@@ -31,12 +31,11 @@ public class Pane extends JPanel{
         tools.addSeparator();
         tools.add(message);
         
-        for (int i=0;i < 22; i++){
-        	for(int j = 0; j < 22 ; j ++){ 
-        	letterBoard[i][j] = (Character) null;
-        }
-       }
-       
+        JButton btnSubmit = new JButton("Submit");
+        tools.add(btnSubmit);
+        
+        
+
         board = new JPanel() {
 
             /**
@@ -79,7 +78,7 @@ public class Pane extends JPanel{
                 ));
         // Set the BG to be ochre
         Color ochre = new Color(204,119,34);
-        board.setBackground(ochre);
+        board.setBackground(SystemColor.activeCaption);
         JPanel boardConstrain = new JPanel(new GridBagLayout());
         boardConstrain.setBackground(SystemColor.desktop);
         boardConstrain.add(board);
@@ -92,14 +91,28 @@ public class Pane extends JPanel{
             for (int jj = 0; jj < boardSquares[ii].length; jj++) {
                 JButton b = new JButton();
                 b.setMargin(buttonMargin);
+                b.addActionListener(new ActionListener(){
+                	public void actionPerformed(ActionEvent e){
+                		// call input window
+                		String input;
+                		input = JOptionPane.showInputDialog(null, "Enter the Character");
+                		if (input.length()>1){
+                			// exception
+                			JOptionPane.showMessageDialog(null,"Invalid Input, Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
+                			input = null;
+                		}
+                		
+                		b.setText(input);
+                	}
+                });
  
-                b.setText("From Andre");
+                //b.setText("Fre");
                 
                 if ((jj % 2 == 1 && ii % 2 == 1)
                         || (jj % 2 == 0 && ii % 2 == 0)) {
                     b.setBackground(Color.WHITE);
                 } else {
-                    b.setBackground(Color.BLACK);
+                    b.setBackground(Color.GRAY);
                 }
                 boardSquares[jj][ii] = b;
             }
@@ -157,9 +170,4 @@ public class Pane extends JPanel{
         return gui;
 
     }
-    
-    private void update (JSONObject letter, char[][] letterBoard){
-        for (JSONObje)
-    }
-
 }
