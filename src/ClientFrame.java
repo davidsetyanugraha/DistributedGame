@@ -70,6 +70,7 @@ public class ClientFrame
   private User user = null;
   private ArrayList<User> userList;
   private int serverPort = 23333;
+  private Pane backPanel;
   
   public static void main(String[] args)
   {
@@ -99,7 +100,7 @@ public class ClientFrame
   {
     this.frmClient = new JFrame();
     this.frmClient.setTitle("Scrabble Game - DSCraftsman");
-    this.frmClient.setBounds(100, 100, 600, 600);
+    this.frmClient.setBounds(100, 100, 800, 800);
     this.frmClient.setDefaultCloseOperation(3);
 
     this.fileChooser = new JFileChooser();
@@ -134,6 +135,8 @@ public class ClientFrame
     this.noBtn.setSize(5, 2);
     this.noBtn.setText("no");
     
+    
+    
     GridBagLayout gridBagLayout = new GridBagLayout();
     gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 259, 52 };
     gridBagLayout.rowHeights = new int[10];
@@ -160,6 +163,20 @@ public class ClientFrame
     toolbarCon.gridx = 0;
     toolbarCon.gridy = 0;
     toolbarCon.anchor = 17;    
+    
+    this.backPanel = new Pane(this);
+//  another window 
+  GridBagConstraints gbc_backPanel = new GridBagConstraints();
+  gbc_backPanel.weighty = 7.0D;
+  gbc_backPanel.weightx = 7.0D;
+  gbc_backPanel.insets = new Insets(0, 0, 0, 5);
+  gbc_backPanel.gridwidth = 22;
+  gbc_backPanel.gridheight = 22;
+  gbc_backPanel.fill = 1;
+  gbc_backPanel.gridx = 0;
+  gbc_backPanel.gridy = 1;
+
+  this.frmClient.getContentPane().add(this.backPanel.getGui(), gbc_backPanel);
 
     
     this.menuBar = new JMenuBar();
@@ -219,24 +236,7 @@ public class ClientFrame
     
     JMenu mnNetwork = new JMenu("network");
     this.menuBar.add(mnNetwork);
-    
-    JMenuItem connectMenu = new JMenuItem("connect to a network");
-    connectMenu.addMouseListener(new MouseAdapter()
-    {
-      public void mouseReleased(MouseEvent e)
-      {
-//        ClientFrame.this.conNetClicked(e);
-      }
-    });
-    
-    JMenuItem createNetMenu = new JMenuItem("create a new network");
-    createNetMenu.addMouseListener(new MouseAdapter()
-    {
-      public void mouseReleased(MouseEvent e)
-      {
-//        ClientFrame.this.createNetClicked(e);
-      }
-    });
+ 
     
     JMenuItem endNetMenu = new JMenuItem("disconnect from network");
     endNetMenu.addMouseListener(new MouseAdapter()
@@ -246,11 +246,25 @@ public class ClientFrame
 //        ClientFrame.this.endNetClicked(e);
       }
     });
+    
+    JMenuItem createMenu = new JMenuItem("create a new game network");
+    createMenu.addMouseListener(new MouseAdapter() {
+    	@Override
+    	public void mouseClicked(MouseEvent e) {
+    		ClientFrame clientFram = new ClientFrame();
+    		Pane game = new Pane(clientFram);
+    		game.setVisible(true);
+    	}
+    });
+    mnNetwork.add(createMenu);
+    
+    JMenuItem connectNet = new JMenuItem("connect network~");
+    mnNetwork.add(connectNet);
     mnNetwork.add(endNetMenu);
     
     this.userListPanel = new UserListPanel(this);
     this.userListPanel
-      .setBorder(new TitledBorder(null, "Online Users", 4, 2, null, null));
+      .setBorder(new TitledBorder(null, "Player List", 4, 2, null, null));
     
     GridBagConstraints gbc_listPanel = new GridBagConstraints();
     gbc_listPanel.insets = new Insets(0, 0, 5, 0);

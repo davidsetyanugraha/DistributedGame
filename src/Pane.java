@@ -8,7 +8,7 @@ import javax.swing.border.*;
 import java.net.URL;
 import javax.imageio.ImageIO;
 
-public class Pane {
+public class Pane extends JPanel{
 
 	private int strokeSize = 1;
     private final JPanel gui = new JPanel(new BorderLayout(3, 3));
@@ -17,12 +17,10 @@ public class Pane {
     private final JLabel message = new JLabel(
             "Ready to play");
     private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
+    
+    char[][] letterBoard = new char[22][22];
 
-    Pane(GameBoard gameBoard){
-        initializeGui();
-    }
-
-    public final void initializeGui() {
+    public Pane(ClientFrame clientFrame){
     	
         // set up the main GUI
         gui.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -32,7 +30,13 @@ public class Pane {
         
         tools.addSeparator();
         tools.add(message);
-
+        
+        for (int i=0;i < 22; i++){
+        	for(int j = 0; j < 22 ; j ++){ 
+        	letterBoard[i][j] = (Character) null;
+        }
+       }
+       
         board = new JPanel() {
 
             /**
@@ -88,6 +92,9 @@ public class Pane {
             for (int jj = 0; jj < boardSquares[ii].length; jj++) {
                 JButton b = new JButton();
                 b.setMargin(buttonMargin);
+ 
+                b.setText("From Andre");
+                
                 if ((jj % 2 == 1 && ii % 2 == 1)
                         || (jj % 2 == 0 && ii % 2 == 0)) {
                     b.setBackground(Color.WHITE);
@@ -133,6 +140,8 @@ public class Pane {
                         row.add(boardSquares[jj][ii], new Float(1));
                 }
             }
+            
+            boardSquares[1][2].setText("A");
         }
     }
     
@@ -148,4 +157,9 @@ public class Pane {
         return gui;
 
     }
+    
+    private void update (JSONObject letter, char[][] letterBoard){
+        for (JSONObje)
+    }
+
 }
