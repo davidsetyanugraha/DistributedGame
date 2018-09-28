@@ -3,36 +3,34 @@
         {
             "name": "Andre",
             "score": 10,
-            "turn": true,
+            "turn": true
         },
         {
             "name": "Kelly",
             "score": 10,
-            "turn": false,
+            "turn": false
         }
     ],
     "word": [
         {
-            "origin": {
-                "x": 0,
-                "y": 0
-            },
-            "end": {
-                "x": 3,
-                "y": 0
-            },
-            "word": "work"
+            "x": 0,
+            "y": 0,
+            "ch": "p"
         },
         {
-            "origin": {
-                "x": 1,
-                "y": 0
-            },
-            "end": {
-                "x": 1,
-                "y": 0
-            },
-            "word": "work"
+            "x": 1,
+            "y": 0,
+            "ch": "l"
+        },
+        {
+            "x": 2,
+            "y": 0,
+            "ch": "a"
+        },
+        {
+            "x": 3,
+            "y": 0,
+            "ch": "y"
         }
     ]
 }

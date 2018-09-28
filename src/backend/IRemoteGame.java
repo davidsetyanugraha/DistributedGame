@@ -1,6 +1,8 @@
 package backend;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
+import frontend.IClient;
 
 /**
  * RMI Remote interface - must be shared between client and server. All methods must throw
@@ -16,15 +18,19 @@ public interface IRemoteGame extends Remote {
                                                    // How to sync the screen? check every 5 Sec!
   public final static int COMMAND_POST_WORD = 1; // Add new word
 
-  /** Client-> Server; Start Game; return JSON success or failed */
-  public String start();
+  public void registerGameClient(IClient client) throws RemoteException;
 
-  /** Client-> Server; get Coordinates or Put word; return JSON success or failed */
-  public String execute(int command, String Json);
+  /** Client-> Server -> all Clients; return JSON success or failed */
+  public String broadcastGeneralMessage(String message) throws RemoteException;
 
-  /** Client-> Server; return JSON success or failed */
-  public String vote(boolean accept);
+  /** Client-> Server -> all Clients; return JSON success or failed */
+  public String broadcastWord(String json) throws RemoteException;
 
-  /** Cclient-> Server; return JSON success or failed */
-  public String pass();
+  /** Client-> Server -> all Clients; return JSON success or failed */
+  public String broadcastVote(boolean accept, String word) throws RemoteException;
+
+  /** Client-> Server -> all Clients; return JSON success or failed */
+  public String broadcastPass(String playerName) throws RemoteException;
+
+  public void disconnectClient() throws RemoteException;
 }
