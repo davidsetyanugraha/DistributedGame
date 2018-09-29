@@ -17,7 +17,8 @@ public class Pane extends JPanel{
     private final JLabel message = new JLabel(
             "Ready to play");
     private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
-    
+    private String word;
+    private int x,y;
 
     public Pane(ClientFrame clientFrame){
     	
@@ -29,6 +30,9 @@ public class Pane extends JPanel{
         
         tools.addSeparator();
         tools.add(message);
+        
+        //String word hold the input
+        word = "";
         
         JButton btnSubmit = new JButton("Submit");
         btnSubmit.addActionListener(new ActionListener() {
@@ -205,6 +209,10 @@ public class Pane extends JPanel{
                 			}
 
                 		b.setText(input);
+                        word += b.getText();
+                        System.out.println(word);
+                        x = j;
+                        y = i;
                 	}
                 });
                 
@@ -268,5 +276,14 @@ public class Pane extends JPanel{
     public final JComponent getGui() {
         return gui;
 
+    }
+    public String getWord(){
+    	return word;
+    }
+    public int getY(){
+    	return y;
+    }
+    public int getX(){
+    	return x;
     }
 }
