@@ -136,13 +136,17 @@ public class Pane extends JPanel{
                 		
                 		//input position invalidation               		
                 		else if (i != 0 & j !=0){
-                			int x,y;
+                			int x = j;
+                			int y = i;
                 			boolean findLetter = false;
-                		for(x=j-1;x<=j+1;x++){
+                			for(x=j-1;x<=j+1;x++){
+                				if(!boardSquares[x][y].getText().equalsIgnoreCase(" ")){
+                					findLetter = true;
+                				}
+                			}
                 			for(y=i-1;y<=i+1;y++){                		
                 				if(!boardSquares[x][y].getText().equalsIgnoreCase(" ")){
                 					findLetter = true;
-                					}
                 				}
                 			}
                 			if(findLetter == false){
@@ -151,33 +155,37 @@ public class Pane extends JPanel{
                 			}
                 		}
                 		else if (i == 0 && j != 0){
-                			int x,y;
+                			int x = j;
+                			int y = i;
                 			boolean findLetter = false;
                 			for(x=j-1;x<=j+1;x++){
-                				for(y=i;y<=i+1;y++){
-                					if(!boardSquares[x][y].getText().equalsIgnoreCase(" ")){
-                						findLetter = true;
-                						}
-                					}
+                				if(!boardSquares[x][y].getText().equalsIgnoreCase(" ")){
+                					findLetter = true;
                 				}
+                			}
+                			for(y=i;y<=i+1;y++){                		
+                				if(!boardSquares[x][y].getText().equalsIgnoreCase(" ")){
+                					findLetter = true;
+                				}
+                			}
                 			if(findLetter == false){
                 				JOptionPane.showMessageDialog(null,"Please Input Letter in Adjacent Positions","Error",JOptionPane.PLAIN_MESSAGE);
                 				input = " ";
                 				}
                 			}
                 		else if (i != 0 & j ==0){
-                			int x,y;
+                			int x = j;
+                			int y = i;
                 			boolean findLetter = false;
                 			for(x=j;x<=j+1;x++){
-                				for(y=i-1;y<=i+1;y++){
-                					if(!boardSquares[x][y].getText().equalsIgnoreCase(" ")){
-                						findLetter = true;
-                						}
-                					}
+                				if(!boardSquares[x][y].getText().equalsIgnoreCase(" ")){
+                					findLetter = true;
                 				}
-                			if(findLetter == false){
-                				JOptionPane.showMessageDialog(null,"Please Input Letter in Adjacent Positions","Error",JOptionPane.PLAIN_MESSAGE);
-                				input = " ";
+                			}
+                			for(y=i-1;y<=i+1;y++){                		
+                				if(!boardSquares[x][y].getText().equalsIgnoreCase(" ")){
+                					findLetter = true;
+                				}
                 			}
                 			}
                 		else if (i == 0 & j ==0){
