@@ -18,7 +18,6 @@ public class Pane extends JPanel{
             "Ready to play");
     private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
     
-    char[][] letterBoard = new char[22][22];
 
     public Pane(ClientFrame clientFrame){
     	
@@ -32,6 +31,12 @@ public class Pane extends JPanel{
         tools.add(message);
         
         JButton btnSubmit = new JButton("Submit");
+        btnSubmit.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		//call submit
+        		//call calculate score
+        	}
+        });
         tools.add(btnSubmit);
         
         
@@ -85,28 +90,44 @@ public class Pane extends JPanel{
         gui.add(boardConstrain);
 
 
-        // create the board squares
+        // create the board squares        
+
         Insets buttonMargin = new Insets(0, 0, 0, 0);
         for (int ii = 0; ii < boardSquares.length; ii++) {
             for (int jj = 0; jj < boardSquares[ii].length; jj++) {
+            	
+        		final int i = ii;
+        		final int j = jj;
+        		
                 JButton b = new JButton();
                 b.setMargin(buttonMargin);
+                boardSquares[10][10] = new JButton(String.valueOf("*"));
                 b.addActionListener(new ActionListener(){
                 	public void actionPerformed(ActionEvent e){
                 		// call input window
                 		String input;
                 		input = JOptionPane.showInputDialog(null, "Enter the Character");
+                		                		
                 		if (input.length()>1){
                 			// exception
-                			JOptionPane.showMessageDialog(null,"Invalid Input, Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
+                			JOptionPane.showMessageDialog(null,"Invalid Input, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
                 			input = null;
                 		}
-                		
+                		else if (!b.getText().isEmpty()){
+                			JOptionPane.showMessageDialog(null,"Letter Already Exist, Try Again.","Error",JOptionPane.PLAIN_MESSAGE);
+                			input = b.getText();
+                		}
+                		else if(boardSquares[i][j+1].getText().isEmpty()
+                				&& boardSquares[i][j-1].getText().isEmpty()
+                				&& boardSquares[i-1][j].getText().isEmpty()
+                				&& boardSquares[i+1][j].getText().isEmpty()){
+                			JOptionPane.showMessageDialog(null,"Please Input Letter in Adjacent Positions","Error",JOptionPane.PLAIN_MESSAGE);
+                			input = null;
+                		}
                 		b.setText(input);
                 	}
                 });
- 
-                //b.setText("Fre");
+                
                 
                 if ((jj % 2 == 1 && ii % 2 == 1)
                         || (jj % 2 == 0 && ii % 2 == 0)) {
@@ -153,8 +174,6 @@ public class Pane extends JPanel{
                         row.add(boardSquares[jj][ii], new Float(1));
                 }
             }
-            
-            boardSquares[1][2].setText("A");
         }
     }
     
