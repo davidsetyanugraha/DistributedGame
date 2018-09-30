@@ -72,7 +72,7 @@ public class ClientFrame {
   private void initialize() {
     this.frmClient = new JFrame();
     this.frmClient.setTitle("Scrabble Game - DSCraftsman");
-    this.frmClient.setBounds(100, 100, 800, 800);
+    this.frmClient.setBounds(100, 100, 3000, 1500);
     this.frmClient.setDefaultCloseOperation(3);
 
     this.fileChooser = new JFileChooser();
@@ -137,14 +137,18 @@ public class ClientFrame {
 
     // another window
     GridBagConstraints gbc_backPanel = new GridBagConstraints();
+    gbc_backPanel.anchor=GridBagConstraints.WEST;
     gbc_backPanel.weighty = 7.0D;
+    gbc_backPanel.ipadx=500;
     gbc_backPanel.weightx = 7.0D;
     gbc_backPanel.insets = new Insets(0, 0, 0, 5);
     gbc_backPanel.gridwidth = 22;
     gbc_backPanel.gridheight = 22;
-    gbc_backPanel.fill = 1;
+    gbc_backPanel.fill = GridBagConstraints.VERTICAL;
     gbc_backPanel.gridx = 0;
-    gbc_backPanel.gridy = 1;
+    gbc_backPanel.gridy = 0;
+    
+    
 
     this.frmClient.getContentPane().add(this.backPanel.getGui(), gbc_backPanel);
 
@@ -220,20 +224,7 @@ public class ClientFrame {
     mnNetwork.add(connectNet);
     mnNetwork.add(endNetMenu);
 
-    this.userListPanel = new UserListPanel(this);
-    this.userListPanel.setBorder(new TitledBorder(null, "Player List", 4, 2, null, null));
-
-    GridBagConstraints gbc_listPanel = new GridBagConstraints();
-    gbc_listPanel.insets = new Insets(0, 0, 5, 0);
-    gbc_listPanel.fill = 1;
-    gbc_listPanel.gridwidth = 2;
-    gbc_listPanel.gridheight = 3;
-    gbc_listPanel.weighty = 3.0D;
-    gbc_listPanel.weightx = 2.0D;
-    gbc_listPanel.gridx = 9;
-    gbc_listPanel.gridy = 1;
-
-    // this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
+    
 
     this.taMsgHis = new JTextArea("");
     GridBagConstraints gbc_taMsgHis = new GridBagConstraints();
@@ -245,18 +236,38 @@ public class ClientFrame {
     JScrollPane msgPane = new JScrollPane();
     msgPane.setViewportBorder(new TitledBorder(null, "Message History", 4, 2, null, null));
     GridBagConstraints gbc_msgPane = new GridBagConstraints();
+    gbc_msgPane.anchor=GridBagConstraints.NORTHEAST;
     gbc_msgPane.insets = new Insets(0, 0, 5, 0);
+    gbc_msgPane.ipadx=1200;
     gbc_msgPane.weighty = 5.0D;
     gbc_msgPane.weightx = 1.5D;
     gbc_msgPane.gridwidth = 2;
     gbc_msgPane.gridheight = 5;
-    gbc_msgPane.fill = 1;
-    gbc_msgPane.gridx = 9;
-    gbc_msgPane.gridy = 4;
+    gbc_msgPane.fill = GridBagConstraints.VERTICAL;
+    gbc_msgPane.gridx = GridBagConstraints.RELATIVE;
+    gbc_msgPane.gridy = 1;
 
     this.frmClient.getContentPane().add(msgPane, gbc_msgPane);
+    
+    this.userListPanel = new UserListPanel(this);
+    this.userListPanel.setBorder(new TitledBorder(null, "Player List", 4, 2, null, null));
 
-    this.tfMsg = new JTextField();
+    GridBagConstraints gbc_listPanel = new GridBagConstraints();
+    
+    gbc_listPanel.insets = new Insets(0, 0, 5, 0);
+    gbc_listPanel.fill = GridBagConstraints.VERTICAL;
+    gbc_listPanel.ipadx=150;
+    gbc_listPanel.gridwidth = 2;
+    gbc_listPanel.gridheight = 3;
+    gbc_listPanel.weighty = 3.0D;
+    gbc_listPanel.weightx = 2.0D;
+    gbc_listPanel.gridx = GridBagConstraints.RELATIVE;
+    gbc_listPanel.gridy = 1;
+
+    
+    this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
+
+    /*this.tfMsg = new JTextField();
     GridBagConstraints gbc_tfMsg = new GridBagConstraints();
     gbc_tfMsg.insets = new Insets(0, 0, 0, 5);
     gbc_tfMsg.weightx = 1.3D;
@@ -275,6 +286,7 @@ public class ClientFrame {
 
     JButton btnSendMsg = new JButton("send");
     GridBagConstraints gbc_btnSendMsg = new GridBagConstraints();
+    gbc_btnSendMsg.anchor=GridBagConstraints.SOUTHEAST;
     gbc_btnSendMsg.weighty = 1.0D;
     gbc_btnSendMsg.weightx = 0.5D;
     gbc_btnSendMsg.gridx = 10;
@@ -284,8 +296,9 @@ public class ClientFrame {
         // ClientFrame.this.sendMsgClicked();
       }
     });
-    this.frmClient.getContentPane().add(btnSendMsg, gbc_btnSendMsg);
+    this.frmClient.getContentPane().add(btnSendMsg, gbc_btnSendMsg);*/
     this.userList = new ArrayList();
+    
   }
 
   /**
