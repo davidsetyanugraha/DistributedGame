@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -30,8 +31,11 @@ public class Pane extends JPanel {
   private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
   private String word;
   private int x, y;
+  private Client client;
 
-  public Pane(ClientFrame clientFrame) {
+  public Pane(ClientFrame clientFrame, Client client) {
+
+    this.client = client;
 
     // set up the main GUI
     gui.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -50,6 +54,14 @@ public class Pane extends JPanel {
       public void actionPerformed(ActionEvent e) {
         // call submit
         // call calculate score
+        System.out.println("word to be submitted:" + word);
+        try {
+          client.addWord(word);
+        } catch (RemoteException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+
       }
     });
     tools.add(btnSubmit);

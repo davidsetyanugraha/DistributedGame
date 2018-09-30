@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -24,6 +26,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.TitledBorder;
+import backend.IRemoteGame;
 
 public class ClientFrame {
   private JFrame frmClient;
@@ -42,11 +45,17 @@ public class ClientFrame {
   private ArrayList<User> userList;
   private int serverPort = 23333;
   private Pane backPanel;
+  private static Client client;
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
+          Registry registry = LocateRegistry.getRegistry("localhost");
+          IRemoteGame remoteGame = (IRemoteGame) registry.lookup("GameServer");
+          client = new Client("playerOne");
+          client.joinGame(remoteGame);
+
           ClientFrame clientFrame = new ClientFrame();
           clientFrame.frmClient.setVisible(true);
         } catch (Exception e) {
@@ -94,8 +103,6 @@ public class ClientFrame {
     this.noBtn.setSize(5, 2);
     this.noBtn.setText("no");
 
-
-
     GridBagLayout gridBagLayout = new GridBagLayout();
     gridBagLayout.columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 259, 52};
     gridBagLayout.rowHeights = new int[10];
@@ -125,7 +132,9 @@ public class ClientFrame {
     toolbarCon.gridy = 0;
     toolbarCon.anchor = 17;
 
-    this.backPanel = new Pane(this);
+    // TODO Pane board
+    this.backPanel = new Pane(this, this.client);
+
     // another window
     GridBagConstraints gbc_backPanel = new GridBagConstraints();
     gbc_backPanel.weighty = 7.0D;
@@ -201,7 +210,7 @@ public class ClientFrame {
       @Override
       public void mouseClicked(MouseEvent e) {
         ClientFrame clientFram = new ClientFrame();
-        Pane game = new Pane(clientFram);
+        Pane game = new Pane(clientFram, client);
         game.setVisible(true);
       }
     });
