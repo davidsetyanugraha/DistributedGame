@@ -216,7 +216,10 @@ public class Pane extends JPanel {
 
             b.setText(input);
             word += b.getText();
+
+            // TODO
             System.out.println(word);
+            //
             x = j;
             y = i;
           }
