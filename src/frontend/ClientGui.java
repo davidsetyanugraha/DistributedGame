@@ -8,11 +8,6 @@ import java.rmi.registry.Registry;
 import java.util.Scanner;
 import backend.IRemoteGame;
 
-/**
- * This class retrieves a reference to the remote object from the RMI registry. It invokes the
- * methods on the remote object as if it was a local object of the type of the remote interface.
- *
- */
 public class ClientGui {
 
   public static void main(String[] args)

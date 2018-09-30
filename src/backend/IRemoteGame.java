@@ -4,13 +4,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import frontend.IClient;
 
-/**
- * RMI Remote interface - must be shared between client and server. All methods must throw
- * RemoteException. All parameters and return types must be either primitives or Serializable.
- * 
- * Any object that is a remote object must implement this interface. Only those methods specified in
- * a "remote interface" are available remotely.
- */
 public interface IRemoteGame extends Remote {
 
   /** list of Commands for method execute */

@@ -5,10 +5,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-/**
- * Creates an instance of the RemoteMath class and publishes it in the rmiregistry
- * 
- */
 public class Server {
 
   public static void main(String[] args) throws RemoteException, MalformedURLException {
