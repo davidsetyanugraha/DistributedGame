@@ -1,7 +1,6 @@
 package backend;
 
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -17,12 +16,11 @@ public class Server {
 
     try {
       Registry registry = LocateRegistry.createRegistry(port);
+      registry.bind("GameServer", new RemoteGame());
+
+      System.out.println("GAME SERVER IS RUNNING!");
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    Naming.rebind("GameServer", new RemoteGame());
-
-    System.out.println("GAME SERVER IS RUNNING!");
   }
 }

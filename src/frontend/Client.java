@@ -7,23 +7,108 @@ import backend.IRemoteGame;
 public class Client extends UnicastRemoteObject implements IClient {
   // Runnable {
 
-  private final IRemoteGame remoteGame;
+  private IRemoteGame remoteGame;
   private String name = null;
+  private boolean debug = true;
 
-  public Client(String name, IRemoteGame remoteGame) throws RemoteException {
+  public Client(String name) throws RemoteException {
     this.name = name;
-    this.remoteGame = remoteGame;
-    remoteGame.registerGameClient(this);
-    remoteGame.broadcastGeneralMessage(name + " Has Connected");
-
-    // test purpose
-    remoteGame.broadcastPass(name);
-    remoteGame.broadcastVote(true, "word");
-    remoteGame.broadcastWord("{[json]}");
   }
 
+  public void joinGame(IRemoteGame remoteGame) {
+    String response;
+    System.out.println("[Log] " + name + " has joined game.");
+
+    try {
+      this.remoteGame = remoteGame;
+      response = remoteGame.registerGameClient(this);
+    } catch (RemoteException e) {
+      response = "Join Game has been failed!";
+      if (debug)
+        response = response + " caused by: " + e.getMessage();
+    }
+
+    System.out.println(response);
+  }
+
+  public void sendMessage(String message) throws RemoteException {
+    String response;
+    System.out.println("[Log] " + name + " has sent message: [ " + message + " ]");
+
+    try {
+      response = remoteGame.broadcastGeneralMessage(message);
+    } catch (RemoteException e) {
+      response = "Send Message has been failed!";
+      if (debug)
+        response = response + " caused by: " + e.getMessage();
+    }
+
+    System.out.println(response);
+  }
+
+  public void pass() throws RemoteException {
+    String response;
+    System.out.println("[Log] " + name + " has chosen pass");
+
+    try {
+      response = remoteGame.broadcastPass(this.name);
+    } catch (RemoteException e) {
+      response = "Send Message has been failed!";
+      if (debug)
+        response = response + " caused by: " + e.getMessage();
+    }
+
+    System.out.println(response);
+  }
+
+  public void vote(Boolean accept, String word) throws RemoteException {
+    String response;
+    System.out.println("[Log] " + name + " has voted [ " + word + " ] : [ " + accept + " ] ");
+
+    try {
+      response = remoteGame.broadcastVote(accept, word);
+    } catch (RemoteException e) {
+      response = "Vote has been failed!";
+      if (debug)
+        response = response + " caused by: " + e.getMessage();
+    }
+
+    System.out.println(response);
+  }
+
+  public void addWord(String json) throws RemoteException {
+    String response;
+    System.out.println("[Log] " + name + " has added new word: [ " + json + " ] ");
+
+    try {
+      response = remoteGame.broadcastWord(json);
+    } catch (RemoteException e) {
+      response = "Add Word has been failed!";
+      if (debug)
+        response = response + " caused by: " + e.getMessage();
+    }
+
+    System.out.println(response);
+  }
+
+  public void logout() throws RemoteException {
+    String response;
+    System.out.println("[Log] " + name + " has logged out");
+
+    try {
+      response = remoteGame.disconnectClient();
+    } catch (RemoteException e) {
+      response = "Logout has been failed!";
+      if (debug)
+        response = response + " caused by: " + e.getMessage();
+    }
+
+    System.out.println(response);
+  }
+
+  /** These getter methods are called by RemoteGame */
   @Override
-  public void getWord(String json) throws RemoteException {
+  public void getWord(String json) {
     // TODO Auto-generated method stub
     System.out.println("getWord: " + json);
   }
@@ -44,7 +129,6 @@ public class Client extends UnicastRemoteObject implements IClient {
   public void getVotingSystem(String json) throws RemoteException {
     // TODO Auto-generated method stub
     System.out.println("getVotingSystem: " + json);
-    remoteGame.broadcastPass("b");
   }
 
   @Override
@@ -55,67 +139,7 @@ public class Client extends UnicastRemoteObject implements IClient {
 
   @Override
   public void getGeneralMessage(String message) throws RemoteException {
-    System.out.println("General Message: " + message);
+    // TODO Auto-generated method stub
+    System.out.println("getGeneralMessage: " + message);
   }
-
-  // public void run() {
-  // // while (true) {
-  // // check();
-  // // try {
-  // // checkDisconnect();
-  // // } catch (RemoteException e) {
-  // // e.printStackTrace();
-  // // }
-  // // }
-  // }
-  //
-  // private void check() {
-  //
-  // // essential
-  // Boolean isWordAdded = true; // from GUI, ex: if (ClientGUI.isWordAdded) {
-  // Boolean isVoteAdded = true; // from GUI, ex: if (ClientGUI.isVoteAdded) {
-  // Boolean isPassAdded = true; // from GUI, ex: if (ClientGUI.isWordAdded) {
-  //
-  // // optional
-  // Boolean isGeneralMessageAdded = true;
-  //
-  // try {
-  // if (isWordAdded) {
-  // System.out.println("1");
-  // String json = "<COORDINATES + WORD>"; // JSON from GUI, String text =
-  // // ClientGUI.field.getText();
-  // remoteGame.broadcastWord(json);
-  // isWordAdded = false; // from GUI, ClientGUI.isWordAdded = false;
-  //
-  // } else if (isVoteAdded) {
-  // System.out.println("2");
-  // Boolean accept = true; // Boolean passing from GUI
-  // String word = "play";
-  //
-  // remoteGame.broadcastVote(accept, word);
-  // isVoteAdded = false; // from GUI, ClientGUI.isWordAdded = false;
-  //
-  // } else if (isPassAdded) {
-  // System.out.println("3");
-  // remoteGame.broadcastPass(this.name);
-  // isPassAdded = false; // from GUI, ClientGUI.isWordAdded = false;
-  // } else if (isGeneralMessageAdded) {
-  // System.out.println("4");
-  // String message = "new message";
-  // remoteGame.broadcastGeneralMessage(message);
-  // isGeneralMessageAdded = false; // from GUI, ClientGUI.isWordAdded = false;
-  // }
-  // } catch (RemoteException e) {
-  // e.printStackTrace();
-  // }
-  // }
-  //
-  // private void checkDisconnect() throws RemoteException {
-  // Boolean disconnected = false; // from GUI, ex: if (ClientGUI.disconnected)
-  //
-  // if (disconnected) {
-  // remoteGame.broadcastGeneralMessage(name + " Has Disconnected");
-  // remoteGame.disconnectClient();
-  // }
-  // }
 }

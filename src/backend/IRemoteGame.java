@@ -18,7 +18,7 @@ public interface IRemoteGame extends Remote {
                                                    // How to sync the screen? check every 5 Sec!
   public final static int COMMAND_POST_WORD = 1; // Add new word
 
-  public void registerGameClient(IClient client) throws RemoteException;
+  public String registerGameClient(IClient client) throws RemoteException;
 
   /** Client-> Server -> all Clients; return JSON success or failed */
   public String broadcastGeneralMessage(String message) throws RemoteException;
@@ -32,5 +32,5 @@ public interface IRemoteGame extends Remote {
   /** Client-> Server -> all Clients; return JSON success or failed */
   public String broadcastPass(String playerName) throws RemoteException;
 
-  public void disconnectClient() throws RemoteException;
+  public String disconnectClient() throws RemoteException;
 }

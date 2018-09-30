@@ -10,18 +10,24 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   private final ArrayList<IClient> clients;
   private static int client_count = 0;
   private static int vote_count = 0;
-  private static int current_player = 0;
+  private static int current_pass_player = 0;
 
   RemoteGame() throws RemoteException {
     clients = new ArrayList<>();
   }
 
-  public synchronized void registerGameClient(IClient client) throws RemoteException {
+  public synchronized String registerGameClient(IClient client) throws RemoteException {
+    // TODO Auto-generated method stub
+    String response = "success";
+
     this.clients.add(client);
     client_count++;
+
+    return response;
   }
 
   public String broadcastWord(String json) {
+    // TODO Auto-generated method stub
     String response = "success";
 
     try {
@@ -40,17 +46,15 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return response;
   }
 
-  public static int getCountClients() {
-    return client_count;
-  }
-
-  public void disconnectClient() throws RemoteException {
+  public String disconnectClient() throws RemoteException {
+    // TODO Auto-generated method stub
     client_count--;
+    return "Success";
   }
 
   @Override
   public String broadcastVote(boolean accept, String word) throws RemoteException {
-    // @todo check json valid or not
+    // TODO Auto-generated method stub
     int i = 0;
 
     if (accept) {
@@ -80,8 +84,9 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
   @Override
   public synchronized String broadcastPass(String playerName) throws RemoteException {
+    // TODO Auto-generated method stub
     String passMessage = playerName + " has pass";
-    current_player++;
+    current_pass_player++;
 
     // tell others about pass message
     int i = 0;
@@ -95,7 +100,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     while (i < clients.size()) {
       clients.get(i++).getBoard(jsonCoordinates);
     }
-
 
     return "success";
   }
