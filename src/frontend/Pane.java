@@ -20,8 +20,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import client.ClientFrame;
-import client.RelativeLayout;
 
 public class Pane extends JPanel {
 

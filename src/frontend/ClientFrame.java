@@ -133,7 +133,7 @@ public class ClientFrame {
     toolbarCon.anchor = 17;
 
     // TODO Pane board
-    this.backPanel = new Pane(this, this.client);
+    this.backPanel = new Pane(this);
 
     // another window
     GridBagConstraints gbc_backPanel = new GridBagConstraints();
@@ -213,8 +213,8 @@ public class ClientFrame {
     createMenu.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        ClientFrame clientFram = new ClientFrame();
-        Pane game = new Pane(clientFram, client);
+        ClientFrame clientFrame = new ClientFrame();
+        Pane game = new Pane(clientFrame);
         game.setVisible(true);
       }
     });
