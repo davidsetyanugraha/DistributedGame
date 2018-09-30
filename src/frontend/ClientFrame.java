@@ -233,7 +233,7 @@ public class ClientFrame {
     gbc_listPanel.gridx = 9;
     gbc_listPanel.gridy = 1;
 
-    this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
+    // this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
 
     this.taMsgHis = new JTextArea("");
     GridBagConstraints gbc_taMsgHis = new GridBagConstraints();
