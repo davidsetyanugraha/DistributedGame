@@ -283,7 +283,6 @@ public class Pane extends JPanel {
 
   public final JComponent getGui() {
     return gui;
-
   }
 
   public String getWord() {
