@@ -1,0 +1,36 @@
+{
+    "player": [
+        {
+            "name": "Andre",
+            "score": 10,
+            "turn": true
+        },
+        {
+            "name": "Kelly",
+            "score": 10,
+            "turn": false
+        }
+    ],
+    "word": [
+        {
+            "x": 0,
+            "y": 0,
+            "ch": "p"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "ch": "l"
+        },
+        {
+            "x": 2,
+            "y": 0,
+            "ch": "a"
+        },
+        {
+            "x": 3,
+            "y": 0,
+            "ch": "y"
+        }
+    ]
+}
