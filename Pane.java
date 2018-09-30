@@ -1,4 +1,4 @@
-package frontend;
+package client;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.net.URL;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 
 public class Pane extends JPanel{
@@ -18,6 +20,7 @@ public class Pane extends JPanel{
             "Ready to play");
     private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
     private String word;
+    private int letNum;
     private int x,y;
 
     public Pane(ClientFrame clientFrame){
@@ -33,6 +36,7 @@ public class Pane extends JPanel{
         
         //String word hold the input
         word = "";
+        letNum = 1;
         
         JButton btnSubmit = new JButton("Submit");
         btnSubmit.addActionListener(new ActionListener() {
@@ -102,11 +106,17 @@ public class Pane extends JPanel{
 //                JButton a = new JButton();
 //            	a.addActionListener(new ActionListener(){
 //            	public void actionPerformed(ActionEvent ia){
-//            		String input = "¡¤";
+//            		String input = "Â¡Â¤";
 //            		a.setText(input);
 //            }});
 //            }
 //            }
+        
+    	int[] i = new int[500];
+    	int[] j = new int[500];
+    	i[0] = 10;
+    	j[0] = 10;
+    	
         for (int ii = 0; ii < boardSquares.length; ii++) {
             for (int jj = 0; jj < boardSquares[ii].length; jj++) {
         		
@@ -115,26 +125,32 @@ public class Pane extends JPanel{
                 
                 boardSquares[10][10] = new JButton(String.valueOf("*"));
                 b.setText("");
-                
-            	final int i = ii;
-            	final int j = jj;
-//                int a = b.getHorizontalTextPosition();
-//                int d = b.getVerticalTextPosition();
+                final int iii = ii;
+                final int jjj = jj;
 
                 b.addActionListener(new ActionListener(){
                 	public void actionPerformed(ActionEvent e){
+                		i[letNum] = iii;
+                    	j[letNum] = jjj;
+
                 		// call input window
                 		String input;
                 		input = JOptionPane.showInputDialog(null, "Enter the Character");
-            			
-                		System.out.print(j);
-                		System.out.print(",");
-                		System.out.println();
                 		
+                		int x = j[letNum];
+                		int y = i[letNum];
+                		int xFirst = j[1];
+                		int yFirst = i[1];
+                		
+                		int xSec = j[2];
+                		int ySec = i[2];
+                		
+                		//check if one button one letter
                 		if (input.length()>1){
                 			// exception
                 			JOptionPane.showMessageDialog(null,"Invalid Input, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
-                			input = " ";
+                			input = "";
+                			letNum -= 1;
                 		}
                 		
 //                		else if (!b.getText().isEmpty() || b.getText().equals("*")){
@@ -142,65 +158,82 @@ public class Pane extends JPanel{
 //                			input = b.getText();
 //                		}
                 		
-                		//input position invalidation  
-                		else if (i != 0 & j !=0){
-                			int x = j;
-                			int y = i;
-                			boolean findLetter = false;
-                			for(x=j-1;x<=j+1;x++){
-//                				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
-//                					findLetter = true;
-//                				}
-//                			}
-                			for(y=i-1;y<=i+1;y++){                		
-                				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
-                					findLetter = true;
+                		//each turn each word, so only allow one direction each turn
+                		else if(xFirst == xSec){
+                			if(x != xSec){
+                				JOptionPane.showMessageDialog(null,"One Word One Turn, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
+                				input = "";
+                				letNum -= 1;
+                			}
+                		}
+                		else if(yFirst == ySec){
+                				if(y != ySec){
+                					JOptionPane.showMessageDialog(null,"One Word One Turn, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
+                    				input = "";
+                    				letNum -= 1;
                 				}
+                		}
+   		
+                		//check if any letter around the letter input  
+                		else if (i[letNum] != 0 & j[letNum] !=0){
+                			boolean findLetter = false;
+                			for(x=j[letNum]-1;x<=j[letNum]+1;x++){
+                    			for(y=i[letNum]-1;y<=i[letNum]+1;y++){ 
+                    				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
+                    					findLetter = true;
+                    				}               		
+                					if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
+                						findLetter = true;
+                					}
+                				}
+                			}
+            			if(findLetter == false){
+            				JOptionPane.showMessageDialog(null,"Please Input Letter in Adjacent Positions","Error",JOptionPane.PLAIN_MESSAGE);
+            				input = "";
+            				letNum -= 1;
+            				}
+                		}
+                		
+                		else if (i[letNum] == 0 && j[letNum] != 0){
+                			boolean findLetter = false;
+                			for(x=j[letNum]-1;x<=j[letNum]+1;x++){
+                    			for(y=i[letNum];y<=i[letNum]+1;y++){
+                    				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
+                    					findLetter = true;
+                    				}                		
+                    				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
+                    					findLetter = true;
+                    				}
+                    			}
                 			}
                 			if(findLetter == false){
                 				JOptionPane.showMessageDialog(null,"Please Input Letter in Adjacent Positions","Error",JOptionPane.PLAIN_MESSAGE);
                 				input = "";
-                			}
-                		}}
-                		else if (i == 0 && j != 0){
-                			int x = j;
-                			int y = i;
+                				letNum -= 1;
+                				}
+                		}
+                		else if (i[letNum] != 0 & j[letNum] == 0){
                 			boolean findLetter = false;
-                			for(x=j-1;x<=j+1;x++){
-                				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
-                					findLetter = true;
-                				}
-                			}
-                			for(y=i;y<=i+1;y++){                		
-                				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
-                					findLetter = true;
-                				}
+                			for(x=j[letNum];x<=j[letNum]+1;x++){
+                    			for(y=i[letNum]-1;y<=i[letNum]+1;y++){
+                    				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
+                    					findLetter = true;
+                    				}                		
+                    				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
+                    					findLetter = true;
+                    				}
+                    			}
                 			}
                 			if(findLetter == false){
                 				JOptionPane.showMessageDialog(null,"Please Input Letter in Adjacent Positions","Error",JOptionPane.PLAIN_MESSAGE);
                 				input = "";
+                				letNum -= 1;
                 				}
-                			}
-                		else if (i != 0 & j == 0){
-                			int x = j;
-                			int y = i;
+                		}
+                		else if (i[letNum] == 0 & j[letNum] ==0){
                 			boolean findLetter = false;
-                			for(x=j;x<=j+1;x++){
-                				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
-                					findLetter = true;
-                				}
-                			}
-                			for(y=i-1;y<=i+1;y++){                		
-                				if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
-                					findLetter = true;
-                				}
-                			}
-                			}
-                		else if (i == 0 & j ==0){
-                			int x,y;
-                			boolean findLetter = false;
-                			for(x=j;x<=j+1;x++){
-                				for(y=i;y<=i+1;y++){
+                			for(x=j[letNum];x<=j[letNum]+1;x++){
+                				for(y=i[letNum];y<=i[letNum]+1;y++){
                 					if(!boardSquares[x][y].getText().equalsIgnoreCase("")){
                 						findLetter = true;
                 					}
@@ -209,14 +242,15 @@ public class Pane extends JPanel{
                 			if(findLetter == false){
                 				JOptionPane.showMessageDialog(null,"Please Input Letter in Adjacent Positions","Error",JOptionPane.PLAIN_MESSAGE);
                 				input = "";
-                			}
-                			}
+                				letNum -= 1;
+                				}
+                		}
+                		
 
                 		b.setText(input);
                         word += b.getText();
-                        System.out.println(word);
-                        x = j;
-                        y = i;
+                        letNum += 1;
+                        
                 	}
                 });
                 
