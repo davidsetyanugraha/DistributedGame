@@ -75,7 +75,14 @@ public class ClientFrame {
 	}
 
 	public ClientFrame() {
-		initialize();
+		try {
+			initialize();
+			file = new File("/Users/andrelee/DistributedSystemProject2/src/example-get.json");
+			readFile();
+		} catch (FileNotFoundException | JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void initialize() {

@@ -282,7 +282,6 @@ public class Pane extends JPanel {
             row.add(boardSquares[jj][ii], new Float(1));
         }
       }
-      setChar(8,9,"r");
     }
   }
 
