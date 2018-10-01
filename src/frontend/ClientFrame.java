@@ -257,7 +257,7 @@ public class ClientFrame {
     JMenuItem DisplayScoreMenu = new JMenuItem("display scoreboard");
     DisplayScoreMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {
-        // ClientFrame.this.endNetClicked(e);
+    	  JOptionPane.showMessageDialog(null, backPanel.getScore());
       }
     });
     
