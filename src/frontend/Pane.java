@@ -79,15 +79,20 @@ public class Pane extends JPanel {
         letNum = 1;
 
         // call window to input the words this player think valid
-        voteWords = JOptionPane.showInputDialog(null, "If More than One Word, use , to split",
-            "Enter the Words");
-        voteWords.replace(",", "");
-        score = voteWords.length();
-        if (voteWords.length() >= numberBefore) {
-          JOptionPane.showMessageDialog(null, "You Lied, Please Try Again!", "Error",
-              JOptionPane.PLAIN_MESSAGE);
-          score = 0;
-        }
+        /** TODO SHOULD WE HAVE THIS? LIED VALIDATION */
+
+        // voteWords = JOptionPane.showInputDialog(null, "If More than One Word, use , to split",
+        // "Enter the Words");
+        // voteWords.replace(",", "");
+        // score = voteWords.length();
+
+
+        // if (voteWords.length() >= numberBefore) {
+        // JOptionPane.showMessageDialog(null, "You Lied, Please Try Again!", "Error",
+        // JOptionPane.PLAIN_MESSAGE);
+        // score = 0;
+        // }
+
       }
     });
     tools.add(btnSubmit);
