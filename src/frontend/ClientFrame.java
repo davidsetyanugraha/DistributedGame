@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -60,7 +61,22 @@ public class ClientFrame {
         try {
           Registry registry = LocateRegistry.getRegistry("localhost");
           IRemoteGame remoteGame = (IRemoteGame) registry.lookup("GameServer");
-          client = new Client("playerOne");
+
+          /** Create Random Name */
+          Random r = new Random(); // just create one and keep it around
+          String alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+          final int N = 10;
+          StringBuilder sb = new StringBuilder();
+          for (int i = 0; i < N; i++) {
+            sb.append(alphabet.charAt(r.nextInt(alphabet.length())));
+          }
+
+          // TODO NAME MUST UNIQUE!
+          String randomName = sb.toString();
+          /** End Create Random Name */
+
+          client = new Client(randomName);
           client.joinGame(remoteGame);
 
           ClientFrame clientFrame = new ClientFrame();
@@ -73,15 +89,17 @@ public class ClientFrame {
   }
 
   public ClientFrame() {
-    try {
-      initialize();
-      file = new File(
-          "/Users/davidsetyanugraha/Master/Semester1/DistributedSystem/Assignment/Assignment2/SourceCode/DistributedSystemProject2/src/example-get.json");
-      readFile();
-    } catch (FileNotFoundException | JSONException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    // try {
+    initialize();
+
+    /** TODO MOVE THIS read json IMP */
+
+    // file = new File(
+    // "/Users/davidsetyanugraha/Master/Semester1/DistributedSystem/Assignment/Assignment2/SourceCode/DistributedSystemProject2/src/example-get.json");
+    // readFile();
+    // } catch (FileNotFoundException | JSONException e) {
+    // e.printStackTrace();
+    // }
   }
 
   private void initialize() {

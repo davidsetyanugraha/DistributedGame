@@ -10,10 +10,18 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   private final ArrayList<IClient> clients;
   private static int client_count = 0;
   private static int vote_count = 0;
-  private static int current_pass_player = 0;
+  private static int count_pass_player = 0;
+  private int index_current_player = 0;
 
   RemoteGame() throws RemoteException {
     clients = new ArrayList<>();
+  }
+
+  private String getNextPlayerName() throws RemoteException {
+    index_current_player++;
+    if (index_current_player >= clients.size())
+      index_current_player = 0;
+    return clients.get(index_current_player).getUniqueName();
   }
 
   public synchronized String registerGameClient(IClient client) throws RemoteException {
@@ -67,17 +75,17 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     }
 
     // tell others to update the board
-    // if (vote_count >= client_count) {
-
-    while (i < clients.size()) {
-      clients.get(i++).getWord(word);
+    if (vote_count >= client_count) {
+      String nextPlayerName = getNextPlayerName();
+      while (i < clients.size()) {
+        clients.get(i++).getWord(word, nextPlayerName);
+      }
+      // @todo construct new Json + new word + coordinates
+      String jsonCoordinates = "new json";
+      while (i < clients.size()) {
+        clients.get(i++).getBoard(jsonCoordinates);
+      }
     }
-    // @todo construct new Json + new word + coordinates
-    String jsonCoordinates = "new json";
-    while (i < clients.size()) {
-      clients.get(i++).getBoard(jsonCoordinates);
-    }
-    // }
 
     return "success";
   }
@@ -86,7 +94,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   public synchronized String broadcastPass(String playerName) throws RemoteException {
     // TODO Auto-generated method stub
     String passMessage = playerName + " has pass";
-    current_pass_player++;
+    count_pass_player++;
 
     // tell others about pass message
     int i = 0;

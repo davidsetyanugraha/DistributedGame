@@ -8,8 +8,14 @@ public class Client extends UnicastRemoteObject implements IClient {
   // Runnable {
 
   private IRemoteGame remoteGame;
-  private String name = null;
+  private String name = null; // MUST UNIQUE!
   private boolean debug = true;
+  private int currentState;
+
+  // Constant Game State
+  public final int STATE_WAIT = 0;
+  public final int STATE_INSERTION = 1;
+  public final int STATE_VOTING = 2;
 
   public Client(String name) throws RemoteException {
     this.name = name;
@@ -106,35 +112,72 @@ public class Client extends UnicastRemoteObject implements IClient {
     System.out.println(response);
   }
 
-  /** These getter methods are called by RemoteGame */
+  public void setCurrentState(int state) {
+    String status;
+
+    if (state == STATE_INSERTION) {
+      status = "INSERTION";
+    } else if (state == STATE_VOTING) {
+      status = "VOTING";
+    } else {
+      status = "WAIT";
+    }
+
+    System.out.println("[Log] " + name + " change State into: " + status);
+    this.currentState = state;
+  }
+
+  public int getCurrentState() {
+    return currentState;
+  }
+
+  /**
+   * These getter methods are called by RemoteGame
+   * 
+   * @throws RemoteException
+   */
   @Override
-  public void getWord(String json) {
+  public void getWord(String json, String nextPlayerName) throws RemoteException {
     // TODO Auto-generated method stub
     System.out.println("getWord: " + json);
+    if (nextPlayerName == name) {
+      this.setCurrentState(STATE_INSERTION);
+    } else {
+      this.setCurrentState(STATE_WAIT);
+    }
   }
 
   @Override
   public void getVote(boolean accept) throws RemoteException {
     // TODO Auto-generated method stub
+    this.setCurrentState(STATE_WAIT);
     System.out.println("getVote: " + accept);
   }
 
   @Override
   public void getPass(String playerName) throws RemoteException {
     // TODO Auto-generated method stub
+    this.setCurrentState(STATE_WAIT);
     System.out.println("getPass: " + playerName);
   }
 
   @Override
   public void getVotingSystem(String json) throws RemoteException {
     // TODO Auto-generated method stub
+    this.setCurrentState(STATE_VOTING);
     System.out.println("getVotingSystem: " + json);
+
   }
 
   @Override
   public void getBoard(String jsonCoordinates) throws RemoteException {
     // TODO Auto-generated method stub
     System.out.println("getBoard: " + jsonCoordinates);
+  }
+
+  @Override
+  public String getUniqueName() throws RemoteException {
+    return this.name;
   }
 
   @Override
