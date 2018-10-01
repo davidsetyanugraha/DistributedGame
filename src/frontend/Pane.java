@@ -1,4 +1,4 @@
-package frontend;
+package client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -41,6 +41,7 @@ public class Pane extends JPanel {
   private int opinion;
   private int[] allOpinion;
   private int playerID;
+  private int playerNum;
   
   public Pane(ClientFrame clientFrame){
   	
@@ -67,7 +68,6 @@ public class Pane extends JPanel {
       	public void actionPerformed(ActionEvent e) {
       		//call submit
       		//call calculate score
-      		JButton v = new JButton();
       		numberBefore += letNum;
       		word = "";
       		letNum = 1;
@@ -116,7 +116,7 @@ public class Pane extends JPanel {
            */
           @Override
           public final Dimension getPreferredSize() {
-              Dimension d = super.getPreferredSize();
+/**              Dimension d = super.getPreferredSize();
               Dimension prefSize = null;
               Component c = getParent();
               if (c == null) {
@@ -133,6 +133,7 @@ public class Pane extends JPanel {
               int h = (int) prefSize.getHeight();
               // the smaller of the two sizes
               int s = (w>h ? h : w);
+*/
               return new Dimension(750, 650);
           }
       };
@@ -146,8 +147,6 @@ public class Pane extends JPanel {
               new EmptyBorder(8,8,8,8),
               new LineBorder(Color.BLACK)
               ));
-      // Set the BG to be ochre
-      Color ochre = new Color(204,119,34);
       board.setBackground(SystemColor.activeCaption);
       JPanel boardConstrain = new JPanel(new GridBagLayout());
       boardConstrain.setBackground(SystemColor.desktop);
