@@ -166,8 +166,12 @@ public class Pane extends JPanel {
       
   	int[] i = new int[500];
   	int[] j = new int[500];
-  	i[0] = 6;
-  	j[0] = 6;
+  	
+  	/*i[0] = 6;
+  	j[0] = 6;*/
+  	
+  	
+  	
   	
       for (int ii = 0; ii < boardSquares.length; ii++) {
           for (int jj = 0; jj < boardSquares[ii].length; jj++) {
@@ -175,7 +179,7 @@ public class Pane extends JPanel {
               JButton b = new JButton();
               b.setMargin(buttonMargin);
               
-              boardSquares[10][10] = new JButton(String.valueOf("*"));
+              
               b.setText("");
               final int iii = ii;
               final int jjj = jj;
@@ -267,20 +271,17 @@ public class Pane extends JPanel {
               		b.setText(input);
                     word += b.getText();
                     letNum += 1;
+                    
                       
               	}
               });
               
               
-              if ((jj % 2 == 1 && ii % 2 == 1)
-                      || (jj % 2 == 0 && ii % 2 == 0)) {
-                  b.setBackground(Color.WHITE);
-              } else {
-                  b.setBackground(Color.GRAY);
-              }
+              b.setBackground(Color.WHITE);
               boardSquares[jj][ii] = b;
           }
       }
+      boardSquares[10][10] = new JButton(String.valueOf("*"));
       
   
       //fill the board
