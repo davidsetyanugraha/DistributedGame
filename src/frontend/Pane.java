@@ -285,11 +285,7 @@ public class Pane extends JPanel {
         });
 
 
-        if ((jj % 2 == 1 && ii % 2 == 1) || (jj % 2 == 0 && ii % 2 == 0)) {
-          b.setBackground(Color.WHITE);
-        } else {
-          b.setBackground(Color.GRAY);
-        }
+        b.setBackground(Color.WHITE);
         boardSquares[jj][ii] = b;
       }
     }
