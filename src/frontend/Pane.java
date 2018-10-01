@@ -26,17 +26,17 @@ import client.RelativeLayout;
 public class Pane extends JPanel {
 
   private final JPanel gui = new JPanel(new BorderLayout(3, 3));
-  private JButton[][] boardSquares = new JButton[22][22];
+  private JButton[][] boardSquares = new JButton[21][21];
   private JPanel board;
   private final JLabel message = new JLabel("Ready to play");
-  private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
+  private static final String COLS = "ABCDEFGHIJKLMNOPQRST";
   private String word;
   private String voteWords;
   private int letNum;
   private int x,y;
   private int score;
   private int numberBefore;
-  private int[] allScores;
+  private int[][] allScores;
   private int turn;
   private int opinion;
   private int[] allOpinion;
@@ -60,7 +60,7 @@ public class Pane extends JPanel {
       turn = 0;
       playerID = 0;
       allOpinion = new int[]{10};
-      allScores = new int[]{50};
+      allScores = new int[10][50];
       
       JButton btnSubmit = new JButton("Submit");
       btnSubmit.addActionListener(new ActionListener() {
@@ -100,7 +100,7 @@ public class Pane extends JPanel {
             	}
             }
             //turn starts from 0
-            allScores[turn] = score;
+            allScores[playerID][turn] = score;
             turn += 1;
       	}});
       tools.add(btnSubmit);
@@ -171,8 +171,8 @@ public class Pane extends JPanel {
       
   	int[] i = new int[500];
   	int[] j = new int[500];
-  	i[0] = 10;
-  	j[0] = 10;
+  	i[0] = 6;
+  	j[0] = 6;
   	
       for (int ii = 0; ii < boardSquares.length; ii++) {
           for (int jj = 0; jj < boardSquares[ii].length; jj++) {
@@ -300,12 +300,12 @@ public class Pane extends JPanel {
       top.add(new JLabel(""), new Float(1));
 
       // fill the top row
-      for (int ii = 0; ii < 21; ii++) {
+      for (int ii = 0; ii < 20; ii++) {
           JLabel label = new JLabel(COLS.substring(ii, ii + 1), SwingConstants.CENTER);
           top.add(label, new Float(1));
       }
       // fill the black non-pawn piece row
-      for (int ii = 0; ii < 21; ii++) {
+      for (int ii = 0; ii < 20; ii++) {
 
           RelativeLayout rowRL = new RelativeLayout(RelativeLayout.X_AXIS);
           rowRL.setRoundingPolicy( RelativeLayout.FIRST );
@@ -314,10 +314,10 @@ public class Pane extends JPanel {
           row.setOpaque(false);
           board.add(row, new Float(1));
 
-          for (int jj = 0; jj < 21; jj++) {
+          for (int jj = 0; jj < 20; jj++) {
               switch (jj) {
                   case 0:
-                      row.add(new JLabel("" + (22-(ii + 1)), SwingConstants.CENTER), new Float(1));
+                      row.add(new JLabel("" + (21-(ii + 1)), SwingConstants.CENTER), new Float(1));
                   default:
                       row.add(boardSquares[jj][ii], new Float(1));
               }
@@ -354,7 +354,7 @@ public class Pane extends JPanel {
   public int getNumBefore(){
 	  return numberBefore;
   }
-  public int[] getAllScores(){
+  public int[][] getAllScores(){
 	  return allScores;
   }
   public int getTurn(){
