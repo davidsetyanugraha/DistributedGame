@@ -64,16 +64,16 @@ public class Pane extends JPanel {
         // call submit
         // call calculate score
         /** Backend Call */
-    	JSONArray wordInput = null;
-		try {
-			wordInput = json.getJSONArray("word");
-		} catch (JSONException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-    	System.out.println("added score:"+wordInput.length());
-    	score=wordInput.length();
-    	
+        JSONArray wordInput = null;
+        try {
+          wordInput = json.getJSONArray("word");
+        } catch (JSONException e2) {
+          // TODO Auto-generated catch block
+          e2.printStackTrace();
+        }
+        System.out.println("added score:" + wordInput.length());
+        score = wordInput.length();
+
         try {
           client.addWord(json.toString());
         } catch (RemoteException e1) {
@@ -268,7 +268,7 @@ public class Pane extends JPanel {
                 }
               }
             }
-            int coordX= j[letNum], coordY= i[letNum];
+            int coordX = j[letNum], coordY = i[letNum];
             b.setText(input);
             if ((b.getText() != "") && (!b.getText().isEmpty())) {
               try {
@@ -371,8 +371,8 @@ public class Pane extends JPanel {
       obj.put("y", y);
       obj.put("ch", ch);
       arrWord.put(obj);
-
       json.put("word", arrWord);
+      json.put("score", arrWord.length());
     } else {
       JSONArray arrWord = json.getJSONArray("word");
       JSONObject obj = new JSONObject();
@@ -380,6 +380,7 @@ public class Pane extends JPanel {
       obj.put("y", y);
       obj.put("ch", ch);
       arrWord.put(obj);
+      json.put("score", arrWord.length());
     }
 
     System.out.println("Final JSON = " + json.toString());

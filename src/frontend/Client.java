@@ -13,6 +13,7 @@ public class Client extends UnicastRemoteObject implements IClient {
   private String name = null; // MUST UNIQUE!
   private boolean debug = true;
   private int currentState;
+  private int score; // final score
 
   // Constant Game State
   public final int STATE_WAIT = 0;
@@ -131,6 +132,14 @@ public class Client extends UnicastRemoteObject implements IClient {
 
   public int getCurrentState() {
     return currentState;
+  }
+
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  public int getScore() {
+    return score;
   }
 
   /**
