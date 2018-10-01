@@ -121,7 +121,7 @@ public class Pane extends JPanel {
         int h = (int) prefSize.getHeight();
         // the smaller of the two sizes
         int s = (w > h ? h : w);
-        return new Dimension(750, 650);
+        return new Dimension(s, s);
       }
     };
 

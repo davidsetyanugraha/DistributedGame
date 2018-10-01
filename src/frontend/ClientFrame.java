@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -77,7 +79,7 @@ public class ClientFrame {
           client = new Client(randomName);
           client.joinGame(remoteGame);
 
-          ClientFrame clientFrame = new ClientFrame();
+          ClientFrame clientFrame = new ClientFrame(client);
           clientFrame.frmClient.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -86,7 +88,7 @@ public class ClientFrame {
     });
   }
 
-  public ClientFrame() {
+  public ClientFrame(Client user) {
     // try {
     initialize();
 
@@ -238,8 +240,8 @@ public class ClientFrame {
     createMenu.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        ClientFrame clientFram = new ClientFrame();
-        Pane game = new Pane(clientFram, client);
+        ClientFrame clientFrame = new ClientFrame(client);
+        Pane game = new Pane(clientFrame, client);
         game.setVisible(true);
       }
     });
@@ -248,8 +250,26 @@ public class ClientFrame {
     JMenuItem connectNet = new JMenuItem("connect network~");
     mnNetwork.add(connectNet);
     mnNetwork.add(endNetMenu);
-
+    
+    JMenu mnScore = new JMenu("score");
+    this.menuBar.add(mnScore);
+    
+    JMenuItem DisplayScoreMenu = new JMenuItem("display scoreboard");
+    DisplayScoreMenu.addMouseListener(new MouseAdapter() {
+      public void mouseReleased(MouseEvent e) {
+        // ClientFrame.this.endNetClicked(e);
+      }
+    });
+    
+    mnScore.add(DisplayScoreMenu);
+    
     this.userListPanel = new UserListPanel(this);
+    try {
+		this.userListPanel.addUser(client.getUniqueName());
+	} catch (RemoteException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
     this.userListPanel.setBorder(new TitledBorder(null, "Player List", 4, 2, null, null));
 
     GridBagConstraints gbc_listPanel = new GridBagConstraints();
@@ -261,10 +281,24 @@ public class ClientFrame {
     gbc_listPanel.weightx = 2.0D;
     gbc_listPanel.gridx = 9;
     gbc_listPanel.gridy = 1;
+    
+    JMenu mnPlayerList = new JMenu("players");
+    this.menuBar.add(mnPlayerList);
+    
+    JMenuItem DisplayPlayerMenu = new JMenuItem("players");
+    DisplayPlayerMenu.addMouseListener(new MouseAdapter() {
+      public void mouseReleased(MouseEvent e) {
+    	  JOptionPane.showOptionDialog(null, userListPanel, "Player List", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+      }
+    });
+   
+    mnPlayerList.add(DisplayPlayerMenu);
+    
+    
 
-    // this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
+    this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
 
-    this.taMsgHis = new JTextArea("");
+    /*this.taMsgHis = new JTextArea("");
     GridBagConstraints gbc_taMsgHis = new GridBagConstraints();
     gbc_taMsgHis.insets = new Insets(0, 0, 5, 5);
     gbc_taMsgHis.gridx = 8;
@@ -313,7 +347,7 @@ public class ClientFrame {
         // ClientFrame.this.sendMsgClicked();
       }
     });
-    this.frmClient.getContentPane().add(btnSendMsg, gbc_btnSendMsg);
+    this.frmClient.getContentPane().add(btnSendMsg, gbc_btnSendMsg);*/
     this.userList = new ArrayList();
   }
 
