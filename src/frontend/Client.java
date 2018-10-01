@@ -1,7 +1,9 @@
 package frontend;
 
+import java.io.FileNotFoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import org.json.JSONException;
 import backend.IRemoteGame;
 
 public class Client extends UnicastRemoteObject implements IClient {
@@ -166,6 +168,13 @@ public class Client extends UnicastRemoteObject implements IClient {
     // TODO Auto-generated method stub
     this.setCurrentState(STATE_VOTING);
     System.out.println("getVotingSystem: " + json);
+
+    try {
+      ClientFrame.renderBasedOnJson(json);
+    } catch (FileNotFoundException | JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
   }
 

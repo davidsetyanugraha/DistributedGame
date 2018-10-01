@@ -11,7 +11,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import javax.swing.border.TitledBorder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 import backend.IRemoteGame;
 
 public class ClientFrame {
@@ -51,9 +49,9 @@ public class ClientFrame {
   private User user = null;
   private ArrayList<User> userList;
   private int serverPort = 23333;
-  private Pane backPanel;
+  private static Pane backPanel;
   private static Client client;
-  private File file;
+  private static File file;
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -533,9 +531,8 @@ public class ClientFrame {
   }
 
   // Reading JSON data.
-  private void readFile() throws FileNotFoundException, JSONException {
-    JSONTokener reader = new JSONTokener(new FileReader(file));
-    JSONObject data = new JSONObject(reader);
+  public static void renderBasedOnJson(String json) throws FileNotFoundException, JSONException {
+    JSONObject data = new JSONObject(json);
 
     // getting words that are available
     JSONArray wordsAvail = (JSONArray) data.get("word");
