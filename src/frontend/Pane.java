@@ -1,4 +1,4 @@
-package frontend;
+package client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,20 +20,28 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import client.ClientFrame;
+import client.RelativeLayout;
 
 public class Pane extends JPanel {
 
   private final JPanel gui = new JPanel(new BorderLayout(3, 3));
-  private JButton[][] boardSquares = new JButton[22][22];
+  private JButton[][] boardSquares = new JButton[21][21];
   private JPanel board;
   private final JLabel message = new JLabel("Ready to play");
-  private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
+  private static final String COLS = "ABCDEFGHIJKLMNOPQRST";
   private String word;
   private String voteWords;
   private int letNum;
   private int x,y;
   private int score;
   private int numberBefore;
+  private int[][] allScores;
+  private int turn;
+  private int opinion;
+  private int[] allOpinion;
+  private int playerID;
+  private int playerNum;
   
   public Pane(ClientFrame clientFrame){
   	
@@ -50,25 +58,50 @@ public class Pane extends JPanel {
       word = "";
       voteWords = "";
       letNum = 1;
+      turn = 0;
+      playerID = 0;
+      allOpinion = new int[]{10};
+      allScores = new int[10][50];
       
       JButton btnSubmit = new JButton("Submit");
       btnSubmit.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent e) {
       		//call submit
       		//call calculate score
-      		JButton v = new JButton();
       		numberBefore += letNum;
       		word = "";
       		letNum = 1;
       		
             // call window to input the words this player think valid
-            voteWords = JOptionPane.showInputDialog(null,"If More than One Word, use , to split", "Enter the Words");
+            voteWords = JOptionPane.showInputDialog(gui,"If More than One Word, use , to split", "Enter,the,Words");
             voteWords.replace(",", "");
           	score = voteWords.length();
-            if(voteWords.length()>=numberBefore){
-      			JOptionPane.showMessageDialog(null,"You Lied, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
+            if(voteWords.length() > numberBefore){
+      			JOptionPane.showMessageDialog(gui,"You Lied, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
       			score = 0;
             }
+            //call voting
+            // if dis > agree, submission is Invalid, score = 0
+            //playerID = 0, 1, 2...
+            opinion = JOptionPane.showConfirmDialog(gui, "Voting!");
+            allOpinion[playerID] = opinion;
+            for(int i = 0; i < allOpinion.length; i++){
+            	int agree = 0, dis = 0;
+            	System.out.println(opinion);
+            	if(allOpinion[i] == 0){
+            		agree += 1;
+            	}
+            	else{
+            		dis += 1;
+            	}
+            	if (agree <= dis){
+            		score = 0;
+          			JOptionPane.showMessageDialog(gui,"Sorry but No score","Sorry",JOptionPane.PLAIN_MESSAGE);
+            	}
+            }
+            //turn starts from 0
+            allScores[playerID][turn] = score;
+            turn += 1;
       	}});
       tools.add(btnSubmit);
       
@@ -83,7 +116,7 @@ public class Pane extends JPanel {
            */
           @Override
           public final Dimension getPreferredSize() {
-              Dimension d = super.getPreferredSize();
+/**              Dimension d = super.getPreferredSize();
               Dimension prefSize = null;
               Component c = getParent();
               if (c == null) {
@@ -100,7 +133,12 @@ public class Pane extends JPanel {
               int h = (int) prefSize.getHeight();
               // the smaller of the two sizes
               int s = (w>h ? h : w);
+<<<<<<< HEAD
+              return new Dimension(s, s);
+=======
+*/
               return new Dimension(750, 650);
+>>>>>>> 387324b530b9d7ab8c6d867c92ea4a662ab5dff4
           }
       };
 
@@ -113,8 +151,6 @@ public class Pane extends JPanel {
               new EmptyBorder(8,8,8,8),
               new LineBorder(Color.BLACK)
               ));
-      // Set the BG to be ochre
-      Color ochre = new Color(204,119,34);
       board.setBackground(SystemColor.activeCaption);
       JPanel boardConstrain = new JPanel(new GridBagLayout());
       boardConstrain.setBackground(SystemColor.desktop);
@@ -138,8 +174,8 @@ public class Pane extends JPanel {
       
   	int[] i = new int[500];
   	int[] j = new int[500];
-  	i[0] = 10;
-  	j[0] = 10;
+  	i[0] = 6;
+  	j[0] = 6;
   	
       for (int ii = 0; ii < boardSquares.length; ii++) {
           for (int jj = 0; jj < boardSquares[ii].length; jj++) {
@@ -159,7 +195,7 @@ public class Pane extends JPanel {
 
               		// call input window
               		String input;
-              		input = JOptionPane.showInputDialog(null, "Enter the Character");
+              		input = JOptionPane.showInputDialog(gui, "Enter the Character");
               		
               		int x = j[letNum];
               		int y = i[letNum];
@@ -172,7 +208,7 @@ public class Pane extends JPanel {
               		//check if one button one letter
               		if (input.length()>1){
               			// exception
-              			JOptionPane.showMessageDialog(null,"Invalid Input, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
+              			JOptionPane.showMessageDialog(gui,"Invalid Input, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
               			input = "";
               			letNum -= 1;
               		}
@@ -185,7 +221,7 @@ public class Pane extends JPanel {
               		//each turn each word, so only allow one direction each turn
               		else if(xFirst == xSec){
               			if(x != xSec){
-              				JOptionPane.showMessageDialog(null,"One Word One Turn, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
+              				JOptionPane.showMessageDialog(gui,"One Word One Turn, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
               				input = "";
               				letNum -= 1;
               			}
@@ -203,7 +239,7 @@ public class Pane extends JPanel {
                   				}
                   			}
               			if(findLetter == false){
-              				JOptionPane.showMessageDialog(null,"Please Input Letter in Adjacent Positions","Error",JOptionPane.PLAIN_MESSAGE);
+              				JOptionPane.showMessageDialog(gui,"Please Input Letter in Adjacent Positions","Error",JOptionPane.PLAIN_MESSAGE);
               				input = "";
               				letNum -= 1;
               				}
@@ -211,7 +247,7 @@ public class Pane extends JPanel {
               		}
               		else if(yFirst == ySec){
               				if(y != ySec){
-              					JOptionPane.showMessageDialog(null,"One Word One Turn, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
+              					JOptionPane.showMessageDialog(gui,"One Word One Turn, Please Try Again!","Error",JOptionPane.PLAIN_MESSAGE);
                   				input = "";
                   				letNum -= 1;
               				}
@@ -267,12 +303,12 @@ public class Pane extends JPanel {
       top.add(new JLabel(""), new Float(1));
 
       // fill the top row
-      for (int ii = 0; ii < 21; ii++) {
+      for (int ii = 0; ii < 20; ii++) {
           JLabel label = new JLabel(COLS.substring(ii, ii + 1), SwingConstants.CENTER);
           top.add(label, new Float(1));
       }
       // fill the black non-pawn piece row
-      for (int ii = 0; ii < 21; ii++) {
+      for (int ii = 0; ii < 20; ii++) {
 
           RelativeLayout rowRL = new RelativeLayout(RelativeLayout.X_AXIS);
           rowRL.setRoundingPolicy( RelativeLayout.FIRST );
@@ -281,10 +317,10 @@ public class Pane extends JPanel {
           row.setOpaque(false);
           board.add(row, new Float(1));
 
-          for (int jj = 0; jj < 21; jj++) {
+          for (int jj = 0; jj < 20; jj++) {
               switch (jj) {
                   case 0:
-                      row.add(new JLabel("" + (22-(ii + 1)), SwingConstants.CENTER), new Float(1));
+                      row.add(new JLabel("" + (21-(ii + 1)), SwingConstants.CENTER), new Float(1));
                   default:
                       row.add(boardSquares[jj][ii], new Float(1));
               }
@@ -314,5 +350,23 @@ public class Pane extends JPanel {
   }
   public int getScore(){
 	  return score;
+  }
+  public String getVoteWords(){
+	  return voteWords;
+  }
+  public int getNumBefore(){
+	  return numberBefore;
+  }
+  public int[][] getAllScores(){
+	  return allScores;
+  }
+  public int getTurn(){
+	  return turn;
+  }
+  public int getOpinion(){
+	  return opinion;
+  }
+  public int[] getAllOpi(){
+	  return allOpinion;
   }
 }

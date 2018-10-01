@@ -247,7 +247,7 @@ public class ClientFrame {
     gbc_msgPane.gridx = GridBagConstraints.RELATIVE;
     gbc_msgPane.gridy = 1;
 
-    this.frmClient.getContentPane().add(msgPane, gbc_msgPane);
+    //this.frmClient.getContentPane().add(msgPane, gbc_msgPane);
     
     this.userListPanel = new UserListPanel(this);
     this.userListPanel.setBorder(new TitledBorder(null, "Player List", 4, 2, null, null));
