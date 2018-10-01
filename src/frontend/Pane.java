@@ -116,7 +116,7 @@ public class Pane extends JPanel {
            */
           @Override
           public final Dimension getPreferredSize() {
-/**              Dimension d = super.getPreferredSize();
+              Dimension d = super.getPreferredSize();
               Dimension prefSize = null;
               Component c = getParent();
               if (c == null) {
@@ -133,12 +133,7 @@ public class Pane extends JPanel {
               int h = (int) prefSize.getHeight();
               // the smaller of the two sizes
               int s = (w>h ? h : w);
-<<<<<<< HEAD
               return new Dimension(s, s);
-=======
-*/
-              return new Dimension(750, 650);
->>>>>>> 387324b530b9d7ab8c6d867c92ea4a662ab5dff4
           }
       };
 
