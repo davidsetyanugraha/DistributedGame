@@ -258,11 +258,11 @@ public class Pane extends JPanel {
                 }
               }
             }
-
+            int coordX= j[letNum], coordY= i[letNum];
             b.setText(input);
             if ((b.getText() != "") && (!b.getText().isEmpty())) {
               try {
-                appendJson(x, y, input);
+                appendJson(coordX, coordY, input);
               } catch (JSONException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
