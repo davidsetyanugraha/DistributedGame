@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -25,7 +23,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
@@ -250,26 +247,26 @@ public class ClientFrame {
     JMenuItem connectNet = new JMenuItem("connect network~");
     mnNetwork.add(connectNet);
     mnNetwork.add(endNetMenu);
-    
+
     JMenu mnScore = new JMenu("score");
     this.menuBar.add(mnScore);
-    
+
     JMenuItem DisplayScoreMenu = new JMenuItem("display scoreboard");
     DisplayScoreMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {
-    	  JOptionPane.showMessageDialog(null, "Your Score: "+backPanel.getScore());
+        JOptionPane.showMessageDialog(null, "Your Score: " + backPanel.getScore());
       }
     });
-    
+
     mnScore.add(DisplayScoreMenu);
-    
+
     this.userListPanel = new UserListPanel(this);
     try {
-		this.userListPanel.addUser(client.getUniqueName());
-	} catch (RemoteException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
+      this.userListPanel.addUser(client.getUniqueName());
+    } catch (RemoteException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
     this.userListPanel.setBorder(new TitledBorder(null, "Player List", 4, 2, null, null));
 
     GridBagConstraints gbc_listPanel = new GridBagConstraints();
@@ -281,73 +278,52 @@ public class ClientFrame {
     gbc_listPanel.weightx = 2.0D;
     gbc_listPanel.gridx = 9;
     gbc_listPanel.gridy = 1;
-    
+
     JMenu mnPlayerList = new JMenu("players");
     this.menuBar.add(mnPlayerList);
-    
+
     JMenuItem DisplayPlayerMenu = new JMenuItem("display players");
     DisplayPlayerMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {
-    	  JOptionPane.showOptionDialog(null, userListPanel, "Player List", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+        JOptionPane.showOptionDialog(null, userListPanel, "Player List", JOptionPane.DEFAULT_OPTION,
+            JOptionPane.INFORMATION_MESSAGE, null, null, null);
       }
     });
-   
+
     mnPlayerList.add(DisplayPlayerMenu);
-    
-    
 
-    this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
 
-    /*this.taMsgHis = new JTextArea("");
-    GridBagConstraints gbc_taMsgHis = new GridBagConstraints();
-    gbc_taMsgHis.insets = new Insets(0, 0, 5, 5);
-    gbc_taMsgHis.gridx = 8;
-    gbc_taMsgHis.gridy = 4;
-    frmClient.getContentPane().add(taMsgHis, gbc_taMsgHis);
-    this.taMsgHis.setEditable(false);
-    JScrollPane msgPane = new JScrollPane();
-    msgPane.setViewportBorder(new TitledBorder(null, "Message History", 4, 2, null, null));
-    GridBagConstraints gbc_msgPane = new GridBagConstraints();
-    gbc_msgPane.insets = new Insets(0, 0, 5, 0);
-    gbc_msgPane.weighty = 5.0D;
-    gbc_msgPane.weightx = 1.5D;
-    gbc_msgPane.gridwidth = 2;
-    gbc_msgPane.gridheight = 5;
-    gbc_msgPane.fill = 1;
-    gbc_msgPane.gridx = 9;
-    gbc_msgPane.gridy = 4;
 
-    this.frmClient.getContentPane().add(msgPane, gbc_msgPane);
+    // this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
 
-    this.tfMsg = new JTextField();
-    GridBagConstraints gbc_tfMsg = new GridBagConstraints();
-    gbc_tfMsg.insets = new Insets(0, 0, 0, 5);
-    gbc_tfMsg.weightx = 1.3D;
-    gbc_tfMsg.weighty = 1.0D;
-    gbc_tfMsg.fill = 2;
-    gbc_tfMsg.gridx = 9;
-    gbc_tfMsg.gridy = 9;
-
-    this.tfMsg.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        // ClientFrame.this.sendMsgClicked();
-      }
-    });
-    this.frmClient.getContentPane().add(this.tfMsg, gbc_tfMsg);
-    this.tfMsg.setColumns(10);
-
-    JButton btnSendMsg = new JButton("send");
-    GridBagConstraints gbc_btnSendMsg = new GridBagConstraints();
-    gbc_btnSendMsg.weighty = 1.0D;
-    gbc_btnSendMsg.weightx = 0.5D;
-    gbc_btnSendMsg.gridx = 10;
-    gbc_btnSendMsg.gridy = 9;
-    btnSendMsg.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        // ClientFrame.this.sendMsgClicked();
-      }
-    });
-    this.frmClient.getContentPane().add(btnSendMsg, gbc_btnSendMsg);*/
+    /*
+     * this.taMsgHis = new JTextArea(""); GridBagConstraints gbc_taMsgHis = new
+     * GridBagConstraints(); gbc_taMsgHis.insets = new Insets(0, 0, 5, 5); gbc_taMsgHis.gridx = 8;
+     * gbc_taMsgHis.gridy = 4; frmClient.getContentPane().add(taMsgHis, gbc_taMsgHis);
+     * this.taMsgHis.setEditable(false); JScrollPane msgPane = new JScrollPane();
+     * msgPane.setViewportBorder(new TitledBorder(null, "Message History", 4, 2, null, null));
+     * GridBagConstraints gbc_msgPane = new GridBagConstraints(); gbc_msgPane.insets = new Insets(0,
+     * 0, 5, 0); gbc_msgPane.weighty = 5.0D; gbc_msgPane.weightx = 1.5D; gbc_msgPane.gridwidth = 2;
+     * gbc_msgPane.gridheight = 5; gbc_msgPane.fill = 1; gbc_msgPane.gridx = 9; gbc_msgPane.gridy =
+     * 4;
+     * 
+     * this.frmClient.getContentPane().add(msgPane, gbc_msgPane);
+     * 
+     * this.tfMsg = new JTextField(); GridBagConstraints gbc_tfMsg = new GridBagConstraints();
+     * gbc_tfMsg.insets = new Insets(0, 0, 0, 5); gbc_tfMsg.weightx = 1.3D; gbc_tfMsg.weighty =
+     * 1.0D; gbc_tfMsg.fill = 2; gbc_tfMsg.gridx = 9; gbc_tfMsg.gridy = 9;
+     * 
+     * this.tfMsg.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent
+     * e) { // ClientFrame.this.sendMsgClicked(); } });
+     * this.frmClient.getContentPane().add(this.tfMsg, gbc_tfMsg); this.tfMsg.setColumns(10);
+     * 
+     * JButton btnSendMsg = new JButton("send"); GridBagConstraints gbc_btnSendMsg = new
+     * GridBagConstraints(); gbc_btnSendMsg.weighty = 1.0D; gbc_btnSendMsg.weightx = 0.5D;
+     * gbc_btnSendMsg.gridx = 10; gbc_btnSendMsg.gridy = 9; btnSendMsg.addActionListener(new
+     * ActionListener() { public void actionPerformed(ActionEvent e) { //
+     * ClientFrame.this.sendMsgClicked(); } }); this.frmClient.getContentPane().add(btnSendMsg,
+     * gbc_btnSendMsg);
+     */
     this.userList = new ArrayList();
   }
 
