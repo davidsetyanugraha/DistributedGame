@@ -1,4 +1,4 @@
-package client;
+package frontend;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,9 +19,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-
-import client.ClientFrame;
-import client.RelativeLayout;
 
 public class Pane extends JPanel {
 
