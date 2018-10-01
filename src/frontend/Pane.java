@@ -64,6 +64,16 @@ public class Pane extends JPanel {
         // call submit
         // call calculate score
         /** Backend Call */
+    	JSONArray wordInput = null;
+		try {
+			wordInput = json.getJSONArray("word");
+		} catch (JSONException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+    	System.out.println("added score:"+wordInput.length());
+    	score=wordInput.length();
+    	
         try {
           client.addWord(json.toString());
         } catch (RemoteException e1) {

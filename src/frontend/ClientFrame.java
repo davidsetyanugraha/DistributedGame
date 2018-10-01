@@ -257,7 +257,7 @@ public class ClientFrame {
     JMenuItem DisplayScoreMenu = new JMenuItem("display scoreboard");
     DisplayScoreMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {
-    	  JOptionPane.showMessageDialog(null, backPanel.getScore());
+    	  JOptionPane.showMessageDialog(null, "Your Score: "+backPanel.getScore());
       }
     });
     
@@ -285,7 +285,7 @@ public class ClientFrame {
     JMenu mnPlayerList = new JMenu("players");
     this.menuBar.add(mnPlayerList);
     
-    JMenuItem DisplayPlayerMenu = new JMenuItem("players");
+    JMenuItem DisplayPlayerMenu = new JMenuItem("display players");
     DisplayPlayerMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {
     	  JOptionPane.showOptionDialog(null, userListPanel, "Player List", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
