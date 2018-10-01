@@ -23,15 +23,18 @@ import javax.swing.border.LineBorder;
 
 public class Pane extends JPanel {
 
-  private int strokeSize = 1;
   private final JPanel gui = new JPanel(new BorderLayout(3, 3));
   private JButton[][] boardSquares = new JButton[22][22];
   private JPanel board;
   private final JLabel message = new JLabel("Ready to play");
   private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
   private String word;
+  private String voteWords;
+  private int letNum;
   private int x, y;
   private Client client;
+  private int score;
+  private int numberBefore;
 
   public Pane(ClientFrame clientFrame, Client client) {
 
@@ -48,12 +51,15 @@ public class Pane extends JPanel {
 
     // String word hold the input
     word = "";
+    voteWords = "";
+    letNum = 1;
 
     JButton btnSubmit = new JButton("Submit");
     btnSubmit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         // call submit
         // call calculate score
+        /** Backend Call */
         System.out.println("word to be submitted:" + word);
         try {
           client.addWord(word);
@@ -61,11 +67,26 @@ public class Pane extends JPanel {
           // TODO Auto-generated catch block
           e1.printStackTrace();
         }
+        /** Backend Call */
 
+        JButton v = new JButton();
+        numberBefore += letNum;
+        word = "";
+        letNum = 1;
+
+        // call window to input the words this player think valid
+        voteWords = JOptionPane.showInputDialog(null, "If More than One Word, use , to split",
+            "Enter the Words");
+        voteWords.replace(",", "");
+        score = voteWords.length();
+        if (voteWords.length() >= numberBefore) {
+          JOptionPane.showMessageDialog(null, "You Lied, Please Try Again!", "Error",
+              JOptionPane.PLAIN_MESSAGE);
+          score = 0;
+        }
       }
     });
     tools.add(btnSubmit);
-
 
 
     board = new JPanel() {
@@ -91,7 +112,7 @@ public class Pane extends JPanel {
         int h = (int) prefSize.getHeight();
         // the smaller of the two sizes
         int s = (w > h ? h : w);
-        return new Dimension(s, s);
+        return new Dimension(750, 650);
       }
     };
 
@@ -118,11 +139,17 @@ public class Pane extends JPanel {
     // JButton a = new JButton();
     // a.addActionListener(new ActionListener(){
     // public void actionPerformed(ActionEvent ia){
-    // String input = "��";
+    // String input = "¡¤";
     // a.setText(input);
     // }});
     // }
     // }
+
+    int[] i = new int[500];
+    int[] j = new int[500];
+    i[0] = 10;
+    j[0] = 10;
+
     for (int ii = 0; ii < boardSquares.length; ii++) {
       for (int jj = 0; jj < boardSquares[ii].length; jj++) {
 
@@ -130,24 +157,34 @@ public class Pane extends JPanel {
         b.setMargin(buttonMargin);
 
         boardSquares[10][10] = new JButton(String.valueOf("*"));
-        b.setText(" ");
-
-        final int i = ii;
-        final int j = jj;
-        // int a = b.getHorizontalTextPosition();
-        // int d = b.getVerticalTextPosition();
+        b.setText("");
+        final int iii = ii;
+        final int jjj = jj;
 
         b.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
+            i[letNum] = iii;
+            j[letNum] = jjj;
+
             // call input window
             String input;
             input = JOptionPane.showInputDialog(null, "Enter the Character");
 
+            int x = j[letNum];
+            int y = i[letNum];
+            int xFirst = j[1];
+            int yFirst = i[1];
+
+            int xSec = j[2];
+            int ySec = i[2];
+
+            // check if one button one letter
             if (input.length() > 1) {
               // exception
               JOptionPane.showMessageDialog(null, "Invalid Input, Please Try Again!", "Error",
                   JOptionPane.PLAIN_MESSAGE);
-              input = " ";
+              input = "";
+              letNum -= 1;
             }
 
             // else if (!b.getText().isEmpty() || b.getText().equals("*")){
@@ -156,84 +193,67 @@ public class Pane extends JPanel {
             // input = b.getText();
             // }
 
-            // input position invalidation
-            else if (i != 0 & j != 0) {
-              int x = j;
-              int y = i;
-              boolean findLetter = false;
-              for (x = j - 1; x <= j + 1; x++) {
-                if (!boardSquares[x][y].getText().equalsIgnoreCase(" ")) {
-                  findLetter = true;
-                }
+            // each turn each word, so only allow one direction each turn
+            else if (xFirst == xSec) {
+              if (x != xSec) {
+                JOptionPane.showMessageDialog(null, "One Word One Turn, Please Try Again!", "Error",
+                    JOptionPane.PLAIN_MESSAGE);
+                input = "";
+                letNum -= 1;
               }
-              for (y = i - 1; y <= i + 1; y++) {
-                if (!boardSquares[x][y].getText().equalsIgnoreCase(" ")) {
-                  findLetter = true;
-                }
-              }
-              if (findLetter == false) {
-                JOptionPane.showMessageDialog(null, "Please Input Letter in Adjacent Positions",
-                    "Error", JOptionPane.PLAIN_MESSAGE);
-                input = " ";
-              }
-            } else if (i == 0 && j != 0) {
-              int x = j;
-              int y = i;
-              boolean findLetter = false;
-              for (x = j - 1; x <= j + 1; x++) {
-                if (!boardSquares[x][y].getText().equalsIgnoreCase(" ")) {
-                  findLetter = true;
-                }
-              }
-              for (y = i; y <= i + 1; y++) {
-                if (!boardSquares[x][y].getText().equalsIgnoreCase(" ")) {
-                  findLetter = true;
-                }
-              }
-              if (findLetter == false) {
-                JOptionPane.showMessageDialog(null, "Please Input Letter in Adjacent Positions",
-                    "Error", JOptionPane.PLAIN_MESSAGE);
-                input = " ";
-              }
-            } else if (i != 0 & j == 0) {
-              int x = j;
-              int y = i;
-              boolean findLetter = false;
-              for (x = j; x <= j + 1; x++) {
-                if (!boardSquares[x][y].getText().equalsIgnoreCase(" ")) {
-                  findLetter = true;
-                }
-              }
-              for (y = i - 1; y <= i + 1; y++) {
-                if (!boardSquares[x][y].getText().equalsIgnoreCase(" ")) {
-                  findLetter = true;
-                }
-              }
-            } else if (i == 0 & j == 0) {
-              int x, y;
-              boolean findLetter = false;
-              for (x = j; x <= j + 1; x++) {
-                for (y = i; y <= i + 1; y++) {
-                  if (!boardSquares[x][y].getText().equalsIgnoreCase(" ")) {
-                    findLetter = true;
+              // check if any letter around the letter input
+              else if (i[letNum] != 0 & j[letNum] != 0) {
+                boolean findLetter = false;
+                for (x = j[letNum] - 1; x <= j[letNum] + 1; x++) {
+                  for (y = i[letNum] - 1; y <= i[letNum] + 1; y++) {
+                    if (!boardSquares[x][y].getText().equalsIgnoreCase("")) {
+                      findLetter = true;
+                    }
+                    if (!boardSquares[x][y].getText().equalsIgnoreCase("")) {
+                      findLetter = true;
+                    }
                   }
                 }
+                if (findLetter == false) {
+                  JOptionPane.showMessageDialog(null, "Please Input Letter in Adjacent Positions",
+                      "Error", JOptionPane.PLAIN_MESSAGE);
+                  input = "";
+                  letNum -= 1;
+                }
               }
-              if (findLetter == false) {
-                JOptionPane.showMessageDialog(null, "Please Input Letter in Adjacent Positions",
-                    "Error", JOptionPane.PLAIN_MESSAGE);
-                input = " ";
+            } else if (yFirst == ySec) {
+              if (y != ySec) {
+                JOptionPane.showMessageDialog(null, "One Word One Turn, Please Try Again!", "Error",
+                    JOptionPane.PLAIN_MESSAGE);
+                input = "";
+                letNum -= 1;
+              }
+              // check if any letter around the letter input
+              else if (i[letNum] != 0 & j[letNum] != 0) {
+                boolean findLetter = false;
+                for (x = j[letNum] - 1; x <= j[letNum] + 1; x++) {
+                  for (y = i[letNum] - 1; y <= i[letNum] + 1; y++) {
+                    if (!boardSquares[x][y].getText().equalsIgnoreCase("")) {
+                      findLetter = true;
+                    }
+                    if (!boardSquares[x][y].getText().equalsIgnoreCase("")) {
+                      findLetter = true;
+                    }
+                  }
+                }
+                if (findLetter == false) {
+                  JOptionPane.showMessageDialog(null, "Please Input Letter in Adjacent Positions",
+                      "Error", JOptionPane.PLAIN_MESSAGE);
+                  input = "";
+                  letNum -= 1;
+                }
               }
             }
 
             b.setText(input);
             word += b.getText();
+            letNum += 1;
 
-            // TODO
-            System.out.println(word);
-            //
-            x = j;
-            y = i;
           }
         });
 
@@ -285,10 +305,6 @@ public class Pane extends JPanel {
     }
   }
 
-  public void setStrokeSize(int size) {
-    this.strokeSize = size;
-  }
-
   public final JComponent getboard() {
     return board;
   }
@@ -308,8 +324,16 @@ public class Pane extends JPanel {
   public int getX() {
     return x;
   }
-  
+
   public void setChar(int x, int y, String ch) {
-	  boardSquares[x][y].setText(ch);
+    boardSquares[x][y].setText(ch);
+  }
+
+  public int getLetNum() {
+    return letNum;
+  }
+
+  public int getScore() {
+    return score;
   }
 }

@@ -1,4 +1,4 @@
-package client;
+package frontend;
 
 import flexjson.JSONSerializer;
 import java.awt.Choice;

@@ -9,7 +9,8 @@ import java.util.Scanner;
 import backend.IRemoteGame;
 
 public class ClientGui {
-
+  /** it is for backend development purpose only! */
+  /** No need to run this */
   public static void main(String[] args)
       throws MalformedURLException, RemoteException, NotBoundException {
     new ClientGui();
