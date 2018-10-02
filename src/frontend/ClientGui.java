@@ -23,11 +23,11 @@ public class ClientGui {
 
     /** Client Imp example */
     Client client = new Client(username);
-    client.joinGame(remoteGame);
-    client.sendMessage("hello from " + username);
-    client.addWord("word1");
-    client.pass();
-    client.vote(true, "word1");
-    client.logout();
+    // client.joinGame(remoteGame);
+    // client.sendMessage("hello from " + username);
+    // client.addWord("word1");
+    // client.pass();
+    // client.vote(true, "word1");
+    // client.logout();
   }
 }

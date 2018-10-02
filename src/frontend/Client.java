@@ -1,21 +1,20 @@
 package frontend;
 
-import java.io.FileNotFoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import backend.IRemoteGame;
 
 public class Client extends UnicastRemoteObject implements IClient {
-  // Runnable {
 
   private IRemoteGame remoteGame;
   private String name = null; // MUST UNIQUE!
   private boolean debug = true;
   private int currentState;
   private int score; // final score
+  private String json = null;
 
   // Constant Game State
   public final int STATE_WAIT = 0;
@@ -26,9 +25,18 @@ public class Client extends UnicastRemoteObject implements IClient {
     this.name = name;
   }
 
-  public void joinGame(IRemoteGame remoteGame) {
+  public JSONObject getJsonObject() throws JSONException {
+    JSONObject jsonObj = new JSONObject(json);
+    return jsonObj;
+  }
+
+  public void joinGame(IRemoteGame remoteGame) throws RemoteException {
     String response;
     System.out.println("[Log] " + name + " has joined game.");
+
+    if (this.json == null) {
+      this.json = remoteGame.getJsonString();
+    }
 
     try {
       this.remoteGame = remoteGame;
@@ -38,8 +46,6 @@ public class Client extends UnicastRemoteObject implements IClient {
       if (debug)
         response = response + " caused by: " + e.getMessage();
     }
-
-    System.out.println(response);
   }
 
   public void sendMessage(String message) throws RemoteException {
@@ -48,13 +54,26 @@ public class Client extends UnicastRemoteObject implements IClient {
 
     try {
       response = remoteGame.broadcastGeneralMessage(message);
+      this.json = remoteGame.getJsonString();
     } catch (RemoteException e) {
       response = "Send Message has been failed!";
       if (debug)
         response = response + " caused by: " + e.getMessage();
     }
+  }
 
-    System.out.println(response);
+  public void addLetter() throws RemoteException {
+    String response;
+    System.out.println("[Log] " + name + " has added letter: [ " + json + " ]");
+
+    try {
+      response = remoteGame.broadcastNewLetter(json).toString();
+      this.json = remoteGame.getJsonString();
+    } catch (RemoteException e) {
+      response = "Add New Letter has been failed!";
+      if (debug)
+        response = response + " caused by: " + e.getMessage();
+    }
   }
 
   public void pass() throws RemoteException {
@@ -63,13 +82,12 @@ public class Client extends UnicastRemoteObject implements IClient {
 
     try {
       response = remoteGame.broadcastPass(this.name);
+      this.json = remoteGame.getJsonString();
     } catch (RemoteException e) {
       response = "Send Message has been failed!";
       if (debug)
         response = response + " caused by: " + e.getMessage();
     }
-
-    System.out.println(response);
   }
 
   public void vote(Boolean accept, String word) throws RemoteException {
@@ -78,28 +96,27 @@ public class Client extends UnicastRemoteObject implements IClient {
 
     try {
       response = remoteGame.broadcastVote(accept, word);
+      this.json = remoteGame.getJsonString();
     } catch (RemoteException e) {
       response = "Vote has been failed!";
       if (debug)
         response = response + " caused by: " + e.getMessage();
     }
-
-    System.out.println(response);
   }
 
-  public void addWord(String json) throws RemoteException {
+  public void performVoting(String json) throws RemoteException {// first player run voting
+                                                                 // system
     String response;
-    System.out.println("[Log] " + name + " has added new word: [ " + json + " ] ");
+    System.out.println("[Log] " + name + " proposed new word: [ " + json + " ] ");
 
     try {
-      response = remoteGame.broadcastWord(json);
+      response = remoteGame.performVoting(json);
+      this.json = remoteGame.getJsonString();
     } catch (RemoteException e) {
-      response = "Add Word has been failed!";
+      response = "Word proposal has been failed!";
       if (debug)
         response = response + " caused by: " + e.getMessage();
     }
-
-    System.out.println(response);
   }
 
   public void logout() throws RemoteException {
@@ -113,8 +130,6 @@ public class Client extends UnicastRemoteObject implements IClient {
       if (debug)
         response = response + " caused by: " + e.getMessage();
     }
-
-    System.out.println(response);
   }
 
   public void setCurrentState(int state) {
@@ -142,6 +157,27 @@ public class Client extends UnicastRemoteObject implements IClient {
 
   public int getScore() {
     return score;
+  }
+
+  public void appendJson(int x, int y, String ch) throws JSONException, RemoteException {
+    System.out.println("APPEND JSON: x = " + x + " , y = " + y + " , ch = " + ch);
+    json = remoteGame.getJsonString();
+
+    if (json != null) {
+      JSONObject jsonObj = new JSONObject(json);
+      JSONArray arrWord = jsonObj.getJSONArray("word");
+      JSONObject obj = new JSONObject();
+      obj.put("x", x);
+      obj.put("y", y);
+      obj.put("ch", ch);
+      arrWord.put(obj);
+
+      JSONObject objScore = jsonObj.getJSONObject("score");
+      objScore.put(this.getUniqueName(), 0);
+      this.json = jsonObj.toString();
+    }
+
+    System.out.println("Final JSON = " + json.toString());
   }
 
   /**
@@ -175,24 +211,27 @@ public class Client extends UnicastRemoteObject implements IClient {
   }
 
   @Override
-  public void getVotingSystem(String json) throws RemoteException {
-    // TODO Auto-generated method stub
+  public void renderVotingSystem(String[] words) throws RemoteException {
+    this.json = remoteGame.getJsonString();
     this.setCurrentState(STATE_VOTING);
-    System.out.println("getVotingSystem: " + json);
+    System.out.println("renderVotingSystem: " + words.toString());
 
-    try {
-      ClientFrame.renderBasedOnJson(json);
-    } catch (FileNotFoundException | JSONException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    // render voting system
+    // ClientFrame.renderVotingSystem(words);
 
+    /** after this point, voting will be arranged by pressing vote button : broadcastVote */
   }
 
   @Override
-  public void getBoard(String jsonCoordinates) throws RemoteException {
-    // TODO Auto-generated method stub
-    System.out.println("getBoard: " + jsonCoordinates);
+  public void renderBoardSystem() throws RemoteException {
+    try {
+      this.json = remoteGame.getJsonString();
+      ClientFrame.renderBasedOnJson(this.json);
+      System.out.println("RenderBoardSystem: " + this.json);
+    } catch (JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -204,9 +243,5 @@ public class Client extends UnicastRemoteObject implements IClient {
   public void getGeneralMessage(String message) throws RemoteException {
     // TODO Auto-generated method stub
     System.out.println("getGeneralMessage: " + message);
-  }
-  
-  public ArrayList<String> getUserList() throws RemoteException {
-	  return this.remoteGame.broadcastPlayerList();
   }
 }

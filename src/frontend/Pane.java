@@ -22,7 +22,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Pane extends JPanel {
 
@@ -35,10 +34,9 @@ public class Pane extends JPanel {
   private String voteWords;
   private int letNum;
   private int x, y;
-  private Client client;
+  private static Client client;
   private int score;
   private int numberBefore;
-  private static JSONObject json = null;
 
   public Pane(ClientFrame clientFrame, Client client) {
 
@@ -61,12 +59,13 @@ public class Pane extends JPanel {
     JButton btnSubmit = new JButton("Submit");
     btnSubmit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        // soon will be change with are you sure? yes then this
         // call submit
         // call calculate score
         /** Backend Call */
         JSONArray wordInput = null;
         try {
-          wordInput = json.getJSONArray("word");
+          wordInput = client.getJsonObject().getJSONArray("word");
         } catch (JSONException e2) {
           // TODO Auto-generated catch block
           e2.printStackTrace();
@@ -75,7 +74,7 @@ public class Pane extends JPanel {
         score = wordInput.length();
 
         try {
-          client.addWord(json.toString());
+          client.addLetter(); // json has been updated in appendJson()
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -272,8 +271,8 @@ public class Pane extends JPanel {
             b.setText(input);
             if ((b.getText() != "") && (!b.getText().isEmpty())) {
               try {
-                appendJson(coordX, coordY, input);
-              } catch (JSONException e1) {
+                client.appendJson(coordX, coordY, input);
+              } catch (JSONException | RemoteException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
               }
@@ -358,31 +357,5 @@ public class Pane extends JPanel {
 
   public int getScore() {
     return score;
-  }
-
-  private static void appendJson(int x, int y, String ch) throws JSONException {
-    System.out.println("APPEND JSON: x = " + x + " , y = " + y + " , ch = " + ch);
-
-    if (json == null) {
-      json = new JSONObject();
-      JSONArray arrWord = new JSONArray();
-      JSONObject obj = new JSONObject();
-      obj.put("x", x);
-      obj.put("y", y);
-      obj.put("ch", ch);
-      arrWord.put(obj);
-      json.put("word", arrWord);
-      json.put("score", arrWord.length());
-    } else {
-      JSONArray arrWord = json.getJSONArray("word");
-      JSONObject obj = new JSONObject();
-      obj.put("x", x);
-      obj.put("y", y);
-      obj.put("ch", ch);
-      arrWord.put(obj);
-      json.put("score", arrWord.length());
-    }
-
-    System.out.println("Final JSON = " + json.toString());
   }
 }

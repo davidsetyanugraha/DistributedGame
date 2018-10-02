@@ -20,6 +20,17 @@
             "y": 0,
             "ch": "y"
         }
-    ], 
-    "score": 4
+    ],
+    "player": [
+        {
+            "name": "Andre",
+            "score": 10,
+            "turn": true
+        },
+        {
+            "name": "Kelly",
+            "score": 10,
+            "turn": false
+        }
+    ]
 }

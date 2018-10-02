@@ -8,7 +8,6 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -262,10 +261,7 @@ public class ClientFrame {
 
     this.userListPanel = new UserListPanel(this);
     try {
-    	ArrayList<String> userList = client.getUserList();
-		for (int i=0; i<userList.size() ; i++) {
-			this.userListPanel.addUser(userList.get(i));
-		}
+      this.userListPanel.addUser(client.getUniqueName());
     } catch (RemoteException e1) {
       // TODO Auto-generated catch block
       e1.printStackTrace();
@@ -544,7 +540,7 @@ public class ClientFrame {
   }
 
   // Reading JSON data.
-  public static void renderBasedOnJson(String json) throws FileNotFoundException, JSONException {
+  public static void renderBasedOnJson(String json) throws JSONException {
     JSONObject data = new JSONObject(json);
 
     // getting words that are available

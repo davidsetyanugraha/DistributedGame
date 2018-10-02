@@ -10,9 +10,11 @@ public interface IClient extends Remote {
 
   void getPass(final String playerName) throws RemoteException;
 
-  void getVotingSystem(final String json) throws RemoteException;
+  void addLetter() throws RemoteException;
 
-  void getBoard(final String jsonCoordinates) throws RemoteException;
+  void renderVotingSystem(final String[] words) throws RemoteException;
+
+  void renderBoardSystem() throws RemoteException;
 
   void getGeneralMessage(final String message) throws RemoteException;
 
