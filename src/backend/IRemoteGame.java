@@ -2,6 +2,8 @@ package backend;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+
 import frontend.IClient;
 
 public interface IRemoteGame extends Remote {
@@ -24,6 +26,8 @@ public interface IRemoteGame extends Remote {
 
   /** Client-> Server -> all Clients; return JSON success or failed */
   public String broadcastPass(String playerName) throws RemoteException;
+  
+  public ArrayList<String> broadcastPlayerList() throws RemoteException;
 
   public String disconnectClient() throws RemoteException;
 }

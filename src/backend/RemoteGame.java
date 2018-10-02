@@ -122,4 +122,14 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     return "success";
   }
+  
+  @Override
+  public ArrayList<String> broadcastPlayerList() throws RemoteException {
+	  ArrayList<String> nameArray = new ArrayList<String>();
+	  for (int i=0; i< clients.size(); i++) {
+		  nameArray.add(clients.get(i).getUniqueName());
+	  }
+	  
+	  return nameArray;
+  }
 }

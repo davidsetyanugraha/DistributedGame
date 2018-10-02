@@ -3,6 +3,8 @@ package frontend;
 import java.io.FileNotFoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import backend.IRemoteGame;
 
@@ -202,5 +204,9 @@ public class Client extends UnicastRemoteObject implements IClient {
   public void getGeneralMessage(String message) throws RemoteException {
     // TODO Auto-generated method stub
     System.out.println("getGeneralMessage: " + message);
+  }
+  
+  public ArrayList<String> getUserList() throws RemoteException {
+	  return this.remoteGame.broadcastPlayerList();
   }
 }
