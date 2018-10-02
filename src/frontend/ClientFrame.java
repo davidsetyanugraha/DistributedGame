@@ -262,7 +262,10 @@ public class ClientFrame {
 
     this.userListPanel = new UserListPanel(this);
     try {
-      this.userListPanel.addUser(client.getUniqueName());
+    	ArrayList<String> userList = client.getUserList();
+		for (int i=0; i<userList.size() ; i++) {
+			this.userListPanel.addUser(userList.get(i));
+		}
     } catch (RemoteException e1) {
       // TODO Auto-generated catch block
       e1.printStackTrace();
