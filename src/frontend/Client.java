@@ -172,8 +172,16 @@ public class Client extends UnicastRemoteObject implements IClient {
       obj.put("ch", ch);
       arrWord.put(obj);
 
-      JSONObject objScore = jsonObj.getJSONObject("score");
-      objScore.put(this.getUniqueName(), 0);
+      JSONArray arrPlayer = jsonObj.getJSONArray("player");
+      JSONObject objPlayer = new JSONObject();
+      objPlayer.put("name", name);
+      objPlayer.put("score", 0);
+      objPlayer.put("turn", true);
+      arrPlayer.put(objPlayer);
+
+      jsonObj.put("word", arrWord);
+      jsonObj.put("player", arrPlayer);
+
       this.json = jsonObj.toString();
     }
 

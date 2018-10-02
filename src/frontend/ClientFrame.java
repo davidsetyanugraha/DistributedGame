@@ -543,6 +543,7 @@ public class ClientFrame {
   public static void renderBasedOnJson(String json) throws JSONException {
     JSONObject data = new JSONObject(json);
 
+    // render words
     // getting words that are available
     JSONArray wordsAvail = (JSONArray) data.get("word");
 
@@ -553,6 +554,8 @@ public class ClientFrame {
       String ch = word.getString("ch");
       backPanel.setChar(x, y, ch);
     }
+
+    // render player
   }
 
 }

@@ -33,8 +33,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     JSONArray arrWord = new JSONArray();
     jsonObj.put("word", arrWord);
 
-    JSONObject objScore = new JSONObject();
-    jsonObj.put("score", objScore);
+    JSONArray arrPlayer = new JSONArray();
+    jsonObj.put("player", arrPlayer);
 
     json = jsonObj.toString();
   }
