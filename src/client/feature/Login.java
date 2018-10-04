@@ -1,4 +1,4 @@
-package client;
+package client.feature;
 
 import java.awt.Color;
 import java.awt.EventQueue;

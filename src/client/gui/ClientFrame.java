@@ -32,7 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import client.Client;
-import client.UserListPanel;
 import server.IRemoteGame;
 
 public class ClientFrame {

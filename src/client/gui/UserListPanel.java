@@ -1,4 +1,4 @@
-package client;
+package client.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -8,8 +8,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import client.gui.ClientFrame;
 
 public class UserListPanel extends JPanel {
   private static final long serialVersionUID = -154678996694424775L;
