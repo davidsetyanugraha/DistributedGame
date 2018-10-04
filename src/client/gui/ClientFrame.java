@@ -327,7 +327,7 @@ public class ClientFrame {
      * ClientFrame.this.sendMsgClicked(); } }); this.frmClient.getContentPane().add(btnSendMsg,
      * gbc_btnSendMsg);
      */
-    this.userList = new ArrayList();
+    
   }
 
   /**
@@ -470,12 +470,12 @@ public class ClientFrame {
     this.popUpDialog.setVisible(false);
   }
 
-  public User getUser() {
-    return this.user;
+  public Client getClient() {
+    return this.client;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setUser(Client client) {
+    this.client = client;
   }
 
   public Pane getPane() {
