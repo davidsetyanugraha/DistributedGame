@@ -1,4 +1,4 @@
-package frontend;
+package client;
 
 import java.io.FileNotFoundException;
 import java.rmi.RemoteException;
@@ -6,7 +6,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import org.json.JSONException;
-import backend.IRemoteGame;
+
+import client.gui.ClientFrame;
+import server.IRemoteGame;
 
 public class Client extends UnicastRemoteObject implements IClient {
   // Runnable {

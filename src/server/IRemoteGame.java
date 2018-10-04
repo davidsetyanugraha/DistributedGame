@@ -1,10 +1,10 @@
-package backend;
+package server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import frontend.IClient;
+import client.IClient;
 
 public interface IRemoteGame extends Remote {
 

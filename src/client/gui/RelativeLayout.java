@@ -1,4 +1,4 @@
-package frontend;
+package client.gui;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -301,7 +301,7 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable {
    *
    * @param target the container in which to do the layout
    * @return the preferred dimensions to lay out the subcomponents of the specified container
-   * @see java.awt.RelativeLayout#minimumLayoutSize
+   * @see java.client.gui.RelativeLayout#minimumLayoutSize
    * @see java.awt.Container#getPreferredSize()
    */
   public Dimension preferredLayoutSize(Container parent) {
@@ -323,7 +323,7 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable {
    *
    * @param target the container in which to do the layout
    * @return the minimum dimensions needed to lay out the subcomponents of the specified container
-   * @see java.awt.RelativeLayout#preferredLayoutSize
+   * @see java.client.gui.RelativeLayout#preferredLayoutSize
    * @see java.awt.Container#doLayout
    */
   public Dimension minimumLayoutSize(Container parent) {

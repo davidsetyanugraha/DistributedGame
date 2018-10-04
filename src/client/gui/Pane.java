@@ -1,4 +1,4 @@
-package frontend;
+package client.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,6 +23,8 @@ import javax.swing.border.LineBorder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import client.Client;
 
 public class Pane extends JPanel {
 

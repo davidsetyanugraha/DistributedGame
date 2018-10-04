@@ -1,4 +1,4 @@
-package backend;
+package server;
 
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;

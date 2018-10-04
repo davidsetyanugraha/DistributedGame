@@ -1,4 +1,4 @@
-package frontend;
+package client.gui;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -30,7 +30,10 @@ import javax.swing.border.TitledBorder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import backend.IRemoteGame;
+
+import client.Client;
+import client.UserListPanel;
+import server.IRemoteGame;
 
 public class ClientFrame {
   private JFrame frmClient;
@@ -45,8 +48,6 @@ public class ClientFrame {
   private JTextField tfMsg;
   private JTextArea taMsgHis;
   private JMenuBar menuBar;
-  private User user = null;
-  private ArrayList<User> userList;
   private int serverPort = 23333;
   private static Pane backPanel;
   private static Client client;

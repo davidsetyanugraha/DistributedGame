@@ -1,9 +1,10 @@
-package backend;
+package server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import frontend.IClient;
+
+import client.IClient;
 
 public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
