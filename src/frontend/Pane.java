@@ -32,7 +32,7 @@ public class Pane extends JPanel {
   private final JLabel message = new JLabel("Ready to play");
   private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
   private String word;
-  private int letNum, turn;
+  private int characterNum, turn;
   private int x, y;
   private Client client;
   private int score;
@@ -54,19 +54,19 @@ public class Pane extends JPanel {
     // String word hold the input
     // because now One Player, One Turn, One letter
     // word = char, only one letter each turn now
-    // letNum used to calculate times this player try to input in his turn, 
+    // characterNum used to calculate times this player try to input in his turn, 
     // used for one-letter-one-turn validation
     word = "";
-    letNum = 0;
+    characterNum = 0;
     turn = 1;
 
     JButton btnSubmit = new JButton("VOTE");
     btnSubmit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        // send ask vote message to server
+    	  // send ask vote message to server
     	  // server broadcast vote to all others
-    	  // others then run the inplementation below
-    	  if(letNum == 0){
+    	  // others then run the implementation below
+    	  if(characterNum == 0){
     		  JOptionPane.showMessageDialog(null,"You can't ask vote before input!","Error",JOptionPane.PLAIN_MESSAGE);
     	  }
     	  else{
@@ -76,7 +76,7 @@ public class Pane extends JPanel {
     	  //then send this vote to server
     	  //if majority agree, call score function
     	  //move to next player
-    	  letNum = 0;
+    	  characterNum = 0;
     	  }
       }
     });
@@ -86,7 +86,7 @@ public class Pane extends JPanel {
     btnPass.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
       	  //move to next turn
-      	  letNum = 0;
+      	  characterNum = 0;
         }
       });
     tools.add(btnPass);
@@ -139,41 +139,41 @@ public class Pane extends JPanel {
 
     Insets buttonMargin = new Insets(0, 0, 0, 0);
 
-    // X: j[turn], jj, jjj; Y: i[turn], ii, iii;
-    int[] i = new int[500];
-    int[] j = new int[500];
-    i[0] = 10;
-    j[0] = 10;
+    // X: j[turn], jj, jj; Y: i[turn], ii, ii;
+    int[] yList = new int[500];
+    int[] xList = new int[500];
+    yList[0] = 10;
+    xList[0] = 10;
 
-    for (int ii = 0; ii < boardSquares.length; ii++) {
-      for (int jj = 0; jj < boardSquares[ii].length; jj++) {
+    for (int i = 0; i < boardSquares.length; i++) {
+      for (int j = 0; j < boardSquares[i].length; j++) {
 
         JButton b = new JButton();
         b.setMargin(buttonMargin);
 
         boardSquares[10][10] = new JButton(String.valueOf("*"));
         b.setText("");
-        final int iii = ii;
-        final int jjj = jj;
+        final int ii = i;
+        final int jj = j;
 
         b.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            i[turn] = iii;
-            j[turn] = jjj;
+            yList[turn] = ii;
+            xList[turn] = jj;
 
             // call input window
             String input;
             input = JOptionPane.showInputDialog(null, "Enter the Character");
 
-            int x = j[turn];
-            int y = i[turn];
+            int x = xList[turn];
+            int y = yList[turn];
 
             //confirmInput set to check if player confirm to input in this button
             int confirmInput = 1;
             confirmInput = JOptionPane.showConfirmDialog(null, "Are You Sure to Input here?");
             if(confirmInput != 0){
             	input = "";
-            	letNum -= 1;
+            	characterNum -= 1;
             	turn -= 1;
             }
             //check if other input in this btn before: check if letter exist, check if is different turn;
@@ -181,7 +181,7 @@ public class Pane extends JPanel {
             	JOptionPane.showMessageDialog(null,"Letter Already Exist, Try Again.","Error",JOptionPane.PLAIN_MESSAGE);
             			//roll back the word of JSON, should save this data
             			//////////////////
-            			letNum -= 1;
+            			characterNum -= 1;
                     	turn -= 1;
             	}
             // check if one button one letter
@@ -190,11 +190,11 @@ public class Pane extends JPanel {
               JOptionPane.showMessageDialog(null, "Invalid Input, Please Try Again!", "Error",
                   JOptionPane.PLAIN_MESSAGE);
               input = "";
-              letNum -= 1;
+              characterNum -= 1;
           	  turn -= 1;
             }            
             // each turn each word validation
-            else if (letNum >= 1) {
+            else if (characterNum >= 1) {
                 JOptionPane.showMessageDialog(null, "One Letter One Turn!", "Error",
                     JOptionPane.PLAIN_MESSAGE);
                 input = "";
@@ -203,11 +203,11 @@ public class Pane extends JPanel {
             // check if any letter around the letter input
             else{
                 boolean findLetter = false;
-                for (y = i[turn] - 1; y <= i[turn] + 1; y++) {
+                for (y = yList[turn] - 1; y <= yList[turn] + 1; y++) {
                     if (!boardSquares[x][y].getText().equalsIgnoreCase("")) {
                         findLetter = true;
                      	}
-                for (x = j[turn] - 1; x <= j[turn] + 1; x++) {
+                for (x = xList[turn] - 1; x <= xList[turn] + 1; x++) {
                     if (!boardSquares[x][y].getText().equalsIgnoreCase("")) {
                       findLetter = true;
                     }
@@ -217,12 +217,12 @@ public class Pane extends JPanel {
                   JOptionPane.showMessageDialog(null, "Please Input Letter in Adjacent Positions",
                       "Error", JOptionPane.PLAIN_MESSAGE);
                   input = "";
-                  letNum -= 1;
+                  characterNum -= 1;
               	turn -= 1;
                 }
             }
             
-            int coordX = j[turn], coordY = i[turn];
+            int coordX = xList[turn], coordY = yList[turn];
             b.setText(input);
             if ((b.getText() != "") && (!b.getText().isEmpty())) {
               try {
@@ -233,35 +233,15 @@ public class Pane extends JPanel {
               }
             }
             word += b.getText();
-            letNum += 1;
+            characterNum += 1;
             turn += 1;
-            
-            /** Backend Call */
-            // submit data to server
-            JSONArray wordInput = null;
-            try {
-            	//wordInput = the word found in checking input function
-              wordInput = json.getJSONArray("word");
-            } catch (JSONException e2) {
-              // TODO Auto-generated catch block
-              e2.printStackTrace();
-            }
-            // change score mechanism
-            System.out.println("added score:" + wordInput.length());
-            score = wordInput.length();
-
-            try {
-              client.addWord(json.toString());
-            } catch (RemoteException e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
-            }
+            submit();
           }
         });
 
 
         b.setBackground(Color.WHITE);
-        boardSquares[jj][ii] = b;
+        boardSquares[j][i] = b;
         
       }
     }
@@ -304,6 +284,28 @@ public class Pane extends JPanel {
     }
   }
 
+  public final void submit(){
+      /** Backend Call */
+      // submit data to server
+      JSONArray wordInput = null;
+      try {
+      	//wordInput = the word found in checking input function
+        wordInput = json.getJSONArray("word");
+      } catch (JSONException e2) {
+        // TODO Auto-generated catch block
+        e2.printStackTrace();
+      }
+      // change score mechanism
+      System.out.println("added score:" + wordInput.length());
+      score = wordInput.length();
+
+      try {
+        client.addWord(json.toString());
+      } catch (RemoteException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+  }
   public final JComponent getboard() {
     return board;
   }
@@ -328,8 +330,8 @@ public class Pane extends JPanel {
     boardSquares[x][y].setText(ch);
   }
 
-  public int getLetNum() {
-    return letNum;
+  public int getcharacterNum() {
+    return characterNum;
   }
 
   public int getScore() {
