@@ -1,4 +1,4 @@
-package frontend;
+ package frontend;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -73,7 +73,17 @@ public class ClientFrame {
           /** End Create Random Name */
 
           client = new Client(randomName);
-          client.joinGame(remoteGame);
+
+          // when button create is pressed
+          client.joinClientList(remoteGame);
+
+          // show the client list
+          ArrayList<IClient> clientList = client.getAllClientList();
+
+          // choose the player(s), ex index 0 and 1
+          String[] clientPlayList =
+              {clientList.get(0).getUniqueName(), clientList.get(1).getUniqueName()};
+          client.createNewGame(remoteGame, clientPlayList);
 
           ClientFrame clientFrame = new ClientFrame(client);
           clientFrame.frmClient.setVisible(true);

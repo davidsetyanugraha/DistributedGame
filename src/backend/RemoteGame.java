@@ -11,15 +11,18 @@ import frontend.IClient;
 public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
   private final ArrayList<IClient> clients;
+  private ArrayList<IClient> players;
   private static int client_count = 0;
   private static int vote_count = 0;
   private static int count_pass_player = 0;
   private int index_current_player = 0;
   private String json;
   private String[] currentWords;
+  private String[] clientPlayList;
 
   RemoteGame() throws RemoteException, JSONException {
     clients = new ArrayList<>();
+    players = new ArrayList<>();
     buildInitialJson();
   }
 
@@ -27,8 +30,11 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return this.json.toString();
   }
 
+  public ArrayList<IClient> getAllClientList() throws RemoteException {
+    return this.players;
+  }
+
   private void buildInitialJson() throws JSONException {
-    // TODO Auto-generated method stub
     JSONObject jsonObj = new JSONObject();
     JSONArray arrWord = new JSONArray();
     jsonObj.put("word", arrWord);
@@ -37,13 +43,39 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     jsonObj.put("player", arrPlayer);
 
     json = jsonObj.toString();
+    System.out.println("Building shared json: " + json);
   }
 
   private String getNextPlayerName() throws RemoteException {
     index_current_player++;
-    if (index_current_player >= clients.size())
+    if (index_current_player >= players.size())
       index_current_player = 0;
-    return clients.get(index_current_player).getUniqueName();
+    return players.get(index_current_player).getUniqueName();
+  }
+
+  public String startNewGame(String[] clientPlayList) throws RemoteException {
+    this.players = extractPlayers(clientPlayList);
+
+    try {
+      int i = 0;
+
+      // TODO
+      // show board for every people
+      // tell others to update board
+      while (i < players.size()) {
+        players.get(i++).renderBoardSystem();
+      }
+    } catch (RemoteException e) {
+      e.printStackTrace();
+    }
+
+    return this.json;
+  }
+
+  private ArrayList<IClient> extractPlayers(String[] clientPlayList2) {
+    // TODO extract player from client
+    ArrayList<IClient> players = new ArrayList<>();
+    return null;
   }
 
   public synchronized String registerGameClient(IClient client) throws RemoteException {
@@ -65,8 +97,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       int i = 0;
 
       // tell others to update board
-      while (i < clients.size()) {
-        clients.get(i++).renderBoardSystem();
+      while (i < players.size()) {
+        players.get(i++).renderBoardSystem();
       }
     } catch (RemoteException e) {
       e.printStackTrace();
@@ -83,8 +115,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
       int i = 0;
       // tell others about voting system
-      while (i < clients.size()) {
-        clients.get(i++).renderVotingSystem(currentWords);
+      while (i < players.size()) {
+        players.get(i++).renderVotingSystem(currentWords);
       }
     } catch (RemoteException e) {
       e.printStackTrace();
@@ -206,20 +238,20 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     }
 
     // tell others about voting in the board
-    while (i < clients.size()) {
-      clients.get(i++).getVote(accept);
+    while (i < players.size()) {
+      players.get(i++).getVote(accept);
     }
 
     // if voting successful
     // tell others to update score
     if (vote_count >= client_count) {
-      updateScore(clients.get(index_current_player).getUniqueName(), calculateScore(currentWords));
+      updateScore(players.get(index_current_player).getUniqueName(), calculateScore(currentWords));
     }
 
     updateTurn(getNextPlayerName());
 
-    while (i < clients.size()) {
-      clients.get(i++).renderBoardSystem();
+    while (i < players.size()) {
+      players.get(i++).renderBoardSystem();
     }
 
     return "success";
@@ -233,14 +265,14 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     // tell others about pass message
     int i = 0;
-    while (i < clients.size()) {
-      clients.get(i++).getPass(playerName);
+    while (i < players.size()) {
+      players.get(i++).getPass(playerName);
     }
 
     updateTurn(getNextPlayerName());
 
-    while (i < clients.size()) {
-      clients.get(i++).renderBoardSystem();
+    while (i < players.size()) {
+      players.get(i++).renderBoardSystem();
     }
 
     return "success";
