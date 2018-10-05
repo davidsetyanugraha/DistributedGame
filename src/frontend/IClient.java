@@ -4,8 +4,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface IClient extends Remote {
-  void getWord(final String json, String nextPlayerName) throws RemoteException;
-
   void getVote(final boolean accept) throws RemoteException;
 
   void getPass(final String playerName) throws RemoteException;

@@ -14,7 +14,7 @@ public class Server {
       Registry registry = LocateRegistry.createRegistry(port);
       registry.bind("GameServer", new RemoteGame());
 
-      System.out.println("GAME SERVER IS RUNNING!");
+      System.out.println("Game Server is ready!");
     } catch (Exception e) {
       e.printStackTrace();
     }
