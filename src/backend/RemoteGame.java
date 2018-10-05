@@ -141,8 +141,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
    * Update the player turn on the Json String
    * */
   public void updateTurn(String name) {
-    // TODO update JSON, set true for new player turn "name"
-	  
 	  try { 
 		  
 			JSONObject jsonObject = new JSONObject(json); //JSON Object to store the json file
@@ -184,7 +182,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
    * Update the current player's score to the Json String
    * */
   public void updateScore(String name, int newScore) {
-    
 	  try { 
 		  
 		JSONObject jsonObject = new JSONObject(json); //JSON Object to store the json file
@@ -217,7 +214,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
    * Calculate score from each word (1 letter = 1 score)
    * */
   private int calculateScore(String[] currentWords2) {
-	
 	int score = 0;
 	int numOfWords = 2;
 	
