@@ -56,6 +56,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   public String startNewGame(ArrayList<String> clientPlayList) throws RemoteException {
     System.out.println("New Game started! it contains");
     this.players = extractPlayers(clientPlayList);
+    insertNewPlayers();
 
     try {
       int i = 0;
@@ -71,6 +72,11 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     }
 
     return this.json;
+  }
+
+  private void insertNewPlayers() {
+    // TODO when first create game, initialize json with all ArrayList<IClient> players
+
   }
 
   private ArrayList<IClient> extractPlayers(ArrayList<String> clientPlayList2)
@@ -90,7 +96,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   }
 
   public synchronized String registerGameClient(IClient client) throws RemoteException {
-    // TODO Auto-generated method stub
     String response = "success";
 
     this.clients.add(client);
@@ -99,10 +104,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return response;
   }
 
-  // perform voting system
   public String broadcastNewLetter(String json) {
-    // TODO Auto-generated method stub
-
     try {
       this.json = json;
       int i = 0;
@@ -118,9 +120,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return this.json;
   }
 
-  // perform voting system
   public String performVoting(String json) {
-    // TODO Auto-generated method stub
     try {
       currentWords = extractWords(json);
 
@@ -137,107 +137,104 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   }
 
   private String[] extractWords(String json2) {
-    // TODO Auto-generated method stub
+    // TODO Extract words from json
+
+    // example output
     String[] words = {"play", "game"};
     return words;
   }
 
   public String disconnectClient() throws RemoteException {
-    // TODO Auto-generated method stub
     client_count--;
     return "Success";
   }
 
   /*
    * Update the player turn on the Json String
-   * */
+   */
   public void updateTurn(String name) {
-	  try { 
-		  
-			JSONObject jsonObject = new JSONObject(json); //JSON Object to store the json file
-			JSONArray playerArray = jsonObject.getJSONArray("player"); 
-			JSONArray newPlayerArray = new JSONArray(); //New Player Array for rewrite
-			JSONObject playerObject; //JSON Object to store a player's JSON details
-			
-			for (int i=0; i<playerArray.length(); i++) {
-				playerObject = playerArray.getJSONObject(i);
-				/*Change the current player's turn to false*/
-				if (playerObject.get("turn").equals(true)) { 
-					playerObject.put("turn", false);
-					newPlayerArray.put(playerObject);
-				} 
-				/*Change the next player's turn to true*/
-				else if (playerObject.get("name").equals(name)) {
-					playerObject.put("turn", true);
-					newPlayerArray.put(playerObject);
-				}
-				else {
-					newPlayerArray.put(playerObject);
-				}
-			}
-			
-			jsonObject.put("player", newPlayerArray);
-			
-			json = jsonObject.toString();
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		  
-		return;
-	  
+    try {
+
+      JSONObject jsonObject = new JSONObject(json); // JSON Object to store the json file
+      JSONArray playerArray = jsonObject.getJSONArray("player");
+      JSONArray newPlayerArray = new JSONArray(); // New Player Array for rewrite
+      JSONObject playerObject; // JSON Object to store a player's JSON details
+
+      for (int i = 0; i < playerArray.length(); i++) {
+        playerObject = playerArray.getJSONObject(i);
+        /* Change the current player's turn to false */
+        if (playerObject.get("turn").equals(true)) {
+          playerObject.put("turn", false);
+          newPlayerArray.put(playerObject);
+        }
+        /* Change the next player's turn to true */
+        else if (playerObject.get("name").equals(name)) {
+          playerObject.put("turn", true);
+          newPlayerArray.put(playerObject);
+        } else {
+          newPlayerArray.put(playerObject);
+        }
+      }
+
+      jsonObject.put("player", newPlayerArray);
+
+      json = jsonObject.toString();
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+
+    return;
+
   }
 
   /*
    * Update the current player's score to the Json String
-   * */
+   */
   public void updateScore(String name, int newScore) {
-	  try { 
-		  
-		JSONObject jsonObject = new JSONObject(json); //JSON Object to store the json file
-		JSONArray playerArray = jsonObject.getJSONArray("player"); 
-		JSONObject playerObject; //JSON Object to store a player's JSON details
-		
-		for (int i=0; i<playerArray.length(); i++) {
-			playerObject = playerArray.getJSONObject(i);
-			if (playerObject.get("name").equals(name)) {
-				playerObject.put("score", newScore);
-				playerArray.put(playerObject);
-			} else {
-				playerArray.put(playerObject);
-			}
-		}
-		
-		jsonObject.put("player", playerArray);
-		
-		json = jsonObject.toString();
-		
-	} catch (JSONException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	  
-	return;
+    try {
+
+      JSONObject jsonObject = new JSONObject(json); // JSON Object to store the json file
+      JSONArray playerArray = jsonObject.getJSONArray("player");
+      JSONObject playerObject; // JSON Object to store a player's JSON details
+
+      for (int i = 0; i < playerArray.length(); i++) {
+        playerObject = playerArray.getJSONObject(i);
+        if (playerObject.get("name").equals(name)) {
+          playerObject.put("score", newScore);
+          playerArray.put(playerObject);
+        } else {
+          playerArray.put(playerObject);
+        }
+      }
+
+      jsonObject.put("player", playerArray);
+
+      json = jsonObject.toString();
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+
+    return;
   }
 
   /*
    * Calculate score from each word (1 letter = 1 score)
-   * */
+   */
   private int calculateScore(String[] currentWords2) {
-	int score = 0;
-	int numOfWords = 2;
-	
-	for (int i=0; i<numOfWords ; i++) {
-		score = score + currentWords2[i].length();
-	}
-	   
+    int score = 0;
+    int numOfWords = 2;
+
+    for (int i = 0; i < numOfWords; i++) {
+      score = score + currentWords2[i].length();
+    }
+
     return score;
   }
 
   @Override
   public String broadcastVote(boolean accept, String word) throws RemoteException {
-    // TODO Auto-generated method stub
     int i = 0;
 
     if (accept) {
@@ -266,7 +263,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
   @Override
   public synchronized String broadcastPass(String playerName) throws RemoteException {
-    // TODO Auto-generated method stub
     String passMessage = playerName + " has pass";
     count_pass_player++;
 
@@ -287,7 +283,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
   @Override
   public String broadcastGeneralMessage(String message) throws RemoteException {
-    // TODO Auto-generated method stub
     int i = 0;
     while (i < clients.size()) {
       clients.get(i++).getGeneralMessage(message);
