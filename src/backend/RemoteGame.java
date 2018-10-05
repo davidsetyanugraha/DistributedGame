@@ -105,17 +105,95 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return "Success";
   }
 
+  /*
+   * Update the player turn on the Json String
+   * */
   public void updateTurn(String name) {
     // TODO update JSON, set true for new player turn "name"
+	  
+	  try { 
+		  
+			JSONObject jsonObject = new JSONObject(json); //JSON Object to store the json file
+			JSONArray playerArray = jsonObject.getJSONArray("player"); 
+			JSONArray newPlayerArray = new JSONArray(); //New Player Array for rewrite
+			JSONObject playerObject; //JSON Object to store a player's JSON details
+			
+			for (int i=0; i<playerArray.length(); i++) {
+				playerObject = playerArray.getJSONObject(i);
+				/*Change the current player's turn to false*/
+				if (playerObject.get("turn").equals(true)) { 
+					playerObject.put("turn", false);
+					newPlayerArray.put(playerObject);
+				} 
+				/*Change the next player's turn to true*/
+				else if (playerObject.get("name").equals(name)) {
+					playerObject.put("turn", true);
+					newPlayerArray.put(playerObject);
+				}
+				else {
+					newPlayerArray.put(playerObject);
+				}
+			}
+			
+			jsonObject.put("player", newPlayerArray);
+			
+			json = jsonObject.toString();
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		  
+		return;
+	  
   }
 
+  /*
+   * Update the current player's score to the Json String
+   * */
   public void updateScore(String name, int newScore) {
-    // TODO update JSON, set true for new player turn "name"
+    
+	  try { 
+		  
+		JSONObject jsonObject = new JSONObject(json); //JSON Object to store the json file
+		JSONArray playerArray = jsonObject.getJSONArray("player"); 
+		JSONObject playerObject; //JSON Object to store a player's JSON details
+		
+		for (int i=0; i<playerArray.length(); i++) {
+			playerObject = playerArray.getJSONObject(i);
+			if (playerObject.get("name").equals(name)) {
+				playerObject.put("score", newScore);
+				playerArray.put(playerObject);
+			} else {
+				playerArray.put(playerObject);
+			}
+		}
+		
+		jsonObject.put("player", playerArray);
+		
+		json = jsonObject.toString();
+		
+	} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  
+	return;
   }
 
+  /*
+   * Calculate score from each word (1 letter = 1 score)
+   * */
   private int calculateScore(String[] currentWords2) {
-    // TODO give words, calculate score from each word
-    return 0;
+	
+	int score = 0;
+	int numOfWords = 2;
+	
+	for (int i=0; i<numOfWords ; i++) {
+		score = score + currentWords2[i].length();
+	}
+	   
+    return score;
   }
 
   @Override
