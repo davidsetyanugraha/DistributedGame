@@ -184,27 +184,6 @@ public class Client extends UnicastRemoteObject implements IClient {
     return score;
   }
 
-  public void appendJsonPlayer(String[] player) throws JSONException, RemoteException {
-    System.out.println("APPEND New JSON Player: " + player.toString());
-    json = remoteGame.getJsonString();
-
-    if (json != null) {
-      JSONObject jsonObj = new JSONObject(json);
-      JSONArray arrPlayer = jsonObj.getJSONArray("player");
-      JSONObject objPlayer = new JSONObject();
-      objPlayer.put("name", name);
-      objPlayer.put("score", 0);
-      objPlayer.put("turn", true);
-      arrPlayer.put(objPlayer);
-
-      jsonObj.put("player", arrPlayer);
-
-      this.json = jsonObj.toString();
-    }
-
-    System.out.println("Final JSON = " + json.toString());
-  }
-
   public void appendJsonLetter(int x, int y, String ch) throws JSONException, RemoteException {
     System.out.println("APPEND JSON Letter: x = " + x + " , y = " + y + " , ch = " + ch);
     json = remoteGame.getJsonString();

@@ -1,4 +1,4 @@
- package frontend;
+package frontend;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -89,7 +89,8 @@ public class ClientFrame {
             i++;
           }
 
-          client.createNewGame(remoteGame, clientPlayListName);
+          // can only be accessed once at the time
+          // client.createNewGame(remoteGame, clientPlayListName);
 
           ClientFrame clientFrame = new ClientFrame(client);
           clientFrame.frmClient.setVisible(true);

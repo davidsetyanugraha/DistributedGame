@@ -34,6 +34,29 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return this.clients;
   }
 
+  private void appendJsonPlayer(ArrayList<String> player) throws JSONException, RemoteException {
+    System.out.println("APPEND New JSON Player: " + player.toString());
+
+    if (json != null) {
+      JSONObject jsonObj = new JSONObject(json);
+      JSONArray arrPlayer = jsonObj.getJSONArray("player");
+
+      for (String name : player) {
+        JSONObject objPlayer = new JSONObject();
+        objPlayer.put("name", name);
+        objPlayer.put("score", 0);
+        objPlayer.put("turn", true);
+        arrPlayer.put(objPlayer);
+      }
+
+      jsonObj.put("player", arrPlayer);
+
+      json = jsonObj.toString();
+    }
+
+    System.out.println("Final JSON = " + json.toString());
+  }
+
   private void buildInitialJson() throws JSONException {
     JSONObject jsonObj = new JSONObject();
     JSONArray arrWord = new JSONArray();
@@ -56,7 +79,12 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   public String startNewGame(ArrayList<String> clientPlayList) throws RemoteException {
     System.out.println("New Game started! it contains");
     this.players = extractPlayers(clientPlayList);
-    insertNewPlayers();
+    try {
+      appendJsonPlayer(clientPlayList);
+    } catch (JSONException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
 
     try {
       int i = 0;
@@ -72,11 +100,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     }
 
     return this.json;
-  }
-
-  private void insertNewPlayers() {
-    // TODO when first create game, initialize json with all ArrayList<IClient> players
-
   }
 
   private ArrayList<IClient> extractPlayers(ArrayList<String> clientPlayList2)
