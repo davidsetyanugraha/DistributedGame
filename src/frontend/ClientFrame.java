@@ -72,10 +72,12 @@ public class ClientFrame {
           String randomName = sb.toString();
           /** End Create Random Name */
 
+          /* login purpose */
           client = new Client(randomName);
 
           // when button login is pressed
           client.joinClientList(remoteGame);
+          /* login purpose */
 
           // show the client list
           ArrayList<IClient> clientList = client.getAllClientList();
