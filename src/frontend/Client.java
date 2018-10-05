@@ -54,17 +54,17 @@ public class Client extends UnicastRemoteObject implements IClient {
   }
 
 
-  public void createNewGame(IRemoteGame remoteGame, String[] clientPlayList)
+  public void createNewGame(IRemoteGame remoteGame, ArrayList<String> clientPlayList)
       throws RemoteException {
     String response;
-    System.out.println("[Log] " + name + " has created new game. contains: " + clientPlayList);
+    System.out
+        .println("[Log] " + name + " has created new game. contains: " + clientPlayList.toString());
 
     if (this.json == null) {
       this.json = remoteGame.getJsonString();
     }
 
     try {
-      this.remoteGame = remoteGame;
       response = remoteGame.startNewGame(clientPlayList);
     } catch (RemoteException e) {
       response = "create new Game has been failed!";

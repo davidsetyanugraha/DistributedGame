@@ -31,7 +31,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   }
 
   public ArrayList<IClient> getAllClientList() throws RemoteException {
-    return this.players;
+    return this.clients;
   }
 
   private void buildInitialJson() throws JSONException {
@@ -53,7 +53,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return players.get(index_current_player).getUniqueName();
   }
 
-  public String startNewGame(String[] clientPlayList) throws RemoteException {
+  public String startNewGame(ArrayList<String> clientPlayList) throws RemoteException {
+    System.out.println("New Game started! it contains");
     this.players = extractPlayers(clientPlayList);
 
     try {
@@ -72,10 +73,20 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return this.json;
   }
 
-  private ArrayList<IClient> extractPlayers(String[] clientPlayList2) {
-    // TODO extract player from client
+  private ArrayList<IClient> extractPlayers(ArrayList<String> clientPlayList2)
+      throws RemoteException {
     ArrayList<IClient> players = new ArrayList<>();
-    return null;
+
+    for (IClient client : clients) {
+      for (String playerName : clientPlayList2) {
+        if (client.getUniqueName().equals(playerName)) {
+          players.add(client);
+          System.out.println(playerName);
+        }
+      }
+    }
+
+    return players;
   }
 
   public synchronized String registerGameClient(IClient client) throws RemoteException {

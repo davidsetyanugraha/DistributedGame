@@ -74,16 +74,22 @@ public class ClientFrame {
 
           client = new Client(randomName);
 
-          // when button create is pressed
+          // when button login is pressed
           client.joinClientList(remoteGame);
 
           // show the client list
           ArrayList<IClient> clientList = client.getAllClientList();
+          ArrayList<String> clientPlayListName = new ArrayList<>();
+          int i = 0;
 
-          // choose the player(s), ex index 0 and 1
-          String[] clientPlayList =
-              {clientList.get(0).getUniqueName(), clientList.get(1).getUniqueName()};
-          client.createNewGame(remoteGame, clientPlayList);
+          // choose the player(s), ex index 0 and 1, choose all
+          for (IClient client : clientList) {
+            System.out.println(client.getUniqueName());
+            clientPlayListName.add(client.getUniqueName());
+            i++;
+          }
+
+          client.createNewGame(remoteGame, clientPlayListName);
 
           ClientFrame clientFrame = new ClientFrame(client);
           clientFrame.frmClient.setVisible(true);
