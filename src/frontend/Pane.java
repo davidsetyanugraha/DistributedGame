@@ -271,7 +271,7 @@ public class Pane extends JPanel {
             b.setText(input);
             if ((b.getText() != "") && (!b.getText().isEmpty())) {
               try {
-                client.appendJson(coordX, coordY, input);
+                client.appendJsonLetter(coordX, coordY, input);
               } catch (JSONException | RemoteException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();

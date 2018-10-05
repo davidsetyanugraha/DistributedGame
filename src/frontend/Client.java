@@ -2,6 +2,7 @@ package frontend;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,9 +31,9 @@ public class Client extends UnicastRemoteObject implements IClient {
     return jsonObj;
   }
 
-  public void joinGame(IRemoteGame remoteGame) throws RemoteException {
+  public void joinClientList(IRemoteGame remoteGame) throws RemoteException {
     String response;
-    System.out.println("[Log] " + name + " has joined game.");
+    System.out.println("[Log] " + name + " has join client list.");
 
     if (this.json == null) {
       this.json = remoteGame.getJsonString();
@@ -42,7 +43,31 @@ public class Client extends UnicastRemoteObject implements IClient {
       this.remoteGame = remoteGame;
       response = remoteGame.registerGameClient(this);
     } catch (RemoteException e) {
-      response = "Join Game has been failed!";
+      response = "Join Client list has been failed!";
+      if (debug)
+        response = response + " caused by: " + e.getMessage();
+    }
+  }
+
+  public ArrayList<IClient> getAllClientList() throws RemoteException {
+    return remoteGame.getAllClientList();
+  }
+
+
+  public void createNewGame(IRemoteGame remoteGame, String[] clientPlayList)
+      throws RemoteException {
+    String response;
+    System.out.println("[Log] " + name + " has created new game. contains: " + clientPlayList);
+
+    if (this.json == null) {
+      this.json = remoteGame.getJsonString();
+    }
+
+    try {
+      this.remoteGame = remoteGame;
+      response = remoteGame.startNewGame(clientPlayList);
+    } catch (RemoteException e) {
+      response = "create new Game has been failed!";
       if (debug)
         response = response + " caused by: " + e.getMessage();
     }
@@ -159,8 +184,29 @@ public class Client extends UnicastRemoteObject implements IClient {
     return score;
   }
 
-  public void appendJson(int x, int y, String ch) throws JSONException, RemoteException {
-    System.out.println("APPEND JSON: x = " + x + " , y = " + y + " , ch = " + ch);
+  public void appendJsonPlayer(String[] player) throws JSONException, RemoteException {
+    System.out.println("APPEND New JSON Player: " + player.toString());
+    json = remoteGame.getJsonString();
+
+    if (json != null) {
+      JSONObject jsonObj = new JSONObject(json);
+      JSONArray arrPlayer = jsonObj.getJSONArray("player");
+      JSONObject objPlayer = new JSONObject();
+      objPlayer.put("name", name);
+      objPlayer.put("score", 0);
+      objPlayer.put("turn", true);
+      arrPlayer.put(objPlayer);
+
+      jsonObj.put("player", arrPlayer);
+
+      this.json = jsonObj.toString();
+    }
+
+    System.out.println("Final JSON = " + json.toString());
+  }
+
+  public void appendJsonLetter(int x, int y, String ch) throws JSONException, RemoteException {
+    System.out.println("APPEND JSON Letter: x = " + x + " , y = " + y + " , ch = " + ch);
     json = remoteGame.getJsonString();
 
     if (json != null) {
@@ -172,36 +218,12 @@ public class Client extends UnicastRemoteObject implements IClient {
       obj.put("ch", ch);
       arrWord.put(obj);
 
-      JSONArray arrPlayer = jsonObj.getJSONArray("player");
-      JSONObject objPlayer = new JSONObject();
-      objPlayer.put("name", name);
-      objPlayer.put("score", 0);
-      objPlayer.put("turn", true);
-      arrPlayer.put(objPlayer);
-
       jsonObj.put("word", arrWord);
-      jsonObj.put("player", arrPlayer);
 
       this.json = jsonObj.toString();
     }
 
     System.out.println("Final JSON = " + json.toString());
-  }
-
-  /**
-   * These getter methods are called by RemoteGame
-   * 
-   * @throws RemoteException
-   */
-  @Override
-  public void getWord(String json, String nextPlayerName) throws RemoteException {
-    // TODO Auto-generated method stub
-    System.out.println("getWord: " + json);
-    if (nextPlayerName == name) {
-      this.setCurrentState(STATE_INSERTION);
-    } else {
-      this.setCurrentState(STATE_WAIT);
-    }
   }
 
   @Override
