@@ -32,7 +32,6 @@ public class Pane extends JPanel {
   private final JLabel message = new JLabel("Ready to play");
   private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
   private String word;
-  private String voteWords;
   private int letNum, turn;
   private int x, y;
   private Client client;
@@ -53,45 +52,45 @@ public class Pane extends JPanel {
     tools.add(message);
 
     // String word hold the input
-    //because now One Player, One Turn, One letter
-    //word = char, only one letter each turn now
-    //letNum used to calculate times this player try to input in his turn, 
-    //	used for one-letter-one-turn validation
+    // because now One Player, One Turn, One letter
+    // word = char, only one letter each turn now
+    // letNum used to calculate times this player try to input in his turn, 
+    // used for one-letter-one-turn validation
     word = "";
     letNum = 0;
     turn = 1;
 
-    JButton btnSubmit = new JButton("Submit");
+    JButton btnSubmit = new JButton("VOTE");
     btnSubmit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        // call submit
-        // call calculate score
-        /** Backend Call */
-        JSONArray wordInput = null;
-        try {
-          wordInput = json.getJSONArray("word");
-        } catch (JSONException e2) {
-          // TODO Auto-generated catch block
-          e2.printStackTrace();
-        }
-        // change score mechanism
-        System.out.println("added score:" + wordInput.length());
-        score = wordInput.length();
-
-        try {
-          client.addWord(json.toString());
-        } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
-        }
-
-        /** Backend Call */
-        word = "";
-        letNum = 0;
-
+        // send ask vote message to server
+    	  // server broadcast vote to all others
+    	  // others then run the inplementation below
+    	  if(letNum == 0){
+    		  JOptionPane.showMessageDialog(null,"You can't ask vote before input!","Error",JOptionPane.PLAIN_MESSAGE);
+    	  }
+    	  else{
+    	  int vote;
+    	  vote = JOptionPane.showConfirmDialog(null, "PLEASE GIVE YOUR VOTE");
+    	  //vote = 0, agree; otherwise disagree
+    	  //then send this vote to server
+    	  //if majority agree, call score function
+    	  //move to next player
+    	  letNum = 0;
+    	  }
       }
     });
     tools.add(btnSubmit);
+    
+    JButton btnPass = new JButton("PASS");
+    btnPass.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+      	  //move to next turn
+      	  letNum = 0;
+        }
+      });
+    tools.add(btnPass);
+    
 
 
     board = new JPanel() {
@@ -181,6 +180,7 @@ public class Pane extends JPanel {
             else if (!b.getText().isEmpty()){
             	JOptionPane.showMessageDialog(null,"Letter Already Exist, Try Again.","Error",JOptionPane.PLAIN_MESSAGE);
             			//roll back the word of JSON, should save this data
+            			//////////////////
             			letNum -= 1;
                     	turn -= 1;
             	}
@@ -194,7 +194,7 @@ public class Pane extends JPanel {
           	  turn -= 1;
             }            
             // each turn each word validation
-            else if (confirmInput == 0 && letNum >= 1) {
+            else if (letNum >= 1) {
                 JOptionPane.showMessageDialog(null, "One Letter One Turn!", "Error",
                     JOptionPane.PLAIN_MESSAGE);
                 input = "";
@@ -235,13 +235,34 @@ public class Pane extends JPanel {
             word += b.getText();
             letNum += 1;
             turn += 1;
+            
+            /** Backend Call */
+            // submit data to server
+            JSONArray wordInput = null;
+            try {
+            	//wordInput = the word found in checking input function
+              wordInput = json.getJSONArray("word");
+            } catch (JSONException e2) {
+              // TODO Auto-generated catch block
+              e2.printStackTrace();
+            }
+            // change score mechanism
+            System.out.println("added score:" + wordInput.length());
+            score = wordInput.length();
 
+            try {
+              client.addWord(json.toString());
+            } catch (RemoteException e1) {
+              // TODO Auto-generated catch block
+              e1.printStackTrace();
+            }
           }
         });
 
 
         b.setBackground(Color.WHITE);
         boardSquares[jj][ii] = b;
+        
       }
     }
 
