@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,6 +16,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import org.json.JSONException;
+
+import backend.RemoteGame;
 
 public class Register extends JFrame {
 
@@ -153,6 +160,20 @@ public class Register extends JFrame {
     regPane.add(confirmationArea);
 
     JButton btnConfirm = new JButton("Confirm");
+	btnConfirm.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+	          if (getPass().equals(getConfirmPass())) {
+					try {
+						RemoteGame remoteGame = new RemoteGame();
+						remoteGame.appendJsonPlayer(getUserName(), getPass(), getFirstName(), getLastName());
+					} catch (RemoteException | JSONException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+	          }
+		}
+	});
     btnConfirm.setFont(new Font("Tahoma", Font.PLAIN, 13));
     btnConfirm.setBackground(Color.WHITE);
     btnConfirm.setBounds(71, 223, 90, 29);
@@ -164,5 +185,29 @@ public class Register extends JFrame {
     regPane.add(button_1);
     setUndecorated(true);
   }
+  
+  public String getFirstName() {
+	  String name = firstNameArea.getText();
+	  return name;
+  }
 
+  public String getLastName() {
+	  String name = lastNameArea.getText();
+	  return name;
+  }
+  
+  public String getUserName() {
+	  String name = userNameArea.getText();
+	  return name;
+  }
+  
+  public String getPass() {
+	  String name = new String (passwordArea.getPassword());
+	  return name;
+  }
+  
+  public String getConfirmPass() {
+	  String name = new String (confirmationArea.getPassword());
+	  return name;
+  }
 }

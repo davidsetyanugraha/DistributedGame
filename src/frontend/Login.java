@@ -149,7 +149,6 @@ public class Login extends JFrame {
     register.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        dispose();
         Register regis = new Register();
         regis.setVisible(true);
         regis.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
