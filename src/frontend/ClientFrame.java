@@ -32,7 +32,7 @@ import org.json.JSONObject;
 import backend.IRemoteGame;
 
 public class ClientFrame {
-  private JFrame frmClient;
+  JFrame frmClient;
   private JFileChooser fileChooser;
   private JDialog popUpDialog;
   private JTextArea popUpMsg;
@@ -50,6 +50,7 @@ public class ClientFrame {
   private static Pane backPanel;
   private static Client client;
   private static File file;
+  private static Login login;
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -74,28 +75,9 @@ public class ClientFrame {
 
           /* login purpose */
           client = new Client(randomName);
-
-          // when button login is pressed
-          client.joinClientList(remoteGame);
-          /* login purpose */
-
-          // show the client list
-          ArrayList<IClient> clientList = client.getAllClientList();
-          ArrayList<String> clientPlayListName = new ArrayList<>();
-          int i = 0;
-
-          // choose the player(s), ex index 0 and 1, choose all
-          for (IClient client : clientList) {
-            System.out.println(client.getUniqueName());
-            clientPlayListName.add(client.getUniqueName());
-            i++;
-          }
-
-          // can only be accessed once at the time
-          // client.createNewGame(remoteGame, clientPlayListName);
-
-          ClientFrame clientFrame = new ClientFrame(client);
-          clientFrame.frmClient.setVisible(true);
+          // open login frame
+          login = new Login(client, remoteGame);
+          login.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -575,6 +557,13 @@ public class ClientFrame {
     }
 
     // render player
+ // getting players that are available
+    JSONArray playerAvail = (JSONArray) data.get("player");
+    
+    for (int i = 0; i < playerAvail.length(); i++) {
+        JSONObject player = playerAvail.getJSONObject(i);
+        String username = player.getString("username");
+      }
   }
 
 }

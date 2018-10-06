@@ -23,12 +23,18 @@
     ],
     "player": [
         {
-            "name": "Andre",
+            "username": "andrelee",
+            "password": 123456,
+            "firstname": "Andre",
+            "lastname": "Andre",
             "score": 10,
             "turn": true
         },
         {
-            "name": "Kelly",
+            "username": "kelly",
+            "password": 123456,
+            "firstname": "Kelly",
+            "lastname": "Kelly",
             "score": 10,
             "turn": false
         }

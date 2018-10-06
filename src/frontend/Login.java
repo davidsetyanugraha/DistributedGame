@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import backend.IRemoteGame;
+
 public class Login extends JFrame {
 
   private JPanel contentPane;
@@ -21,25 +26,11 @@ public class Login extends JFrame {
   private JPasswordField passwordArea;
 
   /**
-   * Launch the application.
-   */
-  public static void main(String[] args) {
-    EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        try {
-          Login frame = new Login();
-          frame.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    });
-  }
-
-  /**
    * Create the frame.
+ * @param remoteGame 
+ * @param client 
    */
-  public Login() {
+  public Login(Client client, IRemoteGame remoteGame) {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 350, 250);
     contentPane = new JPanel();
@@ -109,6 +100,41 @@ public class Login extends JFrame {
     contentPane.add(passwordArea);
 
     JButton loginBtn = new JButton("Login");
+	loginBtn.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+	          // when button login is pressed
+	          try {
+		          // when button login is pressed, check the username and password
+	        	  // client can join the remoteGame if the validation is okay.
+		          client.joinClientList(remoteGame);
+		          //dispose login frame
+		          dispose();
+
+		          // show the client list
+		          ArrayList<IClient> clientList = client.getAllClientList();
+		          ArrayList<String> clientPlayListName = new ArrayList<>();
+		          int i = 0;
+
+		          // choose the player(s), ex index 0 and 1, choose all
+		          for (IClient client : clientList) {
+		            System.out.println(client.getUniqueName());
+		            clientPlayListName.add(client.getUniqueName());
+		            i++;
+		          }
+
+		          // can only be accessed once at the time
+		          // client.createNewGame(remoteGame, clientPlayListName);
+
+		          ClientFrame clientFrame = new ClientFrame(client);
+		          clientFrame.frmClient.setVisible(true);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	          /* login purpose */
+		}
+	});
     loginBtn.setBackground(new Color(255, 255, 255));
     loginBtn.setFont(new Font("Tahoma", Font.PLAIN, 13));
     loginBtn.setBounds(70, 172, 90, 29);
