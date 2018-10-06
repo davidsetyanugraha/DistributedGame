@@ -81,6 +81,18 @@ public class ExtractWordsTest {
 			e.printStackTrace();
 		} // JSON Object to store the json file
 	
+		System.out.println("Score : "+calculateScore(words));
+	}
+	
+	private static int calculateScore(String[] currentWords2) {
+		int score = 0;
+		int numOfWords = 2;
+
+		for (int i = 0; i < numOfWords; i++) {
+			score = score + currentWords2[i].length();
+		}
+
+		return score;
 	}
 	
 	private static String lookUpXAxis(char[][] letterArray, int x, int y) {
