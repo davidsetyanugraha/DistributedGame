@@ -186,12 +186,102 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
 	private String[] extractWords(String json2) {
 		// TODO Extract words from json
+		
+		char[][] letterArray = new char[20][20]; //20x20 board
+		String[] words = new String[2];
+		int x=0;
+		int y=0;
 
-		// example output
-		String[] words = { "play", "game" };
+		JSONObject jsonObject;
+		try {
+			jsonObject = new JSONObject(json);
+			JSONArray letterObject = jsonObject.getJSONArray("word");
+			JSONObject eachLetter;
+			
+			for (int i=0; i<letterObject.length() ; i++) {
+				eachLetter = letterObject.getJSONObject(i);
+				x = eachLetter.getInt("x");
+				y = eachLetter.getInt("y");
+				letterArray[x][y] = eachLetter.getString("ch").charAt(0); //Any Better Option?
+			}
+			
+			words[0] = lookUpXAxis(letterArray,x,y);
+			System.out.println(words[0]);
+			words[1] = lookUpYAxis(letterArray,x,y);
+			System.out.println(words[1]);
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // JSON Object to store the json file
+	
+		
 		return words;
+		
 	}
 
+	private String lookUpXAxis(char[][] letterArray, int x, int y) {
+		
+		final int MAX_X = 19;
+		int leftX=-1; //default number -1
+		
+		String word = "";
+		
+		//Loop through and find the most left character index
+		for (int i=x; i>=0; i--) {
+			if (letterArray[i][y] == 0) {
+				leftX = i+1;
+				break;
+			}
+		}
+		
+		//If haven't found an empty char, set most left as coordinate x=0
+		if (leftX == -1) {
+			leftX = 0;
+		}
+		
+		int j=leftX;
+		
+		while (letterArray[j][y] != 0 && j<= MAX_X) {
+			word = word + letterArray[j][y];
+			j++;
+		}
+		
+		return word;
+		
+	}
+	
+	private String lookUpYAxis(char[][] letterArray, int x, int y) {
+		
+		final int MAX_Y = 19;
+		int topY=-1; //default number -1
+		
+		String word = "";
+		
+		//Loop through and find the most left character index
+		for (int i=y; i>=0; i--) {
+			if (letterArray[x][i] == 0) {
+				topY = i+1;
+				break;
+			}
+		}
+		
+		//If haven't found an empty char, set most left as coordinate x=0
+		if (topY == -1) {
+			topY = 0;
+		}
+		
+		int j=topY;
+		
+		while (letterArray[x][j] != 0 && j<= MAX_Y) {
+			word = word + letterArray[x][j];
+			j++;
+		}
+		
+		return word;
+		
+	}
+	
 	public String disconnectClient() throws RemoteException {
 		client_count--;
 		return "Success";
@@ -216,7 +306,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 					newPlayerArray.put(playerObject);
 				}
 				/* Change the next player's turn to true */
-				else if (playerObject.get("name").equals(name)) {
+				else if (playerObject.get("username").equals(name)) {
 					playerObject.put("turn", true);
 					newPlayerArray.put(playerObject);
 				} else {
@@ -248,7 +338,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
 			for (int i = 0; i < playerArray.length(); i++) {
 				playerObject = playerArray.getJSONObject(i);
-				if (playerObject.get("name").equals(name)) {
+				if (playerObject.get("username").equals(name)) {
 					playerObject.put("score", newScore);
 					playerArray.put(playerObject);
 				} else {
