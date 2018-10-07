@@ -21,27 +21,9 @@ import java.awt.event.ActionEvent;
 public class Lobby extends JFrame {
 
 	private JPanel contentPane;
+	private Client client;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Lobby frame = new Lobby();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public Lobby() {
+	public Lobby(Client client) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 800);
 		contentPane = new JPanel();
@@ -57,7 +39,9 @@ public class Lobby extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.EAST, btnCreateNewGame, -244, SpringLayout.EAST, contentPane);
 		btnCreateNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO check if game exists
+				//Showing the board
+				ClientFrame clientFrame = new ClientFrame(client);
+		        clientFrame.frmClient.setVisible(true);
 			}
 		});
 		contentPane.add(btnCreateNewGame);
