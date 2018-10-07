@@ -1,7 +1,6 @@
 package frontend;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,10 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -29,9 +25,8 @@ import javax.swing.border.TitledBorder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import backend.IRemoteGame;
 
-public class ClientFrame {
+public class ClientBoard {
   JFrame frmClient;
   private JFileChooser fileChooser;
   private JDialog popUpDialog;
@@ -52,51 +47,8 @@ public class ClientFrame {
   private static File file;
   private static Login login;
 
-  public static void main(String[] args) {
-    EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        try {
-          Registry registry = LocateRegistry.getRegistry("localhost");
-          IRemoteGame remoteGame = (IRemoteGame) registry.lookup("GameServer");
-
-          /** Create Random Name */
-          Random r = new Random(); // just create one and keep it around
-          String alphabet = "abcdefghijklmnopqrstuvwxyz";
-
-          final int N = 10;
-          StringBuilder sb = new StringBuilder();
-          for (int i = 0; i < N; i++) {
-            sb.append(alphabet.charAt(r.nextInt(alphabet.length())));
-          }
-
-          // TODO NAME MUST UNIQUE!
-          String randomName = sb.toString();
-          /** End Create Random Name */
-
-          /* login purpose */
-          client = new Client(randomName);
-          // open login frame
-          login = new Login(client, remoteGame);
-          login.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    });
-  }
-
-  public ClientFrame(Client user) {
-    // try {
+  public ClientBoard(Client user) {
     initialize();
-
-    /** TODO MOVE THIS read json IMP */
-
-    // file = new File(
-    // "/Users/davidsetyanugraha/Master/Semester1/DistributedSystem/Assignment/Assignment2/SourceCode/DistributedSystemProject2/src/example-get.json");
-    // readFile();
-    // } catch (FileNotFoundException | JSONException e) {
-    // e.printStackTrace();
-    // }
   }
 
   private void initialize() {
@@ -121,13 +73,13 @@ public class ClientFrame {
     this.yesBtn.setSize(5, 2);
     this.yesBtn.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent evt) {
-        ClientFrame.this.yesBtnClicked();
+        ClientBoard.this.yesBtnClicked();
       }
     });
     this.noBtn = new JButton();
     this.noBtn.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent evt) {
-        ClientFrame.this.noBtnClicked();
+        ClientBoard.this.noBtnClicked();
       }
     });
     this.noBtn.setSize(5, 2);
@@ -218,7 +170,7 @@ public class ClientFrame {
     JMenuItem closeMenu = new JMenuItem("Close");
     closeMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {
-        ClientFrame.this.closeMenuClicked(e);
+        ClientBoard.this.closeMenuClicked(e);
       }
     });
     mnFile.add(closeMenu);
@@ -237,7 +189,7 @@ public class ClientFrame {
     createMenu.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        ClientFrame clientFrame = new ClientFrame(client);
+        ClientBoard clientFrame = new ClientBoard(client);
         Pane game = new Pane(clientFrame, client);
         game.setVisible(true);
       }
@@ -557,13 +509,13 @@ public class ClientFrame {
     }
 
     // render player
- // getting players that are available
+    // getting players that are available
     JSONArray playerAvail = (JSONArray) data.get("player");
-    
+
     for (int i = 0; i < playerAvail.length(); i++) {
-        JSONObject player = playerAvail.getJSONObject(i);
-        String username = player.getString("username");
-      }
+      JSONObject player = playerAvail.getJSONObject(i);
+      String username = player.getString("username");
+    }
   }
 
 }

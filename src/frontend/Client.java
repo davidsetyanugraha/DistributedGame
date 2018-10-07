@@ -26,10 +26,10 @@ public class Client extends UnicastRemoteObject implements IClient {
     this.name = name;
   }
 
-  public boolean isGameRunning() throws RemoteException{
-	  return remoteGame.isGameRunning();
+  public boolean isGameRunning() throws RemoteException {
+    return remoteGame.isGameRunning();
   }
-  
+
   public JSONObject getJsonObject() throws JSONException {
     JSONObject jsonObj = new JSONObject(json);
     return jsonObj;
@@ -59,6 +59,10 @@ public class Client extends UnicastRemoteObject implements IClient {
 
   public ArrayList<IClient> getAllPlayerList() throws RemoteException {
     return remoteGame.getAllPlayerList();
+  }
+
+  public Boolean isLoginValid(String username) throws RemoteException, JSONException {
+    return remoteGame.isLoginValid(username);
   }
 
   public void createNewGame(IRemoteGame remoteGame, ArrayList<String> clientPlayList)
@@ -242,7 +246,7 @@ public class Client extends UnicastRemoteObject implements IClient {
   public void renderBoardSystem() throws RemoteException {
     try {
       this.json = remoteGame.getJsonString();
-      ClientFrame.renderBasedOnJson(this.json);
+      ClientBoard.renderBasedOnJson(this.json);
       System.out.println("RenderBoardSystem: " + this.json);
     } catch (JSONException e) {
       // TODO Auto-generated catch block

@@ -1,22 +1,19 @@
 package frontend;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
 import backend.IRemoteGame;
 
 public class Login extends JFrame {
@@ -27,10 +24,11 @@ public class Login extends JFrame {
 
   /**
    * Create the frame.
- * @param remoteGame 
- * @param client 
+   * 
+   * @param remoteGame
+   * @param client
    */
-  public Login(Client client, IRemoteGame remoteGame) {
+  public Login(IRemoteGame remoteGame) {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 350, 250);
     contentPane = new JPanel();
@@ -100,41 +98,32 @@ public class Login extends JFrame {
     contentPane.add(passwordArea);
 
     JButton loginBtn = new JButton("Login");
-	loginBtn.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-	          // when button login is pressed
-	          try {
-		          // when button login is pressed, check the username and password
-	        	  // client can join the remoteGame if the validation is okay.
-		          client.joinClientList(remoteGame);
-		          //dispose login frame
-		          dispose();
+    loginBtn.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        // when button login is pressed
+        try {
+          // when button login is pressed, check the username and password
+          // client can join the remoteGame if the validation is okay.
+          if (remoteGame.isLoginValid(userNameArea.getText())) {
+            Client client = new Client(userNameArea.getText());
+            client.joinClientList(remoteGame);
+            // dispose login frame
+            dispose();
 
-		          // show the client list
-		          ArrayList<IClient> clientList = client.getAllClientList();
-		          ArrayList<String> clientPlayListName = new ArrayList<>();
-		          int i = 0;
+            Lobby lobby = new Lobby(client, remoteGame);
+            lobby.setVisible(true);
+          } else {
+            // TODO add error windows
+            JOptionPane.showMessageDialog(null, "Username not valid. Please retype again", "Error",
+                JOptionPane.PLAIN_MESSAGE);
+          }
 
-		          // choose the player(s), ex index 0 and 1, choose all
-		          for (IClient client : clientList) {
-		            System.out.println(client.getUniqueName());
-		            clientPlayListName.add(client.getUniqueName());
-		            i++;
-		          }
-
-		          // can only be accessed once at the time
-		          // client.createNewGame(remoteGame, clientPlayListName);
-
-		          Lobby lobby = new Lobby(client);
-		          lobby.setVisible(true);
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	          /* login purpose */
-		}
-	});
+        } catch (RemoteException e1) {
+          e1.printStackTrace();
+        }
+      }
+    });
     loginBtn.setBackground(new Color(255, 255, 255));
     loginBtn.setFont(new Font("Tahoma", Font.PLAIN, 13));
     loginBtn.setBounds(70, 172, 90, 29);
@@ -149,7 +138,7 @@ public class Login extends JFrame {
     register.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        Register regis = new Register();
+        Register regis = new Register(remoteGame);
         regis.setVisible(true);
         regis.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       }

@@ -14,9 +14,9 @@ public class UserListPanel extends JPanel {
   private JList<String> userList;
   private ArrayList<String> userArray = new ArrayList();
   private DefaultListModel<String> listModel;
-  private ClientFrame parentFrm;
+  private ClientBoard parentFrm;
 
-  public UserListPanel(ClientFrame Frm) {
+  public UserListPanel(ClientBoard Frm) {
     this.parentFrm = Frm;
     this.userList = new JList();
     JScrollPane scroll = new JScrollPane();

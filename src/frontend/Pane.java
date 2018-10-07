@@ -38,7 +38,7 @@ public class Pane extends JPanel {
   private int score;
   private static JSONObject json = null;
 
-  public Pane(ClientFrame clientFrame, Client client) {
+  public Pane(ClientBoard clientFrame, Client client) {
 
     this.client = client;
 

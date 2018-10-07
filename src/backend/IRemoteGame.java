@@ -35,4 +35,9 @@ public interface IRemoteGame extends Remote {
   public boolean isGameRunning() throws RemoteException;
 
   public ArrayList<IClient> getAllPlayerList() throws RemoteException;
+
+  public Boolean isLoginValid(String username) throws RemoteException;
+
+  public void appendJsonClient(String username, String password, String firstName, String lastName)
+      throws RemoteException;
 }

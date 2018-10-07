@@ -35,26 +35,31 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return this.clients;
   }
 
-  public void appendJsonPlayer(String username, String password, String firstName, String lastName)
-      throws JSONException, RemoteException {
-    System.out.println("APPEND New JSON Player: " + username);
+  public void appendJsonClient(String username, String password, String firstName, String lastName)
+      throws RemoteException {
+    System.out.println("APPEND New JSON Client: " + username);
 
     if (json != null) {
-      JSONObject jsonObj = new JSONObject(json);
-      JSONArray arrPlayer = jsonObj.getJSONArray("player");
+      JSONObject jsonObj;
+      try {
+        jsonObj = new JSONObject(json);
+        JSONArray arrPlayer = jsonObj.getJSONArray("client");
 
-      JSONObject objPlayer = new JSONObject();
-      objPlayer.put("username", username);
-      objPlayer.put("password", password);
-      objPlayer.put("firstname", firstName);
-      objPlayer.put("lastname", lastName);
-      objPlayer.put("score", 0);
-      objPlayer.put("turn", true);
-      arrPlayer.put(objPlayer);
+        JSONObject objPlayer = new JSONObject();
+        objPlayer.put("username", username);
+        objPlayer.put("password", password);
+        objPlayer.put("firstname", firstName);
+        objPlayer.put("lastname", lastName);
+        arrPlayer.put(objPlayer);
 
-      jsonObj.put("player", arrPlayer);
+        jsonObj.put("client", arrPlayer);
 
-      json = jsonObj.toString();
+        json = jsonObj.toString();
+      } catch (JSONException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+
     }
 
     System.out.println("Final JSON = " + json.toString());
@@ -91,6 +96,16 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     JSONArray arrPlayer = new JSONArray();
     jsonObj.put("player", arrPlayer);
+
+    JSONArray arrClient = new JSONArray();
+    JSONObject objClient = new JSONObject();
+    objClient.put("username", "test");
+    objClient.put("password", "test");
+    objClient.put("firstname", "test");
+    objClient.put("lastname", "test");
+    arrClient.put(objClient);
+
+    jsonObj.put("client", arrClient);
 
     json = jsonObj.toString();
     System.out.println("Building shared json: " + json);
@@ -439,5 +454,28 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   @Override
   public ArrayList<IClient> getAllPlayerList() throws RemoteException {
     return players;
+  }
+
+  @Override
+  public Boolean isLoginValid(String username) throws RemoteException {
+    if (!json.isEmpty()) {
+      JSONObject jsonObject;
+      try {
+        jsonObject = new JSONObject(json);
+        JSONArray playerArray = jsonObject.getJSONArray("client");
+        JSONObject playerObject; // JSON Object to store a player's JSON details
+
+        for (int i = 0; i < playerArray.length(); i++) {
+          playerObject = playerArray.getJSONObject(i);
+          if (playerObject.get("username").equals(username)) {
+            return true;
+          }
+        }
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return false;
   }
 }
