@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -165,6 +166,12 @@ public class Register extends JFrame {
 		public void mouseClicked(MouseEvent e) {
 	          if (getPass().equals(getConfirmPass())) {
 					try {
+						// Error when username has already existed
+						JOptionPane.showMessageDialog(null, "Username exists. Please create another username", "Error", JOptionPane.PLAIN_MESSAGE);
+						// Error when confirmation doesn't match password
+						JOptionPane.showMessageDialog(null, "Confirmation does not match password. Please retype again", "Error", JOptionPane.PLAIN_MESSAGE);
+						
+						//Successful registering
 						RemoteGame remoteGame = new RemoteGame();
 						remoteGame.appendJsonPlayer(getUserName(), getPass(), getFirstName(), getLastName());
 					} catch (RemoteException | JSONException e1) {
