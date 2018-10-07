@@ -19,6 +19,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 	private String json;
 	private String[] currentWords;
 	private String[] clientPlayList;
+	private boolean isGameRunning = false;
 
 	public RemoteGame() throws RemoteException, JSONException {
 		clients = new ArrayList<>();
@@ -112,7 +113,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 			e1.printStackTrace();
 		}
 
-		try {
 			int i = 0;
 
 			// TODO
@@ -121,10 +121,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 			while (i < players.size()) {
 				players.get(i++).renderBoardSystem();
 			}
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-
+		isGameRunning = true;
 		return this.json;
 	}
 
@@ -284,6 +281,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 	
 	public String disconnectClient() throws RemoteException {
 		client_count--;
+		isGameRunning = false;
 		return "Success";
 	}
 
@@ -411,7 +409,10 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 		}
 
 		updateTurn(getNextPlayerName());
-
+		
+		//TODO check how many 'pass' vote, then update isGameRunning variable
+	
+		
 		while (i < players.size()) {
 			players.get(i++).renderBoardSystem();
 		}
@@ -427,5 +428,9 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 		}
 
 		return "success";
+	}
+	@Override
+	public boolean isGameRunning() throws RemoteException {
+		return isGameRunning;
 	}
 }

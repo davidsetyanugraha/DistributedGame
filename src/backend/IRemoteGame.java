@@ -31,4 +31,6 @@ public interface IRemoteGame extends Remote {
   public String startNewGame(ArrayList<String> clientPlayList) throws RemoteException;
 
   public ArrayList<IClient> getAllClientList() throws RemoteException;
+
+  public boolean isGameRunning() throws RemoteException;
 }

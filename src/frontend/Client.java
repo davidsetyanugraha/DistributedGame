@@ -26,6 +26,10 @@ public class Client extends UnicastRemoteObject implements IClient {
     this.name = name;
   }
 
+  public boolean isGameRunning() throws RemoteException{
+	  return remoteGame.isGameRunning();
+  }
+  
   public JSONObject getJsonObject() throws JSONException {
     JSONObject jsonObj = new JSONObject(json);
     return jsonObj;
