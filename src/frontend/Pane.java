@@ -304,7 +304,7 @@ public class Pane extends JPanel {
       System.out.println("added score:" + wordInput.length());
       score = wordInput.length();
       try {
-        client.addWord(json.toString());
+        client.addLetter();
       } catch (RemoteException e1) {
         e1.printStackTrace();
       }

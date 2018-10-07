@@ -126,8 +126,8 @@ public class Login extends JFrame {
 		          // can only be accessed once at the time
 		          // client.createNewGame(remoteGame, clientPlayListName);
 
-		          ClientFrame clientFrame = new ClientFrame(client);
-		          clientFrame.frmClient.setVisible(true);
+		          Lobby lobby = new Lobby();
+		          lobby.setVisible(true);
 			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
