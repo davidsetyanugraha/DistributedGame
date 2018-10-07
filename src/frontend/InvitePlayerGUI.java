@@ -81,10 +81,9 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
 
     ArrayList<String> clientStringList = new ArrayList<>();
     int idx = 0;
-    System.out.println("create dual list box" + clientList.size());
+
     // choose the player(s), ex index 0 and 1, choose all
     for (IClient client : clientList) {
-      System.out.println(client.getUniqueName());
       clientStringList.add(client.getUniqueName());
     }
 
