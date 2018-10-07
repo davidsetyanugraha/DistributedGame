@@ -57,6 +57,9 @@ public class Client extends UnicastRemoteObject implements IClient {
     return remoteGame.getAllClientList();
   }
 
+  public ArrayList<IClient> getAllPlayerList() throws RemoteException {
+    return remoteGame.getAllPlayerList();
+  }
 
   public void createNewGame(IRemoteGame remoteGame, ArrayList<String> clientPlayList)
       throws RemoteException {
