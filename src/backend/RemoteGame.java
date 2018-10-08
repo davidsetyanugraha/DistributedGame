@@ -56,7 +56,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
         json = jsonObj.toString();
       } catch (JSONException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
 

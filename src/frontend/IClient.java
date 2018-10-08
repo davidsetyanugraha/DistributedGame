@@ -22,4 +22,6 @@ public interface IClient extends Remote {
   Boolean isLoginValid(String username) throws RemoteException, JSONException;
 
   void createNewBoard() throws RemoteException;
+
+  void appendJsonLetter(int x, int y, String ch) throws RemoteException;
 }

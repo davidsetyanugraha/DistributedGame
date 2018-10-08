@@ -41,11 +41,12 @@ public class ClientBoard {
   private ArrayList<User> userList;
   private int serverPort = 23333;
   private static Pane backPanel;
-  private static Client client;
+  private static IClient client;
   private static File file;
   private static Login login;
 
-  public ClientBoard(Client user) {
+  public ClientBoard(IClient client) {
+    this.client = client;
     initialize();
   }
 
