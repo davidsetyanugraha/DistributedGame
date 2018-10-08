@@ -7,7 +7,6 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.border.TitledBorder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -212,14 +210,14 @@ public class ClientBoard {
 
     mnScore.add(DisplayScoreMenu);
 
-    this.userListPanel = new UserListPanel(this);
-    try {
-      this.userListPanel.addUser(client.getUniqueName());
-    } catch (RemoteException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-    this.userListPanel.setBorder(new TitledBorder(null, "Player List", 4, 2, null, null));
+    // this.userListPanel = new UserListPanel(this);
+    // try {
+    // this.userListPanel.addUser(this.client.getUniqueName());
+    // } catch (RemoteException e1) {
+    // // TODO Auto-generated catch block
+    // e1.printStackTrace();
+    // }
+    // this.userListPanel.setBorder(new TitledBorder(null, "Player List", 4, 2, null, null));
 
     GridBagConstraints gbc_listPanel = new GridBagConstraints();
     gbc_listPanel.insets = new Insets(0, 0, 5, 0);

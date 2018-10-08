@@ -74,7 +74,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
       for (String name : player) {
         JSONObject objPlayer = new JSONObject();
-        objPlayer.put("name", name);
+        objPlayer.put("username", name);
         objPlayer.put("score", 0);
         objPlayer.put("turn", true);
         arrPlayer.put(objPlayer);
@@ -99,10 +99,16 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     JSONArray arrClient = new JSONArray();
     JSONObject objClient = new JSONObject();
-    objClient.put("username", "test");
-    objClient.put("password", "test");
-    objClient.put("firstname", "test");
-    objClient.put("lastname", "test");
+    objClient.put("username", "a");
+    objClient.put("password", "a");
+    objClient.put("firstname", "a");
+    objClient.put("lastname", "a");
+    arrClient.put(objClient);
+    objClient = new JSONObject();
+    objClient.put("username", "b");
+    objClient.put("password", "b");
+    objClient.put("firstname", "b");
+    objClient.put("lastname", "b");
     arrClient.put(objClient);
 
     jsonObj.put("client", arrClient);
@@ -134,7 +140,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     // show board for every people
     // tell others to update board
     while (i < players.size()) {
-      players.get(i++).renderBoardSystem();
+      players.get(i++).createNewBoard();
     }
     isGameRunning = true;
     return this.json;
@@ -148,7 +154,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       for (String playerName : clientPlayList2) {
         if (client.getUniqueName().equals(playerName)) {
           players.add(client);
-          System.out.println(playerName);
         }
       }
     }

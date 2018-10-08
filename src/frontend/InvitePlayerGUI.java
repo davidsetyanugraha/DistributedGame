@@ -71,8 +71,6 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
     submit.addActionListener(this);
     bottomPanel.add(submit);
     contentPane.add(bottomPanel, BorderLayout.SOUTH);
-
-
   }
 
   public JPanel createDualListBox() throws RemoteException {
@@ -89,8 +87,7 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
 
     String[] onlinePlayers = clientStringList.toArray(new String[0]);
 
-    // String onlinePlayers[] = {"Milk", "Cheese", "Bread", "Butter", "Beans", "Soup", "Bacon",
-    // "Chicken", "Curry Sauce", "Chocolate"};
+    // String onlinePlayers[] = {"Milk", "Cheese"};
 
     players = new DefaultListModel();
     invited = new DefaultListModel();
@@ -188,9 +185,11 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
     } else if (e.getSource() == submit) {
       if (invited.isEmpty() != true) {
         // TODO submit user that is invited to backend
-        ArrayList<String> clientPlayListName = null;
-        for (int j = 0; j < players.getSize(); j++) {
-          clientPlayListName.add((String) players.get(j));
+        ArrayList<String> clientPlayListName = new ArrayList<String>();
+
+        for (int j = 0; j < invited.getSize(); j++) {
+          String invt = (String) invited.get(j);
+          clientPlayListName.add(invt);
         }
 
         try {
@@ -199,9 +198,6 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
           // TODO Auto-generated catch block
           e1.printStackTrace();
         }
-
-        ClientBoard clientBoard = new ClientBoard(client);
-        clientBoard.frmClient.setVisible(true);
       } else {
         JOptionPane.showMessageDialog(null, "invite list is empty, playing solo...");
         // TODO no one is invited show gameboard, playing alone

@@ -16,6 +16,7 @@ public class Client extends UnicastRemoteObject implements IClient {
   private int currentState;
   private int score; // final score
   private String json = null;
+  private ClientBoard clientBoard;
 
   // Constant Game State
   public final int STATE_WAIT = 0;
@@ -68,8 +69,7 @@ public class Client extends UnicastRemoteObject implements IClient {
   public void createNewGame(IRemoteGame remoteGame, ArrayList<String> clientPlayList)
       throws RemoteException {
     String response;
-    System.out
-        .println("[Log] " + name + " has created new game. contains: " + clientPlayList.toString());
+    System.out.println("[Log] " + name + " has created new game. contains: " + clientPlayList);
 
     if (this.json == null) {
       this.json = remoteGame.getJsonString();
@@ -243,10 +243,17 @@ public class Client extends UnicastRemoteObject implements IClient {
   }
 
   @Override
+  public void createNewBoard() throws RemoteException {
+    System.out.println("Open new Board!");
+    this.clientBoard = new ClientBoard(this);
+    clientBoard.frmClient.setVisible(true);
+  }
+
+  @Override
   public void renderBoardSystem() throws RemoteException {
     try {
       this.json = remoteGame.getJsonString();
-      ClientBoard.renderBasedOnJson(this.json);
+      this.clientBoard.renderBasedOnJson(this.json);
       System.out.println("RenderBoardSystem: " + this.json);
     } catch (JSONException e) {
       // TODO Auto-generated catch block

@@ -20,4 +20,6 @@ public interface IClient extends Remote {
   String getUniqueName() throws RemoteException;
 
   Boolean isLoginValid(String username) throws RemoteException, JSONException;
+
+  void createNewBoard() throws RemoteException;
 }
