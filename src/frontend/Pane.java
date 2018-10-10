@@ -20,8 +20,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Pane extends JPanel {
@@ -178,8 +176,8 @@ public class Pane extends JPanel {
             b.setText(input);
             if ((b.getText() != "") && (!b.getText().isEmpty())) {
               try {
-                appendJson(coordX, coordY, input);
-              } catch (JSONException e1) {
+                client.appendJsonLetter(coordX, coordY, input);
+              } catch (RemoteException e1) {
                 e1.printStackTrace();
               }
             }
@@ -301,16 +299,16 @@ public class Pane extends JPanel {
   private final void submit() {
     /** Backend Call */
     // submit data to server
-    JSONArray wordInput = null;
-    try {
-      // wordInput = the word found in checking input function
-      wordInput = json.getJSONArray("word");
-    } catch (JSONException e2) {
-      e2.printStackTrace();
-    }
-    // score mechanism
-    System.out.println("added score:" + wordInput.length());
-    score = wordInput.length();
+    // JSONArray wordInput = null;
+    // try {
+    // // wordInput = the word found in checking input function
+    // wordInput = json.getJSONArray("word");
+    // } catch (JSONException e2) {
+    // e2.printStackTrace();
+    // }
+    // // score mechanism
+    // System.out.println("added score:" + wordInput.length());
+    // score = wordInput.length();
     try {
       this.client.addLetter();
     } catch (RemoteException e1) {
@@ -350,30 +348,5 @@ public class Pane extends JPanel {
     return score;
   }
 
-  private static void appendJson(int x, int y, String ch) throws JSONException {
-    // TODO FIX THIS!
-    System.out.println("APPEND JSON: x = " + x + " , y = " + y + " , ch = " + ch);
 
-    if (json == null) {
-      json = new JSONObject();
-      JSONArray arrWord = new JSONArray();
-      JSONObject obj = new JSONObject();
-      obj.put("x", x);
-      obj.put("y", y);
-      obj.put("ch", ch);
-      arrWord.put(obj);
-      json.put("word", arrWord);
-      json.put("score", arrWord.length());
-    } else {
-      JSONArray arrWord = json.getJSONArray("word");
-      JSONObject obj = new JSONObject();
-      obj.put("x", x);
-      obj.put("y", y);
-      obj.put("ch", ch);
-      arrWord.put(obj);
-      json.put("score", arrWord.length());
-    }
-
-    System.out.println("Final JSON = " + json.toString());
-  }
 }
