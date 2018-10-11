@@ -8,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -38,8 +37,6 @@ public class ClientBoard {
   private JTextField tfMsg;
   private JTextArea taMsgHis;
   private JMenuBar menuBar;
-  private User user = null;
-  private ArrayList<User> userList;
   private int serverPort = 23333;
   private static Pane backPanel;
   private static IClient client;
@@ -245,96 +242,9 @@ public class ClientBoard {
 
     mnPlayerList.add(DisplayPlayerMenu);
 
-
-
     // this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
-
-    /*
-     * this.taMsgHis = new JTextArea(""); GridBagConstraints gbc_taMsgHis = new
-     * GridBagConstraints(); gbc_taMsgHis.insets = new Insets(0, 0, 5, 5); gbc_taMsgHis.gridx = 8;
-     * gbc_taMsgHis.gridy = 4; frmClient.getContentPane().add(taMsgHis, gbc_taMsgHis);
-     * this.taMsgHis.setEditable(false); JScrollPane msgPane = new JScrollPane();
-     * msgPane.setViewportBorder(new TitledBorder(null, "Message History", 4, 2, null, null));
-     * GridBagConstraints gbc_msgPane = new GridBagConstraints(); gbc_msgPane.insets = new Insets(0,
-     * 0, 5, 0); gbc_msgPane.weighty = 5.0D; gbc_msgPane.weightx = 1.5D; gbc_msgPane.gridwidth = 2;
-     * gbc_msgPane.gridheight = 5; gbc_msgPane.fill = 1; gbc_msgPane.gridx = 9; gbc_msgPane.gridy =
-     * 4;
-     * 
-     * this.frmClient.getContentPane().add(msgPane, gbc_msgPane);
-     * 
-     * this.tfMsg = new JTextField(); GridBagConstraints gbc_tfMsg = new GridBagConstraints();
-     * gbc_tfMsg.insets = new Insets(0, 0, 0, 5); gbc_tfMsg.weightx = 1.3D; gbc_tfMsg.weighty =
-     * 1.0D; gbc_tfMsg.fill = 2; gbc_tfMsg.gridx = 9; gbc_tfMsg.gridy = 9;
-     * 
-     * this.tfMsg.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent
-     * e) { // ClientFrame.this.sendMsgClicked(); } });
-     * this.frmClient.getContentPane().add(this.tfMsg, gbc_tfMsg); this.tfMsg.setColumns(10);
-     * 
-     * JButton btnSendMsg = new JButton("send"); GridBagConstraints gbc_btnSendMsg = new
-     * GridBagConstraints(); gbc_btnSendMsg.weighty = 1.0D; gbc_btnSendMsg.weightx = 0.5D;
-     * gbc_btnSendMsg.gridx = 10; gbc_btnSendMsg.gridy = 9; btnSendMsg.addActionListener(new
-     * ActionListener() { public void actionPerformed(ActionEvent e) { //
-     * ClientFrame.this.sendMsgClicked(); } }); this.frmClient.getContentPane().add(btnSendMsg,
-     * gbc_btnSendMsg);
-     */
-    this.userList = new ArrayList();
   }
 
-  /**
-   * start new game public void newMenuClicked(MouseEvent e) { Object[] options = { "Yes", "No" };
-   * int decision = JOptionPane.showOptionDialog(this.frmClient, "Do you want to create a new game",
-   * "Tips", 0, 3, null, options, options[0]); if (decision == 0) { this.backPanel.reset();
-   * this.backPanel.regame(); if (this.serverThread != null) { SocketMsg msg = new SocketMsg();
-   * msg.setOperation("newCanvas"); this.backPanel.sendMsg(msg); } } }
-   * 
-   */
-
-  /**
-   * open a exsited game public void openMenuClicked(MouseEvent e) {
-   * this.fileChooser.setAcceptAllFileFilterUsed(false); this.fileChooser.setFileFilter(new
-   * FileFilter(FileFilter.CanvasFilterType.COF_OPEN)); if
-   * (this.fileChooser.showOpenDialog(this.frmClient) == 0) { File f =
-   * this.fileChooser.getSelectedFile(); if (f.exists()) { try { ObjectInputStream in = new
-   * ObjectInputStream(new FileInputStream(f.getPath())); List<CanvasShape> sh =
-   * (List)in.readObject(); in.close(); this.canvasPanel.reset(); this.canvasPanel.repaint();
-   * this.canvasPanel.setShapes((CopyOnWriteArrayList)sh); this.canvasPanel.repaint();
-   * this.openedFile = this.fileChooser.getSelectedFile(); if (this.serverThread != null) {
-   * SocketMsg msg = new SocketMsg(); msg.setOperation("newCanvas"); this.canvasPanel.sendMsg(msg);
-   * } for (CanvasShape shape : sh) { SocketMsg msg = new SocketMsg(); msg.setOperation("add");
-   * JSONSerializer serializer = new JSONSerializer(); String data = serializer.serialize(shape);
-   * msg.setData(data); this.canvasPanel.sendMsg(msg); } } catch (FileNotFoundException ex) {
-   * ex.printStackTrace(); } catch (IOException ex) { ex.printStackTrace(); } catch
-   * (ClassNotFoundException ex) { ex.printStackTrace(); } } }
-   * this.fileChooser.resetChoosableFileFilters(); }
-   */
-
-  /**
-   * save game public void saveMenuClicked(MouseEvent e) { if (this.openedFile == null) {
-   * this.fileChooser.setAcceptAllFileFilterUsed(false); this.fileChooser.setFileFilter(new
-   * CanvasFileFilter(CanvasFileFilter.CanvasFilterType.COF_SAVE)); if
-   * (this.fileChooser.showSaveDialog(this.frmClient) == 0) { File f =
-   * this.fileChooser.getSelectedFile(); if (f.exists()) { showFileExistDlg(f); } else {
-   * this.userChoice = 1; } if (this.userChoice == 1) { try { ObjectOutputStream out = new
-   * ObjectOutputStream(new FileOutputStream(f.getPath()));
-   * out.writeObject(this.canvasPanel.getShapes()); out.close(); } catch (FileNotFoundException ex)
-   * { ex.printStackTrace(); } catch (IOException ex) { ex.printStackTrace(); } } this.userChoice =
-   * -1; } } else { try { ObjectOutputStream out = new ObjectOutputStream(new
-   * FileOutputStream(this.openedFile.getPath())); out.writeObject(this.canvasPanel.getShapes());
-   * out.close(); } catch (FileNotFoundException ex) { ex.printStackTrace(); } catch (IOException
-   * ex) { ex.printStackTrace(); } } this.fileChooser.resetChoosableFileFilters(); }
-   */
-
-  /**
-   * save as public void saveAsMenuClicked(MouseEvent e) { CanvasFileFilter filter = new
-   * CanvasFileFilter(CanvasFileFilter.CanvasFilterType.SAVE);
-   * this.fileChooser.setAcceptAllFileFilterUsed(false); this.fileChooser.setFileFilter(filter); if
-   * (this.fileChooser.showSaveDialog(this.frmClient) == 0) { try { File f =
-   * this.fileChooser.getSelectedFile(); if (f.exists()) { showFileExistDlg(f); } else {
-   * this.userChoice = 1; } if (this.userChoice == 1) { String ext =
-   * filter.getExtension(f.getPath()); BufferedImage img = this.canvasPanel.getImage();
-   * ImageIO.write(img, ext, f); } } catch (IOException ex) { ex.printStackTrace(); }
-   * this.userChoice = -1; } this.fileChooser.resetChoosableFileFilters(); }
-   */
   public void closeMenuClicked(MouseEvent e) {
     // endNetClicked(e);
     this.frmClient.dispose();
@@ -374,42 +284,6 @@ public class ClientBoard {
     this.popUpDialog.setVisible(true);
   }
 
-  /*
-   * create connect function public void createNetClicked(MouseEvent e) {
-   * 
-   * }
-   * 
-   */
-
-  /**
-   * connect function
-   * 
-   * public void conNetClicked(MouseEvent e) { double x_pos = (this.frmClient.getBounds().getMinX()
-   * + this.frmClient.getBounds().getMaxX()) / 7.0D * 2.0D; double y_pos =
-   * (this.frmClient.getBounds().getMinY() + this.frmClient.getBounds().getMaxY()) / 5.0D * 2.0D;
-   * this.conNetFrame.setLocation((int)x_pos, (int)y_pos); this.conNetFrame.setVisible(true); }
-   */
-
-  /**
-   * end connection function
-   *
-   * public void endNetClicked(MouseEvent e) { if ((this.serverThread != null) || (this.clientThread
-   * != null)) { Object[] options = { "end anyway", "nope" }; int decision =
-   * JOptionPane.showOptionDialog(this.frmClient, "would you like to disconnect", "disconnect from
-   * network", 0, 3, null, options, options[0]); if (decision == 0) { if (this.serverThread != null)
-   * { SocketMsg msg = new SocketMsg(); msg.setOperation("disconnect"); msg.setData("the manager has
-   * disconnected"); this.canvasPanel.sendMsg(msg);
-   * 
-   * CopyOnWriteArrayList<User> clients = this.serverThread.getClients(); try { for (User client :
-   * clients) { if (client.getClientSocket() != null) { client.getClientSocket().close(); } }
-   * this.serverThread.getCanvasServer().close(); this.serverThread = null; this.user = null; }
-   * catch (IOException ioe) { System.out.println(ioe.getMessage()); } clients.removeAll(clients); }
-   * else if (this.clientThread != null) { try { this.clientThread.getClient().close();
-   * this.clientThread = null; getMenuBar().getMenu(0).setEnabled(true); } catch (IOException ioe) {
-   * System.out.println(ioe.getMessage()); } } getUserListPanel().clear(); } } else {
-   * JOptionPane.showMessageDialog(this.frmClient, "you don't have a network"); } }
-   */
-
   public void yesBtnClicked() {
     this.userChoice = 1;
     this.popUpDialog.setVisible(false);
@@ -420,14 +294,6 @@ public class ClientBoard {
     this.popUpDialog.setVisible(false);
   }
 
-  public User getUser() {
-    return this.user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
   public Pane getPane() {
     return this.backPanel;
   }
@@ -436,16 +302,6 @@ public class ClientBoard {
     this.backPanel = backPanel;
   }
 
-  /**
-   * if Socket Thread use in connection
-   * 
-   * public void setServerThread(SocketThread serverThread) { this.serverThread = serverThread; }
-   * 
-   * public SocketClient getClientThread() { return this.clientThread; }
-   * 
-   * public void setClientThread(SocketClient clientThread) { this.clientThread = clientThread; }
-   */
-
   public JTextArea getTaMsgHis() {
     return this.taMsgHis;
   }
@@ -453,25 +309,6 @@ public class ClientBoard {
   public void setTaMsgHis(JTextArea taMsgHis) {
     this.taMsgHis = taMsgHis;
   }
-
-  /**
-   * 
-   * public void sendMsgClicked() { if ((this.serverThread == null) && (this.clientThread == null))
-   * { JOptionPane.showMessageDialog(this.frmClient, "please start or connect to a network first",
-   * "error", 0); } else if (!this.tfMsg.getText().trim().equals("")) { String msgContent =
-   * this.tfMsg.getText(); SocketMsg msg = new SocketMsg(); msg.setOperation("chat");
-   * msg.setData(msgContent); msg.setUserName(getUser().getUserName()); JSONSerializer serializer =
-   * new JSONSerializer(); String msgJson = serializer.serialize(msg); if (this.serverThread !=
-   * null) { CopyOnWriteArrayList<User> clients = getServerThread().getClients(); if
-   * (!clients.isEmpty()) { int i = 0; for (User client : clients) { if (i == 0) { i++; } else { try
-   * { DataOutputStream out = new DataOutputStream(client.getClientSocket().getOutputStream());
-   * out.writeUTF(msgJson); } catch (IOException e) { System.out.println(e.getMessage()); } } } } }
-   * else if (this.clientThread != null) { try { DataOutputStream out = new
-   * DataOutputStream(getClientThread().getClient().getOutputStream()); out.writeUTF(msgJson); }
-   * catch (IOException e) { System.out.println(e.getMessage()); } }
-   * this.taMsgHis.append(this.user.getUserName() + "(me)" + ": " + msgContent + "\n");
-   * this.tfMsg.setText(""); } }
-   */
 
   public JMenuBar getMenuBar() {
     return this.menuBar;

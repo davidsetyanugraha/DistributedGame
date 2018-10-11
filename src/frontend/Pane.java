@@ -208,8 +208,6 @@ public class Pane extends JPanel {
     fillBoard();
   }
 
-
-
   private final void fillBoard() {
     RelativeLayout topRL = new RelativeLayout(RelativeLayout.X_AXIS);
     topRL.setRoundingPolicy(RelativeLayout.FIRST);
@@ -308,18 +306,6 @@ public class Pane extends JPanel {
   }
 
   private final void submit() {
-    /** Backend Call */
-    // submit data to server
-    // JSONArray wordInput = null;
-    // try {
-    // // wordInput = the word found in checking input function
-    // wordInput = json.getJSONArray("word");
-    // } catch (JSONException e2) {
-    // e2.printStackTrace();
-    // }
-    // // score mechanism
-    // System.out.println("added score:" + wordInput.length());
-    // score = wordInput.length();
     try {
       this.client.addLetter();
     } catch (RemoteException e1) {
