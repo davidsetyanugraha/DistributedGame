@@ -541,18 +541,16 @@ public class ClientBoard {
     // move to next player
 
     // voting confirm dialog
-    for (String word : words) {
-      vote = 0;
-      vote = JOptionPane.showConfirmDialog(null, "PLEASE GIVE YOUR VOTE for " + word);
 
-      if (vote == VOTE_ACCEPT) {
-        client.vote(true, word);
-      } else {
-        client.vote(false, word);
-      }
+    System.out.println("Render Voting System for word" + words);
+    vote = 0;
+    vote = JOptionPane.showConfirmDialog(null, "PLEASE GIVE YOUR VOTE");
 
+    if (vote == VOTE_ACCEPT) {
+      client.vote(true, words[0]);
+    } else {
+      client.vote(false, words[0]);
     }
-
   }
 
 }

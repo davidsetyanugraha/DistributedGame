@@ -194,7 +194,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   public String performVoting(String json) {
     try {
       currentWords = extractWords(json);
-      System.out.println("Current Words:" + currentWords.toString());
+      System.out.println("Current Words:" + currentWords);
       int i = 0;
       // tell others about voting system
       while (i < players.size()) {

@@ -239,7 +239,7 @@ public class Client extends UnicastRemoteObject implements IClient {
   public void renderVotingSystem(String[] words) throws RemoteException {
     this.json = remoteGame.getJsonString();
     this.setCurrentState(STATE_VOTING);
-    System.out.println("renderVotingSystem: " + words.toString());
+    System.out.println("renderVotingSystem: " + words);
 
     // render voting system
     this.clientBoard.renderVotingSystem(words);
