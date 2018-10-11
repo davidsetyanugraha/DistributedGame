@@ -363,9 +363,21 @@ public class Pane extends JPanel {
     if (show) {
       this.btnVote.setVisible(true);
       this.btnPass.setVisible(true);
+
+      for (JButton[] jButtons : boardSquares) {
+        for (JButton jButton : jButtons) {
+          jButton.setEnabled(true);
+        }
+      }
     } else {
       this.btnVote.setVisible(false);
       this.btnPass.setVisible(false);
+
+      for (JButton[] jButtons : boardSquares) {
+        for (JButton jButton : jButtons) {
+          jButton.setEnabled(false);
+        }
+      }
     }
 
   }
@@ -373,6 +385,4 @@ public class Pane extends JPanel {
   public void renderMessage(String message) {
     this.message.setText(message);
   }
-
-
 }
