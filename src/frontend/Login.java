@@ -130,6 +130,12 @@ public class Login extends JFrame {
     contentPane.add(loginBtn);
 
     JButton cancelBtn = new JButton("Cancel");
+    cancelBtn.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          System.exit(0);
+        }
+      });
     cancelBtn.setFont(new Font("Tahoma", Font.PLAIN, 13));
     cancelBtn.setBounds(179, 172, 90, 29);
     contentPane.add(cancelBtn);
