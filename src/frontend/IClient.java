@@ -20,7 +20,7 @@ public interface IClient extends Remote {
 
   void pass() throws RemoteException;
 
-  void renderVotingSystem(final String[] words) throws RemoteException;
+  void changeStateIntoVoting(final String[] words) throws RemoteException;
 
   void renderBoardSystem() throws RemoteException;
 

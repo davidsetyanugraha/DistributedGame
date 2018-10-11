@@ -17,12 +17,14 @@ public class Client extends UnicastRemoteObject implements IClient {
   private int score; // final score
   private String json = null;
   private ClientBoard clientBoard;
+  private String[] votingWords;
 
   // Constant Game State
 
 
   public Client(String name) throws RemoteException {
     this.name = name;
+    this.votingWords = new String[10];
   }
 
   public boolean isGameRunning() throws RemoteException {
@@ -236,13 +238,10 @@ public class Client extends UnicastRemoteObject implements IClient {
   }
 
   @Override
-  public void renderVotingSystem(String[] words) throws RemoteException {
+  public void changeStateIntoVoting(String[] words) throws RemoteException {
     this.json = remoteGame.getJsonString();
     this.setCurrentState(STATE_VOTING);
-    System.out.println("renderVotingSystem: " + words);
-
-    // render voting system
-    this.clientBoard.renderVotingSystem(words);
+    this.votingWords = words;
   }
 
   @Override
@@ -256,8 +255,12 @@ public class Client extends UnicastRemoteObject implements IClient {
   public void renderBoardSystem() throws RemoteException {
     try {
       this.json = remoteGame.getJsonString();
-      checkState();
-      this.clientBoard.renderBasedOnJson(this.json, this.currentState);
+
+      if (this.currentState != this.STATE_VOTING) {
+        this.checkState();
+      }
+
+      this.clientBoard.renderBasedOnJson(this.json, this.currentState, this.votingWords);
       System.out.println("RenderBoardSystem: " + this.json);
     } catch (JSONException e) {
       // TODO Auto-generated catch block

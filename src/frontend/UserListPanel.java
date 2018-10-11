@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public class UserListPanel extends JPanel {
+  // possible unused
   private static final long serialVersionUID = -154678996694424775L;
   private JList<String> userList;
   private ArrayList<String> userArray = new ArrayList();

@@ -7,7 +7,6 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.rmi.RemoteException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -331,7 +330,8 @@ public class ClientBoard {
   }
 
   // Reading JSON data.
-  public static void renderBasedOnJson(String json, int state) throws JSONException {
+  public static void renderBasedOnJson(String json, int state, String[] votingWords)
+      throws JSONException {
     JSONObject data = new JSONObject(json);
 
     // render words
@@ -359,35 +359,38 @@ public class ClientBoard {
       // disable buttons
       backPanel.renderMessage("Wait! It's other turn..");
       backPanel.isVoteAndPassShown(false);
+      backPanel.isYesAndNoVoteShown(false);
     } else if (state == client.STATE_INSERTION) {
       // enable buttons
       backPanel.renderMessage("It's your turn.. insert word, then vote or pass");
       backPanel.isVoteAndPassShown(true);
+      backPanel.isYesAndNoVoteShown(false);
     } else if (state == client.STATE_VOTING) {
       // wait for voting
-      backPanel.renderMessage("Let's Vote!");
+      backPanel.renderMessage("Let's Vote! Words: " + votingWords);
       backPanel.isVoteAndPassShown(false);
+      backPanel.isYesAndNoVoteShown(true);
     }
   }
 
-  public static void renderVotingSystem(String[] words) throws RemoteException {
-    int vote;
-    // vote = 0, agree; otherwise disagree
-    // then send this vote to server
-    // if majority agree, call score function
-    // move to next player
-
-    // voting confirm dialog
-
-    System.out.println("Render Voting System for word" + words);
-    vote = 0;
-    vote = JOptionPane.showConfirmDialog(null, "PLEASE GIVE YOUR VOTE");
-
-    if (vote == VOTE_ACCEPT) {
-      client.vote(true, words[0]);
-    } else {
-      client.vote(false, words[0]);
-    }
-  }
+  // public static void renderVotingSystem(String[] words) throws RemoteException {
+  // int vote;
+  // // vote = 0, agree; otherwise disagree
+  // // then send this vote to server
+  // // if majority agree, call score function
+  // // move to next player
+  //
+  // // voting confirm dialog
+  //
+  // System.out.println("Render Voting System for word" + words);
+  // vote = 0;
+  // vote = JOptionPane.showConfirmDialog(null, "PLEASE GIVE YOUR VOTE");
+  //
+  // if (vote == VOTE_ACCEPT) {
+  // client.vote(true, words[0]);
+  // } else {
+  // client.vote(false, words[0]);
+  // }
+  // }
 
 }

@@ -36,7 +36,7 @@ public class Pane extends JPanel {
   private int score;
   private static JSONObject json = null;
   private final int NO_INPUT = 0;
-  JButton btnVote, btnPass;
+  JButton btnVote, btnPass, btnVoteYes, btnVoteNo;
 
   public Pane(ClientBoard clientFrame, IClient client) {
 
@@ -97,6 +97,36 @@ public class Pane extends JPanel {
       }
     });
     tools.add(btnPass);
+
+    btnVoteYes = new JButton("Yes");
+    btnVoteYes.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // send ask vote message to server
+        // server broadcast vote to all others
+        // others then run the implementation below
+        try {
+          client.vote(true, word);
+        } catch (RemoteException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+      }
+    });
+
+    tools.add(btnVoteYes);
+
+    btnVoteNo = new JButton("No");
+    btnVoteNo.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        try {
+          client.vote(false, word);
+        } catch (RemoteException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+      }
+    });
+    tools.add(btnVoteNo);
 
     board = new JPanel() {
       /**
@@ -365,7 +395,16 @@ public class Pane extends JPanel {
         }
       }
     }
+  }
 
+  public void isYesAndNoVoteShown(boolean show) {
+    if (show) {
+      this.btnVoteYes.setVisible(true);
+      this.btnVoteNo.setVisible(true);
+    } else {
+      this.btnVoteYes.setVisible(false);
+      this.btnVoteNo.setVisible(false);
+    }
   }
 
   public void renderMessage(String message) {

@@ -198,7 +198,9 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       int i = 0;
       // tell others about voting system
       while (i < players.size()) {
-        players.get(i++).renderVotingSystem(currentWords);
+        players.get(i).changeStateIntoVoting(currentWords);
+        players.get(i).renderBoardSystem();
+        i = i + 1;
       }
     } catch (RemoteException e) {
       e.printStackTrace();
