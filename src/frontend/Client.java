@@ -19,9 +19,7 @@ public class Client extends UnicastRemoteObject implements IClient {
   private ClientBoard clientBoard;
 
   // Constant Game State
-  public final int STATE_WAIT = 0;
-  public final int STATE_INSERTION = 1;
-  public final int STATE_VOTING = 2;
+
 
   public Client(String name) throws RemoteException {
     this.name = name;
@@ -140,8 +138,8 @@ public class Client extends UnicastRemoteObject implements IClient {
     }
   }
 
-  public void performVoting(String json) throws RemoteException {// first player run voting
-                                                                 // system
+  public void performVoting() throws RemoteException {// first player run voting
+                                                      // system
     String response;
     System.out.println("[Log] " + name + " proposed new word: [ " + json + " ] ");
 
@@ -244,9 +242,7 @@ public class Client extends UnicastRemoteObject implements IClient {
     System.out.println("renderVotingSystem: " + words.toString());
 
     // render voting system
-    // ClientFrame.renderVotingSystem(words);
-
-    /** after this point, voting will be arranged by pressing vote button : broadcastVote */
+    this.clientBoard.renderVotingSystem(words);
   }
 
   @Override
@@ -260,12 +256,34 @@ public class Client extends UnicastRemoteObject implements IClient {
   public void renderBoardSystem() throws RemoteException {
     try {
       this.json = remoteGame.getJsonString();
-      this.clientBoard.renderBasedOnJson(this.json);
+      checkState();
+      this.clientBoard.renderBasedOnJson(this.json, this.currentState);
       System.out.println("RenderBoardSystem: " + this.json);
     } catch (JSONException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+  }
+
+  private void checkState() throws JSONException, RemoteException {
+
+    JSONObject jsonObject = new JSONObject(json); // JSON Object to store the json file
+    JSONArray playerArray = jsonObject.getJSONArray("player");
+    JSONArray newPlayerArray = new JSONArray(); // New Player Array for rewrite
+    JSONObject playerObject; // JSON Object to store a player's JSON details
+
+    for (int i = 0; i < playerArray.length(); i++) {
+      playerObject = playerArray.getJSONObject(i);
+      /* Change the current player's turn to false */
+      if (playerObject.get("username").equals(this.getUniqueName())) {
+        if (playerObject.get("turn").equals(true)) {
+          this.setCurrentState(STATE_INSERTION);
+        } else {
+          this.setCurrentState(STATE_WAIT);
+        }
+      }
+    }
+
   }
 
   @Override

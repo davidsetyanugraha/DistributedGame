@@ -35,6 +35,8 @@ public class Pane extends JPanel {
   private IClient client;
   private int score;
   private static JSONObject json = null;
+  private final int NO_INPUT = 0;
+  JButton btnVote, btnPass;
 
   public Pane(ClientBoard clientFrame, IClient client) {
 
@@ -53,36 +55,45 @@ public class Pane extends JPanel {
     // characterNum used to calculate times this player try to input in his turn,
     // used for one-letter-one-turn validation
     word = "";
-    characterNum = 0;
+    characterNum = NO_INPUT;
     turn = 1;
 
-    JButton btnVote = new JButton("VOTE");
+    btnVote = new JButton("VOTE");
     btnVote.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         // send ask vote message to server
         // server broadcast vote to all others
         // others then run the implementation below
-        if (characterNum == 0) {
+        if (characterNum == NO_INPUT) {
           JOptionPane.showMessageDialog(null, "You can't ask vote before input!", "Error",
               JOptionPane.PLAIN_MESSAGE);
         } else {
-          int vote;
-          vote = JOptionPane.showConfirmDialog(null, "PLEASE GIVE YOUR VOTE");
-          // vote = 0, agree; otherwise disagree
-          // then send this vote to server
-          // if majority agree, call score function
-          // move to next player
-          characterNum = 0;
+          try {
+            client.performVoting();
+          } catch (RemoteException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+
+          characterNum = NO_INPUT;
         }
       }
     });
+
     tools.add(btnVote);
 
-    JButton btnPass = new JButton("PASS");
+    btnPass = new JButton("PASS");
     btnPass.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         // move to next turn
-        characterNum = 0;
+        characterNum = NO_INPUT;
+
+        try {
+          client.pass();
+        } catch (RemoteException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
       }
     });
     tools.add(btnPass);
@@ -348,5 +359,30 @@ public class Pane extends JPanel {
     return score;
   }
 
+  public void isVoteAndPassShown(boolean show) {
+    if (show) {
+      this.btnVote.setVisible(true);
+      this.btnPass.setVisible(true);
 
+      for (JButton[] jButtons : boardSquares) {
+        for (JButton jButton : jButtons) {
+          jButton.setEnabled(true);
+        }
+      }
+    } else {
+      this.btnVote.setVisible(false);
+      this.btnPass.setVisible(false);
+
+      for (JButton[] jButtons : boardSquares) {
+        for (JButton jButton : jButtons) {
+          jButton.setEnabled(false);
+        }
+      }
+    }
+
+  }
+
+  public void renderMessage(String message) {
+    this.message.setText(message);
+  }
 }

@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -44,6 +45,7 @@ public class ClientBoard {
   private static IClient client;
   private static File file;
   private static Login login;
+  private final static int VOTE_ACCEPT = 0;
 
   public ClientBoard(IClient client) {
     this.client = client;
@@ -492,7 +494,7 @@ public class ClientBoard {
   }
 
   // Reading JSON data.
-  public static void renderBasedOnJson(String json) throws JSONException {
+  public static void renderBasedOnJson(String json, int state) throws JSONException {
     JSONObject data = new JSONObject(json);
 
     // render words
@@ -515,6 +517,42 @@ public class ClientBoard {
       JSONObject player = playerAvail.getJSONObject(i);
       String username = player.getString("username");
     }
+
+    if (state == client.STATE_WAIT) {
+      // disable buttons
+      backPanel.renderMessage("Wait! It's other turn..");
+      backPanel.isVoteAndPassShown(false);
+    } else if (state == client.STATE_INSERTION) {
+      // enable buttons
+      backPanel.renderMessage("It's your turn.. insert word, then vote or pass");
+      backPanel.isVoteAndPassShown(true);
+    } else if (state == client.STATE_VOTING) {
+      // wait for voting
+      backPanel.renderMessage("Let's Vote!");
+      backPanel.isVoteAndPassShown(false);
+    }
+  }
+
+  public static void renderVotingSystem(String[] words) throws RemoteException {
+    int vote;
+    // vote = 0, agree; otherwise disagree
+    // then send this vote to server
+    // if majority agree, call score function
+    // move to next player
+
+    // voting confirm dialog
+    for (String word : words) {
+      vote = 0;
+      vote = JOptionPane.showConfirmDialog(null, "PLEASE GIVE YOUR VOTE for " + word);
+
+      if (vote == VOTE_ACCEPT) {
+        client.vote(true, word);
+      } else {
+        client.vote(false, word);
+      }
+
+    }
+
   }
 
 }
