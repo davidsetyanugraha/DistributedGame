@@ -71,11 +71,15 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       JSONObject jsonObj = new JSONObject(json);
       JSONArray arrPlayer = jsonObj.getJSONArray("player");
 
-      for (String name : player) {
+      for (int i = 0; i < player.size(); i++) {
         JSONObject objPlayer = new JSONObject();
-        objPlayer.put("username", name);
+        objPlayer.put("username", player.get(i));
         objPlayer.put("score", 0);
-        objPlayer.put("turn", true);
+        if (i == 0)
+          objPlayer.put("turn", true);
+        else
+          objPlayer.put("turn", false);
+
         arrPlayer.put(objPlayer);
       }
 
@@ -139,7 +143,9 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     // show board for every people
     // tell others to update board
     while (i < players.size()) {
-      players.get(i++).createNewBoard();
+      players.get(i).createNewBoard();
+      players.get(i).renderBoardSystem();
+      i = i + 1;
     }
     isGameRunning = true;
     return this.json;
@@ -188,7 +194,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   public String performVoting(String json) {
     try {
       currentWords = extractWords(json);
-
+      System.out.println("Current Words:" + currentWords.toString());
       int i = 0;
       // tell others about voting system
       while (i < players.size()) {
@@ -366,7 +372,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
       jsonObject.put("player", playerArray);
 
-      json = jsonObject.toString();
+      this.json = jsonObject.toString();
 
     } catch (JSONException e) {
       e.printStackTrace();
@@ -410,6 +416,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     updateTurn(getNextPlayerName());
 
+    i = 0;
     while (i < players.size()) {
       players.get(i++).renderBoardSystem();
     }

@@ -5,11 +5,20 @@ import java.rmi.RemoteException;
 import org.json.JSONException;
 
 public interface IClient extends Remote {
+
+  public final int STATE_WAIT = 0;
+  public final int STATE_INSERTION = 1;
+  public final int STATE_VOTING = 2;
+
   void getVote(final boolean accept) throws RemoteException;
 
   void getPass(final String playerName) throws RemoteException;
 
   void addLetter() throws RemoteException;
+
+  void vote(Boolean accept, String word) throws RemoteException;
+
+  void pass() throws RemoteException;
 
   void renderVotingSystem(final String[] words) throws RemoteException;
 
@@ -24,4 +33,6 @@ public interface IClient extends Remote {
   void createNewBoard() throws RemoteException;
 
   void appendJsonLetter(int x, int y, String ch) throws RemoteException;
+
+  public void performVoting() throws RemoteException;
 }
