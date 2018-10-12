@@ -2,6 +2,7 @@ package frontend;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import org.json.JSONException;
 
 public interface IClient extends Remote {
@@ -19,7 +20,7 @@ public interface IClient extends Remote {
 
   void pass() throws RemoteException;
 
-  void changeStateIntoVotingShow(final String[] words) throws RemoteException;
+  void changeStateIntoVotingShow(final ArrayList<String> words) throws RemoteException;
 
   void changeStateIntoVotingWait(boolean accept) throws RemoteException;
 
@@ -38,4 +39,7 @@ public interface IClient extends Remote {
   public void performVoting() throws RemoteException;
 
   public void changeStateIntoWait() throws RemoteException;
+
+  public int getCurrentState() throws RemoteException;
+
 }

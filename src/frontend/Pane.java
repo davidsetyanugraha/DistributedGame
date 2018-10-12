@@ -10,6 +10,7 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -39,12 +40,12 @@ public class Pane extends JPanel {
   private static JSONObject json = null;
   private final int NO_INPUT = 0;
   JButton btnVote, btnPass, btnVoteYes1, btnVoteNo1, btnVoteYes2, btnVoteNo2;
-  private String[] votingWords;
+  private ArrayList<String> votingWords;
 
   public Pane(ClientBoard clientFrame, IClient client) {
 
     this.client = client;
-    this.votingWords = new String[10];
+    this.votingWords = new ArrayList<>();
 
     // set up the main GUI
     gui.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -110,7 +111,8 @@ public class Pane extends JPanel {
         // server broadcast vote to all others
         // others then run the implementation below
         try {
-          client.vote(true, votingWords[0]);
+          client.vote(true, votingWords.get(0));
+          hideVotingYesAndNoVote1();
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -124,7 +126,8 @@ public class Pane extends JPanel {
     btnVoteNo1.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          client.vote(false, votingWords[0]);
+          client.vote(false, votingWords.get(0));
+          hideVotingYesAndNoVote1();
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -142,7 +145,8 @@ public class Pane extends JPanel {
         // server broadcast vote to all others
         // others then run the implementation below
         try {
-          client.vote(true, votingWords[1]);
+          client.vote(true, votingWords.get(1));
+          hideVotingYesAndNoVote2();
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -156,7 +160,8 @@ public class Pane extends JPanel {
     btnVoteNo2.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          client.vote(false, votingWords[1]);
+          client.vote(false, votingWords.get(1));
+          hideVotingYesAndNoVote2();
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -449,17 +454,32 @@ public class Pane extends JPanel {
     this.message.setText(message + " ");
   }
 
-  public void renderVotingMessage(String[] votingWords) {
-    this.votingMessage1.setText("word #1: " + votingWords[0] + " ");
+  public void renderVotingMessage(ArrayList<String> votingWords) {
+    this.votingWords = votingWords;
+    this.votingMessage1.setText("word #1: " + votingWords.get(0) + " ");
     this.votingMessage1.setVisible(true);
     this.btnVoteYes1.setVisible(true);
     this.btnVoteNo1.setVisible(true);
 
-    if (votingWords[1] != null) {
-      this.votingMessage2.setText("word #2: " + votingWords[1] + " ");
+    if (votingWords.size() == 2) {
+      this.votingMessage2.setText("word #2: " + votingWords.get(1) + " ");
       this.votingMessage2.setVisible(true);
       this.btnVoteYes2.setVisible(true);
       this.btnVoteNo2.setVisible(true);
     }
+  }
+
+  private void hideVotingYesAndNoVote1() {
+    this.votingMessage1.setText("");
+    this.votingMessage1.setVisible(false);
+    this.btnVoteYes1.setVisible(false);
+    this.btnVoteNo1.setVisible(false);
+  }
+
+  private void hideVotingYesAndNoVote2() {
+    this.votingMessage2.setText("");
+    this.votingMessage2.setVisible(false);
+    this.btnVoteYes2.setVisible(false);
+    this.btnVoteNo2.setVisible(false);
   }
 }

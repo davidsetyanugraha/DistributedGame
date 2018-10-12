@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -129,40 +130,8 @@ public class ClientBoard {
 
     this.menuBar = new JMenuBar();
     this.frmClient.setJMenuBar(this.menuBar);
-    JMenu mnFile = new JMenu("file");
+    JMenu mnFile = new JMenu("option");
     this.menuBar.add(mnFile);
-
-    JMenuItem newMenu = new JMenuItem("New");
-    newMenu.addMouseListener(new MouseAdapter() {
-      public void mouseReleased(MouseEvent e) {
-        // ClientFrame.this.newMenuClicked(e);
-      }
-    });
-    mnFile.add(newMenu);
-
-    JMenuItem openMenu = new JMenuItem("Open");
-    openMenu.addMouseListener(new MouseAdapter() {
-      public void mouseReleased(MouseEvent e) {
-        // ClientFrame.this.openMenuClicked(e);
-      }
-    });
-    mnFile.add(openMenu);
-
-    JMenuItem saveMenu = new JMenuItem("Save");
-    saveMenu.addMouseListener(new MouseAdapter() {
-      public void mouseReleased(MouseEvent e) {
-        // ClientFrame.this.saveMenuClicked(e);
-      }
-    });
-    mnFile.add(saveMenu);
-
-    JMenuItem saveAsMenu = new JMenuItem("Save as");
-    saveAsMenu.addMouseListener(new MouseAdapter() {
-      public void mouseReleased(MouseEvent e) {
-        // ClientFrame.this.saveAsMenuClicked(e);
-      }
-    });
-    mnFile.add(saveAsMenu);
 
     JMenuItem closeMenu = new JMenuItem("Close");
     closeMenu.addMouseListener(new MouseAdapter() {
@@ -182,19 +151,6 @@ public class ClientBoard {
       }
     });
 
-    JMenuItem createMenu = new JMenuItem("create a new game network");
-    createMenu.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        ClientBoard clientFrame = new ClientBoard(client);
-        Pane game = new Pane(clientFrame, client);
-        game.setVisible(true);
-      }
-    });
-    mnNetwork.add(createMenu);
-
-    JMenuItem connectNet = new JMenuItem("connect network~");
-    mnNetwork.add(connectNet);
     mnNetwork.add(endNetMenu);
 
     JMenu mnScore = new JMenu("score");
@@ -330,7 +286,7 @@ public class ClientBoard {
   }
 
   // Reading JSON data.
-  public static void renderBasedOnJson(String json, int state, String[] votingWords)
+  public static void renderBasedOnJson(String json, int state, ArrayList<String> votingWords)
       throws JSONException {
     JSONObject data = new JSONObject(json);
 
@@ -377,25 +333,4 @@ public class ClientBoard {
       backPanel.hideVotingYesAndNoVote();
     }
   }
-
-  // public static void renderVotingSystem(String[] words) throws RemoteException {
-  // int vote;
-  // // vote = 0, agree; otherwise disagree
-  // // then send this vote to server
-  // // if majority agree, call score function
-  // // move to next player
-  //
-  // // voting confirm dialog
-  //
-  // System.out.println("Render Voting System for word" + words);
-  // vote = 0;
-  // vote = JOptionPane.showConfirmDialog(null, "PLEASE GIVE YOUR VOTE");
-  //
-  // if (vote == VOTE_ACCEPT) {
-  // client.vote(true, words[0]);
-  // } else {
-  // client.vote(false, words[0]);
-  // }
-  // }
-
 }

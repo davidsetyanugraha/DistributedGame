@@ -3,6 +3,7 @@ package backend;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,13 +13,14 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
   private final ArrayList<IClient> clients;
   private ArrayList<IClient> players;
-  private static int client_count = 0;
-  private static int vote_count = 0;
-  private static int accept_count = 0;
-  private static int count_pass_player = 0;
+  private int client_count = 0;
+  HashMap<String, Integer> vote_count = new HashMap<String, Integer>();
+  private int accept_count_word1 = 0;
+  private int accept_count_word2 = 0;
+  private int count_pass_player = 0;
   private int index_current_player = 0;
   private String json;
-  private String[] currentWords;
+  private ArrayList<String> currentWords;
   private String[] clientPlayList;
   private boolean isGameRunning = false;
 
@@ -160,6 +162,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       for (String playerName : clientPlayList2) {
         if (client.getUniqueName().equals(playerName)) {
           players.add(client);
+          vote_count.put(playerName, 0);
         }
       }
     }
@@ -194,8 +197,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
   public String performVoting(String json) {
     try {
-      currentWords = extractWords(json);
-      System.out.println("Current Words: " + currentWords);
+      this.currentWords = extractWords(json);
+      System.out.println("Current Words: " + currentWords.toString());
       int i = 0;
       // tell others about voting system
       while (i < players.size()) {
@@ -210,11 +213,11 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return this.json;
   }
 
-  private String[] extractWords(String json2) {
+  private ArrayList<String> extractWords(String json2) {
     // TODO Extract words from json
 
     char[][] letterArray = new char[20][20]; // 20x20 board
-    String[] words = new String[2];
+    ArrayList<String> words = new ArrayList<>();
     int x = 0;
     int y = 0;
 
@@ -235,19 +238,19 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       String tempY = lookUpYAxis(letterArray, x, y);
 
       if ((tempX.length() == 1) && (tempY.length() == 1)) {
-        words[0] = tempX;
-        System.out.println("Word1 = " + words[0]);
+        words.add(tempX);
+        // System.out.println("Word1 = " + words.get(0));
       } else if ((tempX.length() > 1) && (tempY.length() == 1)) {
-        words[0] = tempX;
-        System.out.println("Word1 = " + words[0]);
+        words.add(tempX);
+        // System.out.println("Word1 = " + words[0]);
       } else if ((tempX.length() == 1) && (tempY.length() > 1)) {
-        words[0] = tempY;
-        System.out.println("Word1 = " + words[0]);
+        words.add(tempY);
+        // System.out.println("Word1 = " + words[0]);
       } else if ((tempX.length() > 1) && (tempY.length() > 1)) {
-        words[0] = tempX;
-        words[1] = tempY;
-        System.out.println("Word1 = " + words[0]);
-        System.out.println("Word2 = " + words[1]);
+        words.add(tempX);
+        words.add(tempY);
+        // System.out.println("Word1 = " + words[0]);
+        // System.out.println("Word2 = " + words[1]);
       }
 
 
@@ -373,24 +376,27 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
    */
   public void updateScore(String name, int newScore) {
     try {
-
+      System.out.println("update bro");
       JSONObject jsonObject = new JSONObject(json); // JSON Object to store the json file
       JSONArray playerArray = jsonObject.getJSONArray("player");
       JSONObject playerObject; // JSON Object to store a player's JSON details
 
-      for (int i = 0; i < playerArray.length(); i++) {
+      int playerSize = playerArray.length();
+      for (int i = 0; i < playerSize; i++) {
+        System.out.println("playerarray");
         playerObject = playerArray.getJSONObject(i);
         if (playerObject.get("username").equals(name)) {
-          playerObject.put("score", newScore);
-          playerArray.put(playerObject);
-        } else {
-          playerArray.put(playerObject);
+          int finalScore = playerObject.getInt("score") + newScore;
+          System.out.println("FINAL SCORE:" + finalScore);
+          playerObject.put("score", finalScore);
+          break;
         }
       }
 
       jsonObject.put("player", playerArray);
-
       this.json = jsonObject.toString();
+      System.out.println("after update score");
+      System.out.println(this.json.toString());
 
     } catch (JSONException e) {
       e.printStackTrace();
@@ -402,12 +408,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   /*
    * Calculate score from each word (1 letter = 1 score)
    */
-  private int calculateScore(String[] currentWords2) {
-    int score = 0;
-
-    for (int i = 0; i < currentWords2.length; i++) {
-      score = score + currentWords2[i].length();
-    }
+  private int calculateScore(String word) {
+    int score = word.length();
 
     return score;
   }
@@ -415,33 +417,63 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   @Override
   public String broadcastVote(String name, boolean accept, String word) throws RemoteException {
     int i = 0;
-    vote_count++;
+    vote_count.put(name, vote_count.get(name) + 1);
 
-    if (accept) {
-      accept_count++;
+    if (word.equals(currentWords.get(0))) {
+      System.out.println("word 1 equals");
+      // this.vote_count_word1 = this.vote_count_word1 + 1;
+      if (accept) {
+        this.accept_count_word1 = this.accept_count_word1 + 1;
+      }
+    } else {
+      System.out.println("word 2 equals");
+      // this.vote_count_word2 = this.vote_count_word2 + 1;
+      if (accept) {
+        this.accept_count_word2 = this.accept_count_word2 + 1;
+      }
     }
 
     int idVoter;
     try {
-      idVoter = this.getId(name);
-      players.get(idVoter).changeStateIntoVotingWait(accept);
-      players.get(idVoter).renderBoardSystem();
+      System.out.println("vote count get name:" + vote_count.get(name));
+      if (vote_count.get(name) == currentWords.size()) {
+        // one player has voted all word(s)
+        System.out.println("one player has voted all word(s)");
+        idVoter = this.getId(name);
+        players.get(idVoter).changeStateIntoVotingWait(accept);
+        players.get(idVoter).renderBoardSystem();
+        vote_count.put(name, 0);
+      }
 
-      if (vote_count >= players.size()) {
-        System.out.println("voting more than expected! vote_count" + vote_count + " , client_count"
-            + client_count);
-        if (accept_count == players.size()) {
-          updateScore(players.get(index_current_player).getUniqueName(),
-              calculateScore(currentWords));
+      if (this.accept_count_word1 == players.size()) { // everyone has voted accept word 1, update
+                                                       // score
+        System.out.println("calculate score word 1");
+        int wordScore = calculateScore(word);
+        System.out.println("update score word1 " + wordScore);
+        updateScore(players.get(index_current_player).getUniqueName(), wordScore);
+        this.accept_count_word1 = 0;
+      }
+
+      if (this.accept_count_word2 == players.size()) { // everyone has voted accept word 2, update
+                                                       // score
+        System.out.println("calculate score word 2");
+        // int wordScore = calculateScore(word);
+        // System.out.println("update score word2 " + wordScore);
+        // hardcode
+        updateScore(players.get(index_current_player).getUniqueName(), 3);
+        this.accept_count_word2 = 0;
+      }
+
+      int count_update_turn = 0;
+      for (IClient player : players) {
+        if (player.getCurrentState() == player.STATE_VOTING_WAIT) {
+          count_update_turn = count_update_turn + 1;
         }
+      }
 
+      if (count_update_turn == players.size()) {// if everyone has voted
+        System.out.println("update turn");
         updateTurn(getNextPlayerName());
-
-        // reset the count
-        System.out.println("reset count!");
-        vote_count = 0;
-        accept_count = 0;
-
         i = 0;
         while (i < players.size()) {
           players.get(i).changeStateIntoWait();
@@ -450,8 +482,9 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
         }
       }
 
+    } catch (
 
-    } catch (JSONException e) {
+    JSONException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
