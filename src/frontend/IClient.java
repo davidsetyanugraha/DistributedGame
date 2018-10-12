@@ -36,4 +36,6 @@ public interface IClient extends Remote {
   void appendJsonLetter(int x, int y, String ch) throws RemoteException;
 
   public void performVoting() throws RemoteException;
+
+  public void changeStateIntoWait() throws RemoteException;
 }

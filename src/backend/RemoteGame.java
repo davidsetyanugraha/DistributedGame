@@ -423,14 +423,14 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     int idVoter;
     try {
-      idVoter = this.getIdVoter(name);
+      idVoter = this.getId(name);
       players.get(idVoter).changeStateIntoVotingWait(accept);
       players.get(idVoter).renderBoardSystem();
 
       if (vote_count >= players.size()) {
         System.out.println("voting more than expected! vote_count" + vote_count + " , client_count"
             + client_count);
-        if (accept_count > players.size() / 2) {
+        if (accept_count > players.size()) {
           updateScore(players.get(index_current_player).getUniqueName(),
               calculateScore(currentWords));
         }
@@ -438,8 +438,16 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
         updateTurn(getNextPlayerName());
 
         // reset the count
+        System.out.println("reset count!");
         vote_count = 0;
         accept_count = 0;
+
+        i = 0;
+        while (i < players.size()) {
+          players.get(i).changeStateIntoWait();
+          players.get(i).renderBoardSystem();
+          i = i + 1;
+        }
       }
 
 
@@ -451,7 +459,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return "success";
   }
 
-  private int getIdVoter(String name) throws JSONException {
+  private int getId(String name) throws JSONException {
     int id = -1;
 
     JSONObject jsonObject = new JSONObject(json); // JSON Object to store the json file
@@ -469,21 +477,20 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   }
 
   @Override
-  public synchronized String broadcastPass(String playerName) throws RemoteException {
-    String passMessage = playerName + " has pass";
+  public synchronized String broadcastPass(String name) throws RemoteException {
     count_pass_player++;
 
     // tell others about pass message
     int i = 0;
     while (i < players.size()) {
-      players.get(i++).getPass(playerName);
+      players.get(i++).getPass(name);
     }
 
     updateTurn(getNextPlayerName());
 
     // TODO check how many 'pass' vote, then update isGameRunning variable
 
-
+    i = 0;
     while (i < players.size()) {
       players.get(i++).renderBoardSystem();
     }

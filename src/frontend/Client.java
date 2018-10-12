@@ -228,14 +228,14 @@ public class Client extends UnicastRemoteObject implements IClient {
   @Override
   public void changeStateIntoVotingWait(boolean accept) throws RemoteException {
     // TODO Auto-generated method stub
-    this.setCurrentState(STATE_WAIT);
+    this.setCurrentState(STATE_VOTING_WAIT);
     System.out.println("You have voted successfully: " + accept);
   }
 
   @Override
   public void getPass(String playerName) throws RemoteException {
     // TODO Auto-generated method stub
-    this.setCurrentState(STATE_VOTING_WAIT);
+    this.setCurrentState(STATE_WAIT);
     System.out.println("getPass: " + playerName);
   }
 
@@ -258,7 +258,8 @@ public class Client extends UnicastRemoteObject implements IClient {
     try {
       this.json = remoteGame.getJsonString();
 
-      if (this.currentState != this.STATE_VOTING_SHOW) {
+      if ((this.currentState != this.STATE_VOTING_WAIT)
+          && (this.currentState != this.STATE_VOTING_SHOW)) {
         this.checkState();
       }
 
@@ -300,5 +301,10 @@ public class Client extends UnicastRemoteObject implements IClient {
   public void getGeneralMessage(String message) throws RemoteException {
     // TODO Auto-generated method stub
     System.out.println("getGeneralMessage: " + message);
+  }
+
+  @Override
+  public void changeStateIntoWait() throws RemoteException {
+    this.setCurrentState(STATE_WAIT);
   }
 }
