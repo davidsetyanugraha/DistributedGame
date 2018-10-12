@@ -8,9 +8,8 @@ public interface IClient extends Remote {
 
   public final int STATE_WAIT = 0;
   public final int STATE_INSERTION = 1;
-  public final int STATE_VOTING = 2;
-
-  void getVote(final boolean accept) throws RemoteException;
+  public final int STATE_VOTING_SHOW = 2;
+  public final int STATE_VOTING_WAIT = 3;
 
   void getPass(final String playerName) throws RemoteException;
 
@@ -20,7 +19,9 @@ public interface IClient extends Remote {
 
   void pass() throws RemoteException;
 
-  void changeStateIntoVoting(final String[] words) throws RemoteException;
+  void changeStateIntoVotingShow(final String[] words) throws RemoteException;
+
+  void changeStateIntoVotingWait(boolean accept) throws RemoteException;
 
   void renderBoardSystem() throws RemoteException;
 

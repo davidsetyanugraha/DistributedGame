@@ -14,6 +14,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   private ArrayList<IClient> players;
   private static int client_count = 0;
   private static int vote_count = 0;
+  private static int accept_count = 0;
   private static int count_pass_player = 0;
   private int index_current_player = 0;
   private String json;
@@ -198,7 +199,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       int i = 0;
       // tell others about voting system
       while (i < players.size()) {
-        players.get(i).changeStateIntoVoting(currentWords);
+        players.get(i).changeStateIntoVotingShow(currentWords);
         players.get(i).renderBoardSystem();
         i = i + 1;
       }
@@ -357,8 +358,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
       jsonObject.put("player", newPlayerArray);
 
-      json = jsonObject.toString();
-
+      this.json = jsonObject.toString();
+      System.out.println("update turn json" + this.json.toString());
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -403,9 +404,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
    */
   private int calculateScore(String[] currentWords2) {
     int score = 0;
-    int numOfWords = 2;
 
-    for (int i = 0; i < numOfWords; i++) {
+    for (int i = 0; i < currentWords2.length; i++) {
       score = score + currentWords2[i].length();
     }
 
@@ -413,32 +413,59 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   }
 
   @Override
-  public String broadcastVote(boolean accept, String word) throws RemoteException {
+  public String broadcastVote(String name, boolean accept, String word) throws RemoteException {
     int i = 0;
+    vote_count++;
 
     if (accept) {
-      vote_count++;
+      accept_count++;
     }
 
-    // tell others about voting in the board
-    while (i < players.size()) {
-      players.get(i++).getVote(accept);
-    }
+    int idVoter;
+    try {
+      idVoter = this.getIdVoter(name);
+      players.get(idVoter).changeStateIntoVotingWait(accept);
+      players.get(idVoter).renderBoardSystem();
 
-    // if voting successful
-    // tell others to update score
-    if (vote_count >= client_count) {
-      updateScore(players.get(index_current_player).getUniqueName(), calculateScore(currentWords));
-    }
+      if (vote_count >= players.size()) {
+        System.out.println("voting more than expected! vote_count" + vote_count + " , client_count"
+            + client_count);
+        if (accept_count > players.size() / 2) {
+          updateScore(players.get(index_current_player).getUniqueName(),
+              calculateScore(currentWords));
+        }
 
-    updateTurn(getNextPlayerName());
+        updateTurn(getNextPlayerName());
 
-    i = 0;
-    while (i < players.size()) {
-      players.get(i++).renderBoardSystem();
+        // reset the count
+        vote_count = 0;
+        accept_count = 0;
+      }
+
+
+    } catch (JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
 
     return "success";
+  }
+
+  private int getIdVoter(String name) throws JSONException {
+    int id = -1;
+
+    JSONObject jsonObject = new JSONObject(json); // JSON Object to store the json file
+    JSONArray playerArray = jsonObject.getJSONArray("player");
+    JSONObject playerObject; // JSON Object to store a player's JSON details
+
+    for (int i = 0; i < playerArray.length(); i++) {
+      playerObject = playerArray.getJSONObject(i);
+      if (playerObject.get("username").equals(name)) {
+        id = i;
+      }
+    }
+
+    return id;
   }
 
   @Override

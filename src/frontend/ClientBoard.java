@@ -365,11 +365,16 @@ public class ClientBoard {
       backPanel.renderMessage("It's your turn.. insert word, then vote or pass");
       backPanel.isVoteAndPassShown(true);
       backPanel.hideVotingYesAndNoVote();
-    } else if (state == client.STATE_VOTING) {
+    } else if (state == client.STATE_VOTING_SHOW) {
       // wait for voting
       backPanel.renderMessage("Let's Vote! ");
       backPanel.isVoteAndPassShown(false);
       backPanel.renderVotingMessage(votingWords);
+    } else if (state == client.STATE_VOTING_WAIT) {
+      // wait for voting
+      backPanel.renderMessage("Please wait other votes.. ");
+      backPanel.isVoteAndPassShown(false);
+      backPanel.hideVotingYesAndNoVote();
     }
   }
 

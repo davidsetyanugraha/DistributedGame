@@ -446,17 +446,17 @@ public class Pane extends JPanel {
   }
 
   public void renderMessage(String message) {
-    this.message.setText(message);
+    this.message.setText(message + " ");
   }
 
   public void renderVotingMessage(String[] votingWords) {
-    this.votingMessage1.setText("word #1: " + votingWords[0]);
+    this.votingMessage1.setText("word #1: " + votingWords[0] + " ");
     this.votingMessage1.setVisible(true);
     this.btnVoteYes1.setVisible(true);
     this.btnVoteNo1.setVisible(true);
 
     if (votingWords[1] != null) {
-      this.votingMessage2.setText("word #2: " + votingWords[1]);
+      this.votingMessage2.setText("word #2: " + votingWords[1] + " ");
       this.votingMessage2.setVisible(true);
       this.btnVoteYes2.setVisible(true);
       this.btnVoteNo2.setVisible(true);

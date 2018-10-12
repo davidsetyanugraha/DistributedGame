@@ -11,19 +11,14 @@ public interface IRemoteGame extends Remote {
 
   public String getJsonString() throws RemoteException;
 
-  /** Client-> Server -> all Clients; return JSON success or failed */
   public String broadcastGeneralMessage(String message) throws RemoteException;
 
-  /** Client-> Server -> all Clients; return JSON success or failed */
   public String performVoting(String json) throws RemoteException;
 
-  /** Client-> Server -> all Clients; return JSON success or failed */
   public String broadcastNewLetter(String json) throws RemoteException;
 
-  /** Client-> Server -> all Clients; return JSON success or failed */
-  public String broadcastVote(boolean accept, String word) throws RemoteException;
+  public String broadcastVote(String name, boolean accept, String word) throws RemoteException;
 
-  /** Client-> Server -> all Clients; return JSON success or failed */
   public String broadcastPass(String playerName) throws RemoteException;
 
   public String disconnectClient() throws RemoteException;

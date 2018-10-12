@@ -131,7 +131,7 @@ public class Client extends UnicastRemoteObject implements IClient {
     System.out.println("[Log] " + name + " has voted [ " + word + " ] : [ " + accept + " ] ");
 
     try {
-      response = remoteGame.broadcastVote(accept, word);
+      response = remoteGame.broadcastVote(name, accept, word);
       this.json = remoteGame.getJsonString();
     } catch (RemoteException e) {
       response = "Vote has been failed!";
@@ -173,8 +173,10 @@ public class Client extends UnicastRemoteObject implements IClient {
 
     if (state == STATE_INSERTION) {
       status = "INSERTION";
-    } else if (state == STATE_VOTING) {
-      status = "VOTING";
+    } else if (state == STATE_VOTING_SHOW) {
+      status = "VOTING_SHOW";
+    } else if (state == STATE_VOTING_WAIT) {
+      status = "VOTING_WAIT";
     } else {
       status = "WAIT";
     }
@@ -224,23 +226,23 @@ public class Client extends UnicastRemoteObject implements IClient {
   }
 
   @Override
-  public void getVote(boolean accept) throws RemoteException {
+  public void changeStateIntoVotingWait(boolean accept) throws RemoteException {
     // TODO Auto-generated method stub
     this.setCurrentState(STATE_WAIT);
-    System.out.println("getVote: " + accept);
+    System.out.println("You have voted successfully: " + accept);
   }
 
   @Override
   public void getPass(String playerName) throws RemoteException {
     // TODO Auto-generated method stub
-    this.setCurrentState(STATE_WAIT);
+    this.setCurrentState(STATE_VOTING_WAIT);
     System.out.println("getPass: " + playerName);
   }
 
   @Override
-  public void changeStateIntoVoting(String[] words) throws RemoteException {
+  public void changeStateIntoVotingShow(String[] words) throws RemoteException {
     this.json = remoteGame.getJsonString();
-    this.setCurrentState(STATE_VOTING);
+    this.setCurrentState(STATE_VOTING_SHOW);
     this.votingWords = words;
   }
 
@@ -256,7 +258,7 @@ public class Client extends UnicastRemoteObject implements IClient {
     try {
       this.json = remoteGame.getJsonString();
 
-      if (this.currentState != this.STATE_VOTING) {
+      if (this.currentState != this.STATE_VOTING_SHOW) {
         this.checkState();
       }
 
