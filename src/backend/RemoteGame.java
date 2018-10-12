@@ -430,7 +430,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       if (vote_count >= players.size()) {
         System.out.println("voting more than expected! vote_count" + vote_count + " , client_count"
             + client_count);
-        if (accept_count > players.size()) {
+        if (accept_count == players.size()) {
           updateScore(players.get(index_current_player).getUniqueName(),
               calculateScore(currentWords));
         }
