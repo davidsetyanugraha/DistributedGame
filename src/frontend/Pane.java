@@ -110,7 +110,7 @@ public class Pane extends JPanel {
         // server broadcast vote to all others
         // others then run the implementation below
         try {
-          client.vote(true, word);
+          client.vote(true, votingWords[0]);
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -124,7 +124,7 @@ public class Pane extends JPanel {
     btnVoteNo1.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          client.vote(false, word);
+          client.vote(false, votingWords[0]);
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -142,7 +142,7 @@ public class Pane extends JPanel {
         // server broadcast vote to all others
         // others then run the implementation below
         try {
-          client.vote(true, word);
+          client.vote(true, votingWords[1]);
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -156,7 +156,7 @@ public class Pane extends JPanel {
     btnVoteNo2.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          client.vote(false, word);
+          client.vote(false, votingWords[1]);
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
