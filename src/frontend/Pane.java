@@ -28,6 +28,8 @@ public class Pane extends JPanel {
   private JButton[][] boardSquares = new JButton[22][22];
   private JPanel board;
   private final JLabel message = new JLabel("Ready to play");
+  private final JLabel votingMessage1 = new JLabel("");
+  private final JLabel votingMessage2 = new JLabel("");
   private static final String COLS = "ABCDEFGHIJKLMNOPQRSTUV";
   private String word;
   private int characterNum, turn;
@@ -36,11 +38,13 @@ public class Pane extends JPanel {
   private int score;
   private static JSONObject json = null;
   private final int NO_INPUT = 0;
-  JButton btnVote, btnPass, btnVoteYes, btnVoteNo;
+  JButton btnVote, btnPass, btnVoteYes1, btnVoteNo1, btnVoteYes2, btnVoteNo2;
+  private String[] votingWords;
 
   public Pane(ClientBoard clientFrame, IClient client) {
 
     this.client = client;
+    this.votingWords = new String[10];
 
     // set up the main GUI
     gui.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -49,6 +53,7 @@ public class Pane extends JPanel {
     gui.add(tools, BorderLayout.PAGE_START);
     tools.addSeparator();
     tools.add(message);
+    tools.add(votingMessage1);
     // String word hold the input
     // because now One Player, One Turn, One letter
     // word = char, only one letter each turn now
@@ -98,8 +103,8 @@ public class Pane extends JPanel {
     });
     tools.add(btnPass);
 
-    btnVoteYes = new JButton("Yes");
-    btnVoteYes.addActionListener(new ActionListener() {
+    btnVoteYes1 = new JButton("Yes");
+    btnVoteYes1.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         // send ask vote message to server
         // server broadcast vote to all others
@@ -113,10 +118,10 @@ public class Pane extends JPanel {
       }
     });
 
-    tools.add(btnVoteYes);
+    tools.add(btnVoteYes1);
 
-    btnVoteNo = new JButton("No");
-    btnVoteNo.addActionListener(new ActionListener() {
+    btnVoteNo1 = new JButton("No");
+    btnVoteNo1.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
           client.vote(false, word);
@@ -126,7 +131,39 @@ public class Pane extends JPanel {
         }
       }
     });
-    tools.add(btnVoteNo);
+    tools.add(btnVoteNo1);
+
+    tools.add(votingMessage2);
+
+    btnVoteYes2 = new JButton("Yes");
+    btnVoteYes2.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // send ask vote message to server
+        // server broadcast vote to all others
+        // others then run the implementation below
+        try {
+          client.vote(true, word);
+        } catch (RemoteException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+      }
+    });
+
+    tools.add(btnVoteYes2);
+
+    btnVoteNo2 = new JButton("No");
+    btnVoteNo2.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        try {
+          client.vote(false, word);
+        } catch (RemoteException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+      }
+    });
+    tools.add(btnVoteNo2);
 
     board = new JPanel() {
       /**
@@ -397,17 +434,32 @@ public class Pane extends JPanel {
     }
   }
 
-  public void isYesAndNoVoteShown(boolean show) {
-    if (show) {
-      this.btnVoteYes.setVisible(true);
-      this.btnVoteNo.setVisible(true);
-    } else {
-      this.btnVoteYes.setVisible(false);
-      this.btnVoteNo.setVisible(false);
-    }
+  public void hideVotingYesAndNoVote() {
+    this.votingMessage1.setText("");
+    this.votingMessage2.setText("");
+    this.votingMessage1.setVisible(false);
+    this.votingMessage2.setVisible(false);
+    this.btnVoteYes1.setVisible(false);
+    this.btnVoteNo1.setVisible(false);
+    this.btnVoteYes2.setVisible(false);
+    this.btnVoteNo2.setVisible(false);
   }
 
   public void renderMessage(String message) {
     this.message.setText(message);
+  }
+
+  public void renderVotingMessage(String[] votingWords) {
+    this.votingMessage1.setText("word #1: " + votingWords[0]);
+    this.votingMessage1.setVisible(true);
+    this.btnVoteYes1.setVisible(true);
+    this.btnVoteNo1.setVisible(true);
+
+    if (!votingWords[1].isEmpty()) {
+      this.votingMessage2.setText("word #2: " + votingWords[1]);
+      this.votingMessage2.setVisible(true);
+      this.btnVoteYes2.setVisible(true);
+      this.btnVoteNo2.setVisible(true);
+    }
   }
 }

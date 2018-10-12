@@ -359,17 +359,17 @@ public class ClientBoard {
       // disable buttons
       backPanel.renderMessage("Wait! It's other turn..");
       backPanel.isVoteAndPassShown(false);
-      backPanel.isYesAndNoVoteShown(false);
+      backPanel.hideVotingYesAndNoVote();
     } else if (state == client.STATE_INSERTION) {
       // enable buttons
       backPanel.renderMessage("It's your turn.. insert word, then vote or pass");
       backPanel.isVoteAndPassShown(true);
-      backPanel.isYesAndNoVoteShown(false);
+      backPanel.hideVotingYesAndNoVote();
     } else if (state == client.STATE_VOTING) {
       // wait for voting
-      backPanel.renderMessage("Let's Vote! Words: " + votingWords);
+      backPanel.renderMessage("Let's Vote! ");
       backPanel.isVoteAndPassShown(false);
-      backPanel.isYesAndNoVoteShown(true);
+      backPanel.renderVotingMessage(votingWords);
     }
   }
 
