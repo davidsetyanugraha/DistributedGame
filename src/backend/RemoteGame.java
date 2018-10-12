@@ -194,7 +194,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   public String performVoting(String json) {
     try {
       currentWords = extractWords(json);
-      System.out.println("Current Words:" + currentWords);
+      System.out.println("Current Words: " + currentWords);
       int i = 0;
       // tell others about voting system
       while (i < players.size()) {
@@ -230,10 +230,25 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
         letterArray[x][y] = eachLetter.getString("ch").charAt(0); // Any Better Option?
       }
 
-      words[0] = lookUpXAxis(letterArray, x, y);
-      System.out.println(words[0]);
-      words[1] = lookUpYAxis(letterArray, x, y);
-      System.out.println(words[1]);
+      String tempX = lookUpXAxis(letterArray, x, y);
+      String tempY = lookUpYAxis(letterArray, x, y);
+
+      if ((tempX.length() == 1) && (tempY.length() == 1)) {
+        words[0] = tempX;
+        System.out.println("Word1 = " + words[0]);
+      } else if ((tempX.length() > 1) && (tempY.length() == 1)) {
+        words[0] = tempX;
+        System.out.println("Word1 = " + words[0]);
+      } else if ((tempX.length() == 1) && (tempY.length() > 1)) {
+        words[0] = tempY;
+        System.out.println("Word1 = " + words[0]);
+      } else if ((tempX.length() > 1) && (tempY.length() > 1)) {
+        words[0] = tempX;
+        words[1] = tempY;
+        System.out.println("Word1 = " + words[0]);
+        System.out.println("Word2 = " + words[1]);
+      }
+
 
     } catch (JSONException e) {
       // TODO Auto-generated catch block
