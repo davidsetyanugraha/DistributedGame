@@ -28,12 +28,12 @@ import backend.IRemoteGame;
 // ATTENTION
 // for backends: please look for TODO tags to connect to server
 
-public class InvitePlayerGUI extends JFrame implements ActionListener {
+public class PlayerListGUI extends JFrame implements ActionListener {
 
   private JPanel contentPane;
   JList inviteList, playerList;
   DefaultListModel players, invited;
-  JButton buttonin, buttonout, submit;
+  JButton buttonin, buttonout, submit, back;
   private Client client;
   private IRemoteGame remoteGame;
 
@@ -42,7 +42,8 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
    * 
    * @throws RemoteException
    */
-  public InvitePlayerGUI(Client client, IRemoteGame remoteGame) throws RemoteException {
+  public PlayerListGUI(Client client, IRemoteGame remoteGame, Boolean isInviteActive)
+      throws RemoteException {
 
     this.remoteGame = remoteGame;
     this.client = client;
@@ -55,21 +56,57 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
     contentPane.setOpaque(true);
     contentPane.setLayout(new BorderLayout(0, 0));
 
-    JLabel lblNewLabel = new JLabel("Create New Game - Invite Players");
-    lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-    lblNewLabel.setFont(new Font("Verdana", Font.PLAIN, 40));
-    lblNewLabel.setForeground(Color.ORANGE);
-    contentPane.add(lblNewLabel, BorderLayout.PAGE_START);
+    JLabel lblNewLabel;
+    JPanel bottomPanel;
 
-    JPanel inviteBox = createDualListBox();
+    if (isInviteActive) {
+      lblNewLabel = new JLabel("Create New Game - Invite Players");
+      lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      lblNewLabel.setFont(new Font("Verdana", Font.PLAIN, 40));
+      lblNewLabel.setForeground(Color.ORANGE);
+      contentPane.add(lblNewLabel, BorderLayout.PAGE_START);
 
-    contentPane.add(inviteBox, BorderLayout.CENTER);
+      JPanel inviteBox = createDualListBox();
 
-    JPanel bottomPanel = new JPanel();
-    bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-    submit = new JButton("Submit");
-    submit.addActionListener(this);
-    bottomPanel.add(submit);
+      contentPane.add(inviteBox, BorderLayout.CENTER);
+
+      bottomPanel = new JPanel();
+      bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+      submit = new JButton("Submit");
+      submit.addActionListener(this);
+      bottomPanel.add(submit);
+    } else {
+      lblNewLabel = new JLabel("List of Clients");
+      lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      lblNewLabel.setFont(new Font("Verdana", Font.PLAIN, 40));
+      lblNewLabel.setForeground(Color.ORANGE);
+      contentPane.add(lblNewLabel, BorderLayout.PAGE_START);
+
+      JPanel singleListBox = createSingleListBox();
+
+      contentPane.add(singleListBox, BorderLayout.CENTER);
+
+      bottomPanel = new JPanel();
+      bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+    }
+
+    back = new JButton("Back to Lobby");
+    back.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        try {
+          dispose();
+          Lobby lobby = new Lobby(client, remoteGame);
+          lobby.setVisible(true);
+        } catch (RemoteException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+      }
+    });
+
+    bottomPanel.add(back);
     contentPane.add(bottomPanel, BorderLayout.SOUTH);
   }
 
@@ -86,8 +123,6 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
     }
 
     String[] onlinePlayers = clientStringList.toArray(new String[0]);
-
-    // String onlinePlayers[] = {"Milk", "Cheese"};
 
     players = new DefaultListModel();
     invited = new DefaultListModel();
@@ -136,6 +171,46 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
     dualListBox.add(Box.createRigidArea(new Dimension(10, 0)));
 
     return dualListBox;
+  }
+
+  public JPanel createSingleListBox() throws RemoteException {
+    // TODO temporary data will be swapped by real player list from backend
+    ArrayList<IClient> clientList = client.getAllClientList();
+
+    ArrayList<String> clientStringList = new ArrayList<>();
+    int idx = 0;
+
+    // choose the player(s), ex index 0 and 1, choose all
+    for (IClient client : clientList) {
+      clientStringList.add(client.getUniqueName());
+    }
+
+    String[] onlinePlayers = clientStringList.toArray(new String[0]);
+
+    players = new DefaultListModel();
+
+    for (int i = 0; i < onlinePlayers.length; i++) {
+      players.addElement(onlinePlayers[i]);
+    }
+
+    playerList = new JList(players);
+    playerList.setVisibleRowCount(10);
+    playerList.setFixedCellHeight(20);
+    playerList.setFixedCellWidth(140);
+    playerList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+    JScrollPane PlayerScrollList = new JScrollPane(playerList);
+    JPanel buttonPanel = new JPanel();
+
+    buttonPanel.setBackground(new Color(51, 102, 153));
+
+    JPanel singleListBox = new JPanel();
+    singleListBox.setLayout(new BoxLayout(singleListBox, BoxLayout.LINE_AXIS));
+
+    singleListBox.add(Box.createRigidArea(new Dimension(10, 0)));
+    singleListBox.add(PlayerScrollList);
+
+    return singleListBox;
   }
 
   @Override

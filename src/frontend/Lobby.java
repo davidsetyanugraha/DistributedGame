@@ -45,8 +45,9 @@ public class Lobby extends JFrame {
           // Showing the board
           dispose();
           try {
-            InvitePlayerGUI invitePlayerGui = new InvitePlayerGUI(client, remoteGame);
-            invitePlayerGui.setVisible(true);
+            Boolean isInviteActive = true;
+            PlayerListGUI playerListGui = new PlayerListGUI(client, remoteGame, isInviteActive);
+            playerListGui.setVisible(true);
           } catch (RemoteException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -67,7 +68,15 @@ public class Lobby extends JFrame {
         contentPane);
     btnPlayerList.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
-        // TODO show current player in lobby
+        try {
+          Boolean isInviteActive = false;
+          PlayerListGUI playerListGui = new PlayerListGUI(client, remoteGame, isInviteActive);
+          playerListGui.setVisible(true);
+        } catch (RemoteException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+
         dispose();
       }
     });
