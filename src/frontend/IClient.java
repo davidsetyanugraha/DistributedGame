@@ -40,6 +40,8 @@ public interface IClient extends Remote {
   public void performVoting() throws RemoteException;
 
   public void changeStateIntoWait() throws RemoteException;
+  
+  public void exitGame() throws RemoteException;
 
   public int getCurrentState() throws RemoteException;
 

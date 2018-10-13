@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class ClientBoard {
   private static JMenuItem displayScoreMenu;
 
   public ClientBoard(IClient client) {
+	  
     this.client = client;
     try {
       initialize();
@@ -63,6 +66,56 @@ public class ClientBoard {
 
   private void initialize() throws RemoteException {
     this.frmClient = new JFrame();
+
+    this.frmClient.addWindowListener(new WindowListener() {
+		@Override
+		public void windowOpened(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			// TODO Auto-generated method stub
+			try {
+				client.exitGame();
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+    });
+    
     this.frmClient
         .setTitle("Scrabble Game - DSCraftsman, PlayerName: " + this.client.getUniqueName());
     this.frmClient.setBounds(100, 100, 800, 800);
@@ -171,7 +224,7 @@ public class ClientBoard {
     gbc_listPanel.weightx = 2.0D;
     gbc_listPanel.gridx = 9;
     gbc_listPanel.gridy = 1;
-
+    
     // this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
   }
 
