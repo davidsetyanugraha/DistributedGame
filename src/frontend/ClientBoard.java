@@ -158,15 +158,6 @@ public class ClientBoard {
     this.mnScore = new JMenu("score");
     this.menuBar.add(mnScore);
 
-    displayScoreMenu = new JMenuItem("display scoreboard");
-    displayScoreMenu.addMouseListener(new MouseAdapter() {
-      public void mouseReleased(MouseEvent e) {
-        JOptionPane.showMessageDialog(null, "Scores: " + backPanel.getScoreMessage());
-      }
-    });
-
-    mnScore.add(displayScoreMenu);
-
     // this.userListPanel = new UserListPanel(this);
     // try {
     // this.userListPanel.addUser(this.client.getUniqueName());
@@ -308,14 +299,10 @@ public class ClientBoard {
 
     // render player
     // getting players that are available
+
     JSONArray playerAvail = (JSONArray) data.get("player");
-
-    for (int i = 0; i < playerAvail.length(); i++) {
-      JSONObject player = playerAvail.getJSONObject(i);
-      String username = player.getString("username");
-    }
-
-    renderDisplayScoreMenu();
+    backPanel.updateScoreBoard(playerAvail);
+    renderDisplayScoreMenu(playerAvail);
 
     if (state == client.STATE_WAIT) {
       // disable buttons
@@ -340,8 +327,9 @@ public class ClientBoard {
     }
   }
 
-  private static void renderDisplayScoreMenu() {
+  private static void renderDisplayScoreMenu(JSONArray playerAvail) {
     mnScore.removeAll();
+
     displayScoreMenu = new JMenuItem("display scoreboard");
     displayScoreMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {

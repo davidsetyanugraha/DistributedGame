@@ -25,6 +25,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Pane extends JPanel {
@@ -424,12 +426,20 @@ public class Pane extends JPanel {
             .toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
   }
 
+  public void updateScoreBoard(JSONArray players) throws JSONException {
+    this.score_board = new HashMap<String, Integer>();
+    for (int i = 0; i < players.length(); i++) {
+      JSONObject player = players.getJSONObject(i);
+      this.score_board.put(player.getString("username"), player.getInt("score"));
+    }
+  }
+
   public String getScoreMessage() {
     String message = "";
-    final Map<String, Integer> sortedByCount = sortByValue(score_board); // rank
+    final Map<String, Integer> sortedByCount = sortByValue(this.score_board); // rank
     int rank = 1;
     for (Map.Entry<String, Integer> entry : sortedByCount.entrySet()) {
-      message = message + "\n" + rank + ")" + entry.getKey() + " = " + entry.getValue();
+      message = message + "\n" + rank + ") " + entry.getKey() + " : " + entry.getValue();
       rank = rank + 1;
     }
 
