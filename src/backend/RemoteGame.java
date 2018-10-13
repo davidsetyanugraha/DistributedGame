@@ -192,6 +192,16 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return this.json;
   }
 
+  public synchronized void broadcastExit() throws RemoteException {
+
+    endGame();
+
+    int i = 0;
+    while (i < players.size()) {
+      players.get(i++).renderBoardSystem();
+    }
+  }
+
   public String performVoting(String json) {
     try {
       this.currentWords = extractWords(json);
@@ -503,18 +513,24 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return id;
   }
 
+  private void endGame() throws RemoteException {
+    int i = 0;
+    while (i < players.size()) {
+      isGameRunning = false;
+      players.get(i).changeStateIntoEndGame();
+      i = i + 1;
+    }
+  }
+
   @Override
   public synchronized String broadcastPass(String name) throws RemoteException {
     this.count_pass_player = this.count_pass_player + 1;
-    int i = 0;
+    int i;
     if (this.count_pass_player == players.size()) {
-      while (i < players.size()) {
-        isGameRunning = false;
-        players.get(i).changeStateIntoEndGame();
-        i = i + 1;
-      }
+      endGame();
     } else {
       // tell others about pass message
+      i = 0;
       while (i < players.size()) {
         players.get(i).getPass(name);
         i = i + 1;

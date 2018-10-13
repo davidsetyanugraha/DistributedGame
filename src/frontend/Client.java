@@ -271,6 +271,7 @@ public class Client extends UnicastRemoteObject implements IClient {
       }
 
       if (this.currentState == this.STATE_END) {
+        System.out.println("masuk lobby lagi");
         Lobby lobby = new Lobby(this, remoteGame);
         lobby.setVisible(true);
         this.clientBoard.destroyCurrentBoard();
@@ -324,5 +325,20 @@ public class Client extends UnicastRemoteObject implements IClient {
   @Override
   public void changeStateIntoEndGame() throws RemoteException {
     this.setCurrentState(STATE_END);
+  }
+
+  @Override
+  public void exit() throws RemoteException {
+    String response;
+    System.out.println("[Log] " + name + " has exit the game.");
+
+    try {
+      remoteGame.broadcastExit();
+      this.json = remoteGame.getJsonString();
+    } catch (RemoteException e) {
+      response = "Join Client list has been failed!";
+      if (debug)
+        response = response + " caused by: " + e.getMessage();
+    }
   }
 }

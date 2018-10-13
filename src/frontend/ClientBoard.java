@@ -146,10 +146,15 @@ public class ClientBoard {
     JMenu mnFile = new JMenu("option");
     this.menuBar.add(mnFile);
 
-    JMenuItem closeMenu = new JMenuItem("Close");
+    JMenuItem closeMenu = new JMenuItem("Exit");
     closeMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {
-        ClientBoard.this.closeMenuClicked(e);
+        try {
+          client.exit();
+        } catch (RemoteException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
       }
     });
     mnFile.add(closeMenu);

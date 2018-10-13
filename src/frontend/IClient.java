@@ -45,4 +45,6 @@ public interface IClient extends Remote {
 
   public void changeStateIntoEndGame() throws RemoteException;
 
+  public void exit() throws RemoteException;
+
 }

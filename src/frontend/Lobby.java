@@ -22,6 +22,7 @@ public class Lobby extends JFrame {
   public Lobby(Client client, IRemoteGame remoteGame) throws RemoteException {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 800, 800);
+    this.setTitle("Welcome back " + client.getUniqueName());
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
     contentPane.setBackground(new Color(51, 102, 153));

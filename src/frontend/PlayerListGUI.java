@@ -73,7 +73,7 @@ public class PlayerListGUI extends JFrame implements ActionListener {
       bottomPanel = new JPanel();
       bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-      submit = new JButton("Submit");
+      submit = new JButton("Start Game");
       submit.addActionListener(this);
       bottomPanel.add(submit);
     } else {

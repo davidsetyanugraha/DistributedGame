@@ -37,4 +37,6 @@ public interface IRemoteGame extends Remote {
       throws RemoteException;
 
   public void resetJson() throws RemoteException;
+
+  public void broadcastExit() throws RemoteException;
 }
