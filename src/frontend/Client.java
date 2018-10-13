@@ -174,7 +174,7 @@ public class Client extends UnicastRemoteObject implements IClient {
   //Player exit the game
   public void exitGame() throws RemoteException {
 	  
-	  this.remoteGame.logoutClient(this);
+	  this.remoteGame.removeClient(this);
 	  System.out.println("[Log] " + name + " has exit the game");
 	  
   }

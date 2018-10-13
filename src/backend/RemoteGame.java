@@ -337,7 +337,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return "Success";
   }
   
-  public void logoutClient(IClient client) throws RemoteException {
+  public void removeClient(IClient client) throws RemoteException {
 	clients.remove(client);
 	return;
   }
