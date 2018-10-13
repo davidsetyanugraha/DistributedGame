@@ -254,6 +254,7 @@ public class Client extends UnicastRemoteObject implements IClient {
   @Override
   public void createNewBoard() throws RemoteException {
     System.out.println("Open new Board!");
+    this.setCurrentState(STATE_WAIT);
     this.clientBoard = new ClientBoard(this);
     clientBoard.frmClient.setVisible(true);
   }
