@@ -177,6 +177,8 @@ public class Client extends UnicastRemoteObject implements IClient {
       status = "VOTING_SHOW";
     } else if (state == STATE_VOTING_WAIT) {
       status = "VOTING_WAIT";
+    } else if (state == STATE_END) {
+      status = "END";
     } else {
       status = "WAIT";
     }
@@ -259,12 +261,21 @@ public class Client extends UnicastRemoteObject implements IClient {
       this.json = remoteGame.getJsonString();
 
       if ((this.currentState != this.STATE_VOTING_WAIT)
-          && (this.currentState != this.STATE_VOTING_SHOW)) {
+          && (this.currentState != this.STATE_VOTING_SHOW)
+          && (this.currentState != this.STATE_END)) {
         this.checkState();
+      }
+
+      if (this.currentState == this.STATE_END) {
+        Lobby lobby = new Lobby(this, remoteGame);
+        lobby.setVisible(true);
+
+        // this.clientBoard.destroyCurrentBoard();
       }
 
       this.clientBoard.renderBasedOnJson(this.json, this.currentState, this.votingWords);
       System.out.println("RenderBoardSystem: " + this.json);
+
     } catch (JSONException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -289,7 +300,6 @@ public class Client extends UnicastRemoteObject implements IClient {
         }
       }
     }
-
   }
 
   @Override
@@ -306,5 +316,10 @@ public class Client extends UnicastRemoteObject implements IClient {
   @Override
   public void changeStateIntoWait() throws RemoteException {
     this.setCurrentState(STATE_WAIT);
+  }
+
+  @Override
+  public void changeStateIntoEndGame() throws RemoteException {
+    this.setCurrentState(STATE_END);
   }
 }

@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -48,12 +49,23 @@ public class ClientBoard {
 
   public ClientBoard(IClient client) {
     this.client = client;
-    initialize();
+    try {
+      initialize();
+    } catch (RemoteException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
-  private void initialize() {
+  public void destroyCurrentBoard() {
+    this.frmClient.dispose();
+    this.frmClient.setVisible(false);
+  }
+
+  private void initialize() throws RemoteException {
     this.frmClient = new JFrame();
-    this.frmClient.setTitle("Scrabble Game - DSCraftsman");
+    this.frmClient
+        .setTitle("Scrabble Game - DSCraftsman, PlayerName: " + this.client.getUniqueName());
     this.frmClient.setBounds(100, 100, 800, 800);
     this.frmClient.setDefaultCloseOperation(3);
 
@@ -315,13 +327,17 @@ public class ClientBoard {
       backPanel.isVoteAndPassShown(true);
       backPanel.hideVotingYesAndNoVote();
     } else if (state == client.STATE_VOTING_SHOW) {
-      // wait for voting
+      // wait for voting, show buttons
       backPanel.renderMessage("Let's Vote! ");
       backPanel.isVoteAndPassShown(false);
       backPanel.renderVotingMessage(votingWords);
     } else if (state == client.STATE_VOTING_WAIT) {
       // wait for voting
       backPanel.renderMessage("Please wait other votes.. ");
+      backPanel.isVoteAndPassShown(false);
+      backPanel.hideVotingYesAndNoVote();
+    } else if (state == client.STATE_END) {
+      backPanel.renderMessage("GAME END!");
       backPanel.isVoteAndPassShown(false);
       backPanel.hideVotingYesAndNoVote();
     }

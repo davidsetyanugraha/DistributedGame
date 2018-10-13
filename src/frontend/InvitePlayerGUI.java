@@ -193,6 +193,7 @@ public class InvitePlayerGUI extends JFrame implements ActionListener {
         }
 
         try {
+          dispose();
           client.createNewGame(remoteGame, clientPlayListName);
         } catch (RemoteException e1) {
           // TODO Auto-generated catch block

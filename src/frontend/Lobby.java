@@ -43,6 +43,7 @@ public class Lobby extends JFrame {
       btnCreateNewGame.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // Showing the board
+          dispose();
           try {
             InvitePlayerGUI invitePlayerGui = new InvitePlayerGUI(client, remoteGame);
             invitePlayerGui.setVisible(true);
@@ -67,6 +68,7 @@ public class Lobby extends JFrame {
     btnPlayerList.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
         // TODO show current player in lobby
+        dispose();
       }
     });
     contentPane.add(btnPlayerList);

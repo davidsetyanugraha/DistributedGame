@@ -11,6 +11,7 @@ public interface IClient extends Remote {
   public final int STATE_INSERTION = 1;
   public final int STATE_VOTING_SHOW = 2;
   public final int STATE_VOTING_WAIT = 3;
+  public final int STATE_END = 4;
 
   void getPass(final String playerName) throws RemoteException;
 
@@ -41,5 +42,7 @@ public interface IClient extends Remote {
   public void changeStateIntoWait() throws RemoteException;
 
   public int getCurrentState() throws RemoteException;
+
+  public void changeStateIntoEndGame() throws RemoteException;
 
 }

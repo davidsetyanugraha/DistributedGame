@@ -511,4 +511,6 @@ public class Pane extends JPanel {
     this.btnVoteYes2.setVisible(false);
     this.btnVoteNo2.setVisible(false);
   }
+
+
 }
