@@ -35,4 +35,6 @@ public interface IRemoteGame extends Remote {
 
   public void appendJsonClient(String username, String password, String firstName, String lastName)
       throws RemoteException;
+
+  public void resetJson() throws RemoteException;
 }

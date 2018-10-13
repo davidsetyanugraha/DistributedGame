@@ -574,4 +574,24 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     return false;
   }
+
+  @Override
+  public void resetJson() throws RemoteException {
+    try {
+
+      JSONObject jsonObject = new JSONObject(json); // JSON Object to store the json file
+      JSONArray newPlayerArray = new JSONArray(); // New Player Array for rewrite
+      JSONArray newWordArray = new JSONArray(); // New Player Array for rewrite
+      jsonObject.put("player", newPlayerArray);
+      jsonObject.put("word", newWordArray);
+
+      this.json = jsonObject.toString();
+      System.out.println("Reset json" + this.json.toString());
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+
+    return;
+
+  }
 }

@@ -68,6 +68,7 @@ public class Client extends UnicastRemoteObject implements IClient {
 
   public void createNewGame(IRemoteGame remoteGame, ArrayList<String> clientPlayList)
       throws RemoteException {
+    resetState();
     String response;
     System.out.println("[Log] " + name + " has created new game. contains: " + clientPlayList);
 
@@ -82,6 +83,11 @@ public class Client extends UnicastRemoteObject implements IClient {
       if (debug)
         response = response + " caused by: " + e.getMessage();
     }
+  }
+
+  private void resetState() throws RemoteException {
+    this.setCurrentState(STATE_WAIT);
+    remoteGame.resetJson();
   }
 
   public void sendMessage(String message) throws RemoteException {
