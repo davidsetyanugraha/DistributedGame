@@ -32,7 +32,7 @@ public class PlayerListGUI extends JFrame implements ActionListener {
   JList inviteList, playerList;
   DefaultListModel players, invited;
   JButton buttonin, buttonout, submit, back;
-  private Client client;
+  private IClient client;
   private IRemoteGame remoteGame;
 
   /**

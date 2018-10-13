@@ -19,7 +19,7 @@ import backend.IRemoteGame;
 public class Lobby extends JFrame {
 
   private JPanel contentPane;
-  private Client client;
+  private IClient client;
   
   public Lobby(Client client, IRemoteGame remoteGame) throws RemoteException {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
