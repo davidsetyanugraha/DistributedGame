@@ -172,23 +172,8 @@ public class ClientBoard {
     gbc_listPanel.gridx = 9;
     gbc_listPanel.gridy = 1;
 
-    JMenu mnPlayerList = new JMenu("players");
-    this.menuBar.add(mnPlayerList);
-
-    JMenuItem DisplayPlayerMenu = new JMenuItem("display players");
-    DisplayPlayerMenu.addMouseListener(new MouseAdapter() {
-      public void mouseReleased(MouseEvent e) {
-        JOptionPane.showOptionDialog(null, userListPanel, "Player List", JOptionPane.DEFAULT_OPTION,
-            JOptionPane.INFORMATION_MESSAGE, null, null, null);
-      }
-    });
-
-    mnPlayerList.add(DisplayPlayerMenu);
-
     // this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
   }
-
-
 
   public void closeMenuClicked(MouseEvent e) {
     // endNetClicked(e);
@@ -329,7 +314,7 @@ public class ClientBoard {
   private static void renderDisplayScoreMenu(JSONArray playerAvail) {
     mnScore.removeAll();
 
-    displayScoreMenu = new JMenuItem("display scoreboard");
+    displayScoreMenu = new JMenuItem("Display Scoreboard");
     displayScoreMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {
         JOptionPane.showMessageDialog(null, "Scores: " + backPanel.getScoreMessage());
