@@ -271,7 +271,7 @@ public class Client extends UnicastRemoteObject implements IClient {
       }
 
       if (this.currentState == this.STATE_END) {
-        System.out.println("masuk lobby lagi");
+        System.out.println("masuk lobby lagi" + this.clientBoard.getLastScoreBoard());
         Lobby lobby = new Lobby(this, remoteGame);
         lobby.setVisible(true);
         this.clientBoard.destroyCurrentBoard();

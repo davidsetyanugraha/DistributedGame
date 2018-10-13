@@ -32,7 +32,6 @@ public class ClientBoard {
   private JTextArea popUpMsg;
   private JButton yesBtn;
   private JButton noBtn;
-  private UserListPanel userListPanel;
   private File openedFile = null;
   private int userChoice = -1;
   private JTextField tfMsg;
@@ -252,14 +251,6 @@ public class ClientBoard {
     return this.frmClient;
   }
 
-  public UserListPanel getUserListPanel() {
-    return this.userListPanel;
-  }
-
-  public void setUserListPanel(UserListPanel userListPanel) {
-    this.userListPanel = userListPanel;
-  }
-
   // Reading JSON data.
   public static void renderBasedOnJson(String json, int state, ArrayList<String> votingWords)
       throws JSONException {
@@ -322,5 +313,9 @@ public class ClientBoard {
     });
 
     mnScore.add(displayScoreMenu);
+  }
+
+  public String getLastScoreBoard() {
+    return backPanel.getScoreMessage();
   }
 }
