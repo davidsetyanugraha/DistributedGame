@@ -439,7 +439,7 @@ public class Pane extends JPanel {
     final Map<String, Integer> sortedByCount = sortByValue(this.score_board); // rank
     int rank = 1;
     for (Map.Entry<String, Integer> entry : sortedByCount.entrySet()) {
-      message = message + "\n" + rank + ") " + entry.getKey() + " : " + entry.getValue();
+      message = message + "\n" + rank + ") " + entry.getKey() + " = " + entry.getValue();
       rank = rank + 1;
     }
 
