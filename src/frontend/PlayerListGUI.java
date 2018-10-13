@@ -24,10 +24,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import backend.IRemoteGame;
 
-// GUI for inviting player
-// ATTENTION
-// for backends: please look for TODO tags to connect to server
-
 public class PlayerListGUI extends JFrame implements ActionListener {
 
   private JPanel contentPane;

@@ -446,6 +446,10 @@ public class Pane extends JPanel {
     return message;
   }
 
+  public Map<String, Integer> getSortedScoreBoard() {
+    return sortByValue(this.score_board);
+  }
+
   public void isVoteAndPassShown(boolean show) {
     if (show) {
       this.btnVote.setVisible(true);

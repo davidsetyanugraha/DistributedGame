@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -296,7 +297,7 @@ public class ClientBoard {
       backPanel.isVoteAndPassShown(false);
       backPanel.hideVotingYesAndNoVote();
     } else if (state == client.STATE_END) {
-      backPanel.renderMessage("GAME END!");
+      backPanel.renderMessage("GAME Over!");
       backPanel.isVoteAndPassShown(false);
       backPanel.hideVotingYesAndNoVote();
     }
@@ -315,7 +316,7 @@ public class ClientBoard {
     mnScore.add(displayScoreMenu);
   }
 
-  public String getLastScoreBoard() {
-    return backPanel.getScoreMessage();
+  public Map<String, Integer> getLastScoreBoard() {
+    return backPanel.getSortedScoreBoard();
   }
 }
