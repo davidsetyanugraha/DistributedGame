@@ -156,13 +156,13 @@ public class Register extends JFrame {
             e1.printStackTrace();
           }
           
-          dispose();
         } else {
           // Error when confirmation doesn't match password
           JOptionPane.showMessageDialog(null,
               "Confirmation does not match password. Please retype again", "Error",
               JOptionPane.PLAIN_MESSAGE);
         }
+        
       }
     });
     btnConfirm.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -171,12 +171,6 @@ public class Register extends JFrame {
     regPane.add(btnConfirm);
 
     JButton button_1 = new JButton("Cancel");
-    button_1.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {            
-        		dispose();     
-        }
-      });
     button_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
     button_1.setBounds(178, 223, 90, 29);
     regPane.add(button_1);
