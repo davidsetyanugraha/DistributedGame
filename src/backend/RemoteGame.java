@@ -599,7 +599,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   }
   
   @Override
-  public boolean isPlayerLoggedIn(String username) throws RemoteException {
+  public boolean isClientLoggedIn(String username) throws RemoteException {
 	  
 	  for (int i = 0; i <clients.size() ; i++) {
 		  if (clients.get(i).getUniqueName().equals(username)) {

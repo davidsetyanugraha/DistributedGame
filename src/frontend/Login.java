@@ -107,7 +107,7 @@ public class Login extends JFrame {
           // client can join the remoteGame if the validation is okay.
           if (remoteGame.isLoginValid(userNameArea.getText())) {
         	  
-        	  	if (!remoteGame.isPlayerLoggedIn(userNameArea.getText())) {
+        	  	if (!remoteGame.isClientLoggedIn(userNameArea.getText())) {
         	  		Client client = new Client(userNameArea.getText());
         	  		client.joinClientList(remoteGame);
         	  		// dispose login frame
