@@ -43,6 +43,8 @@ public class ClientBoard {
   private static File file;
   private static Login login;
   private final static int VOTE_ACCEPT = 0;
+  private static JMenu mnScore;
+  private static JMenuItem displayScoreMenu;
 
   public ClientBoard(IClient client) {
     this.client = client;
@@ -153,17 +155,17 @@ public class ClientBoard {
 
     mnNetwork.add(endNetMenu);
 
-    JMenu mnScore = new JMenu("score");
+    this.mnScore = new JMenu("score");
     this.menuBar.add(mnScore);
 
-    JMenuItem DisplayScoreMenu = new JMenuItem("display scoreboard");
-    DisplayScoreMenu.addMouseListener(new MouseAdapter() {
+    displayScoreMenu = new JMenuItem("display scoreboard");
+    displayScoreMenu.addMouseListener(new MouseAdapter() {
       public void mouseReleased(MouseEvent e) {
-        JOptionPane.showMessageDialog(null, "Your Score: " + backPanel.getScore());
+        JOptionPane.showMessageDialog(null, "Scores: " + backPanel.getScoreMessage());
       }
     });
 
-    mnScore.add(DisplayScoreMenu);
+    mnScore.add(displayScoreMenu);
 
     // this.userListPanel = new UserListPanel(this);
     // try {
@@ -199,6 +201,8 @@ public class ClientBoard {
 
     // this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
   }
+
+
 
   public void closeMenuClicked(MouseEvent e) {
     // endNetClicked(e);
@@ -311,6 +315,8 @@ public class ClientBoard {
       String username = player.getString("username");
     }
 
+    renderDisplayScoreMenu();
+
     if (state == client.STATE_WAIT) {
       // disable buttons
       backPanel.renderMessage("Wait! It's other turn..");
@@ -332,5 +338,17 @@ public class ClientBoard {
       backPanel.isVoteAndPassShown(false);
       backPanel.hideVotingYesAndNoVote();
     }
+  }
+
+  private static void renderDisplayScoreMenu() {
+    mnScore.removeAll();
+    displayScoreMenu = new JMenuItem("display scoreboard");
+    displayScoreMenu.addMouseListener(new MouseAdapter() {
+      public void mouseReleased(MouseEvent e) {
+        JOptionPane.showMessageDialog(null, "Scores: " + backPanel.getScoreMessage());
+      }
+    });
+
+    mnScore.add(displayScoreMenu);
   }
 }

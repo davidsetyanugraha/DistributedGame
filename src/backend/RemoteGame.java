@@ -14,7 +14,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   private final ArrayList<IClient> clients;
   private ArrayList<IClient> players;
   private int client_count = 0;
-  HashMap<String, Integer> vote_count = new HashMap<String, Integer>();
+  private HashMap<String, Integer> vote_count = new HashMap<String, Integer>();
   private int accept_count_word1 = 0;
   private int accept_count_word2 = 0;
   private int count_pass_player = 0;
@@ -473,7 +473,9 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
       if (count_update_turn == players.size()) {// if everyone has voted
         System.out.println("update turn");
-        updateTurn(getNextPlayerName());
+        if (players.size() > 1)
+          updateTurn(getNextPlayerName());
+
         i = 0;
         while (i < players.size()) {
           players.get(i).changeStateIntoWait();
@@ -519,7 +521,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       players.get(i++).getPass(name);
     }
 
-    updateTurn(getNextPlayerName());
+    if (players.size() > 1)
+      updateTurn(getNextPlayerName());
 
     // TODO check how many 'pass' vote, then update isGameRunning variable
 

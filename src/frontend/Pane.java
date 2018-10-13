@@ -11,6 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -41,6 +45,7 @@ public class Pane extends JPanel {
   private final int NO_INPUT = 0;
   JButton btnVote, btnPass, btnVoteYes1, btnVoteNo1, btnVoteYes2, btnVoteNo2;
   private ArrayList<String> votingWords;
+  private Map<String, Integer> score_board = new HashMap<String, Integer>();
 
   public Pane(ClientBoard clientFrame, IClient client) {
 
@@ -413,8 +418,22 @@ public class Pane extends JPanel {
     return characterNum;
   }
 
-  public int getScore() {
-    return score;
+  public static Map<String, Integer> sortByValue(final Map<String, Integer> wordCounts) {
+    return wordCounts.entrySet().stream()
+        .sorted((Map.Entry.<String, Integer>comparingByValue().reversed())).collect(Collectors
+            .toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+  }
+
+  public String getScoreMessage() {
+    String message = "";
+    final Map<String, Integer> sortedByCount = sortByValue(score_board); // rank
+    int rank = 1;
+    for (Map.Entry<String, Integer> entry : sortedByCount.entrySet()) {
+      message = message + "\n" + rank + ")" + entry.getKey() + " = " + entry.getValue();
+      rank = rank + 1;
+    }
+
+    return message;
   }
 
   public void isVoteAndPassShown(boolean show) {
