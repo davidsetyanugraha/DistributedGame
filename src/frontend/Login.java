@@ -106,13 +106,20 @@ public class Login extends JFrame {
           // when button login is pressed, check the username and password
           // client can join the remoteGame if the validation is okay.
           if (remoteGame.isLoginValid(userNameArea.getText())) {
-            Client client = new Client(userNameArea.getText());
-            client.joinClientList(remoteGame);
-            // dispose login frame
-            dispose();
+        	  
+        	  	if (!remoteGame.isPlayerLoggedIn(userNameArea.getText())) {
+        	  		Client client = new Client(userNameArea.getText());
+        	  		client.joinClientList(remoteGame);
+        	  		// dispose login frame
+        	  		dispose();
 
-            Lobby lobby = new Lobby(client, remoteGame);
-            lobby.setVisible(true);
+        	  		Lobby lobby = new Lobby(client, remoteGame);
+        	  		lobby.setVisible(true); 
+            } else {
+            		JOptionPane.showMessageDialog(null, "Username has been used. Please try another username", "Error", 
+            			JOptionPane.PLAIN_MESSAGE);
+            }
+        	  	
           } else {
             // TODO add error windows
             JOptionPane.showMessageDialog(null, "Username not valid. Please retype again", "Error",
