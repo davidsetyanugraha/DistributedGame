@@ -154,29 +154,8 @@ public class ClientBoard {
     });
     mnFile.add(closeMenu);
 
-    JMenu mnNetwork = new JMenu("network");
-    this.menuBar.add(mnNetwork);
-
-    JMenuItem endNetMenu = new JMenuItem("disconnect from network");
-    endNetMenu.addMouseListener(new MouseAdapter() {
-      public void mouseReleased(MouseEvent e) {
-        // ClientFrame.this.endNetClicked(e);
-      }
-    });
-
-    mnNetwork.add(endNetMenu);
-
     this.mnScore = new JMenu("score");
     this.menuBar.add(mnScore);
-
-    // this.userListPanel = new UserListPanel(this);
-    // try {
-    // this.userListPanel.addUser(this.client.getUniqueName());
-    // } catch (RemoteException e1) {
-    // // TODO Auto-generated catch block
-    // e1.printStackTrace();
-    // }
-    // this.userListPanel.setBorder(new TitledBorder(null, "Player List", 4, 2, null, null));
 
     GridBagConstraints gbc_listPanel = new GridBagConstraints();
     gbc_listPanel.insets = new Insets(0, 0, 5, 0);
