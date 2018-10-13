@@ -58,7 +58,6 @@ public class ClientBoard {
   }
 
   public void destroyCurrentBoard() {
-    this.frmClient.dispose();
     this.frmClient.setVisible(false);
   }
 

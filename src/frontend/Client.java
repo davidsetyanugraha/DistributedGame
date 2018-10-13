@@ -19,9 +19,6 @@ public class Client extends UnicastRemoteObject implements IClient {
   private ClientBoard clientBoard;
   private ArrayList<String> votingWords;
 
-  // Constant Game State
-
-
   public Client(String name) throws RemoteException {
     this.name = name;
     this.votingWords = new ArrayList<>();
@@ -275,8 +272,7 @@ public class Client extends UnicastRemoteObject implements IClient {
       if (this.currentState == this.STATE_END) {
         Lobby lobby = new Lobby(this, remoteGame);
         lobby.setVisible(true);
-
-        // this.clientBoard.destroyCurrentBoard();
+        this.clientBoard.destroyCurrentBoard();
       }
 
       this.clientBoard.renderBasedOnJson(this.json, this.currentState, this.votingWords);
