@@ -33,7 +33,7 @@ public interface IRemoteGame extends Remote {
 
   public ArrayList<IClient> getAllPlayerList() throws RemoteException;
 
-  public Boolean isLoginValid(String username) throws RemoteException;
+  public Boolean isUsernameExisted(String username) throws RemoteException;
 
   public Boolean isLoginValid(String username, String password) throws RemoteException;
 

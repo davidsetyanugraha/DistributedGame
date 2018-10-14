@@ -7,8 +7,6 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import frontend.Client;
 import frontend.IClient;
 
 public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
@@ -336,10 +334,10 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     isGameRunning = false;
     return "Success";
   }
-  
+
   public void removeClient(IClient client) throws RemoteException {
-	clients.remove(client);
-	return;
+    clients.remove(client);
+    return;
   }
 
   /*
@@ -586,7 +584,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
         for (int i = 0; i < playerArray.length(); i++) {
           playerObject = playerArray.getJSONObject(i);
-          if (playerObject.get("username").equals(username)&&playerObject.get("password").equals(password)) {
+          if (playerObject.get("username").equals(username)
+              && playerObject.get("password").equals(password)) {
             return true;
           }
         }
@@ -597,17 +596,17 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     return false;
   }
-  
+
   @Override
   public boolean isClientLoggedIn(String username) throws RemoteException {
-	  
-	  for (int i = 0; i <clients.size() ; i++) {
-		  if (clients.get(i).getUniqueName().equals(username)) {
-			  return true;
-		  }
-	  }
-	  
-	  return false;
+
+    for (int i = 0; i < clients.size(); i++) {
+      if (clients.get(i).getUniqueName().equals(username)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   @Override
@@ -630,9 +629,25 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
   }
 
-@Override
-public Boolean isLoginValid(String username) throws RemoteException {
-	// TODO Auto-generated method stub
-	return null;
-}
+  public Boolean isUsernameExisted(String username) throws RemoteException {
+    if (!json.isEmpty()) {
+      JSONObject jsonObject;
+      try {
+        jsonObject = new JSONObject(json);
+        JSONArray playerArray = jsonObject.getJSONArray("client");
+        JSONObject playerObject; // JSON Object to store a player's JSON details
+
+        for (int i = 0; i < playerArray.length(); i++) {
+          playerObject = playerArray.getJSONObject(i);
+          if (playerObject.get("username").equals(username)) {
+            return true;
+          }
+        }
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return false;
+  }
 }

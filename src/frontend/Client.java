@@ -59,10 +59,6 @@ public class Client extends UnicastRemoteObject implements IClient {
     return remoteGame.getAllPlayerList();
   }
 
-  public Boolean isLoginValid(String username) throws RemoteException, JSONException {
-    return remoteGame.isLoginValid(username);
-  }
-
   public void createNewGame(IRemoteGame remoteGame, ArrayList<String> clientPlayList)
       throws RemoteException {
     resetState();
@@ -171,14 +167,14 @@ public class Client extends UnicastRemoteObject implements IClient {
     }
   }
 
-  //Player exit the game
+  // Player exit the game
   public void exitGame() throws RemoteException {
-	  
-	  this.remoteGame.removeClient(this);
-	  System.out.println("[Log] " + name + " has exit the game");
-	  
+
+    this.remoteGame.removeClient(this);
+    System.out.println("[Log] " + name + " has exit the game");
+
   }
-  
+
   public void setCurrentState(int state) {
     String status;
 

@@ -144,7 +144,7 @@ public class Register extends JFrame {
       public void mouseClicked(MouseEvent e) {
         if (getPass().equals(getConfirmPass())) {
           try {
-            if (remoteGame.isLoginValid(userNameArea.getText())) {
+            if (remoteGame.isUsernameExisted(userNameArea.getText())) {
               // Error when username has already existed
               JOptionPane.showMessageDialog(null, "Username exists. Please create another username",
                   "Error", JOptionPane.PLAIN_MESSAGE);
@@ -155,14 +155,14 @@ public class Register extends JFrame {
           } catch (RemoteException e1) {
             e1.printStackTrace();
           }
-          
+
         } else {
           // Error when confirmation doesn't match password
           JOptionPane.showMessageDialog(null,
               "Confirmation does not match password. Please retype again", "Error",
               JOptionPane.PLAIN_MESSAGE);
         }
-        
+
       }
     });
     btnConfirm.setFont(new Font("Tahoma", Font.PLAIN, 13));
