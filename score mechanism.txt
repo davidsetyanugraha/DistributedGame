@@ -1,9 +1,0 @@
-1: w  e  a  l t h y
-letter:1 2 3 4 5 6 7
-word = wealthy vot = wealthy score = 7
-2: e  a  t
-letter:1 2 3
-// t is the last letter
-// we should check words associate with t
-// will update score mechanism latter
-word= eat vote = at+eat score = 5
