@@ -102,22 +102,30 @@ public class Login extends JFrame {
       @Override
       public void mouseClicked(MouseEvent e) {
         // when button login is pressed
-    	  char [] pass = passwordArea.getPassword();
-    	  String passString = new String (pass);
+        char[] pass = passwordArea.getPassword();
+        String passString = new String(pass);
         try {
           // when button login is pressed, check the username and password
           // client can join the remoteGame if the validation is okay.
-          if (remoteGame.isLoginValid(userNameArea.getText(), passString)) {
-            Client client = new Client(userNameArea.getText());
-            client.joinClientList(remoteGame);
-            // dispose login frame
-            dispose();
 
-            Lobby lobby = new Lobby(client, remoteGame);
-            lobby.setVisible(true);
+          if (remoteGame.isLoginValid(userNameArea.getText(), passString)) {
+
+            if (!remoteGame.isClientLoggedIn(userNameArea.getText())) {
+              Client client = new Client(userNameArea.getText());
+              client.joinClientList(remoteGame);
+              // dispose login frame
+              dispose();
+
+              Lobby lobby = new Lobby(client, remoteGame);
+              lobby.setVisible(true);
+            } else {
+              JOptionPane.showMessageDialog(null,
+                  "Username has been used. Please try another username", "Error",
+                  JOptionPane.PLAIN_MESSAGE);
+            }
           } else {
-            // TODO add error windows
-            JOptionPane.showMessageDialog(null, "Username or password not valid. Please retype again", "Error",
+            JOptionPane.showMessageDialog(null,
+                "Username or password not valid. Please retype again", "Error",
                 JOptionPane.PLAIN_MESSAGE);
           }
 
@@ -133,11 +141,11 @@ public class Login extends JFrame {
 
     JButton cancelBtn = new JButton("Cancel");
     cancelBtn.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          System.exit(0);
-        }
-      });
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        System.exit(0);
+      }
+    });
     cancelBtn.setFont(new Font("Tahoma", Font.PLAIN, 13));
     cancelBtn.setBounds(179, 172, 90, 29);
     contentPane.add(cancelBtn);

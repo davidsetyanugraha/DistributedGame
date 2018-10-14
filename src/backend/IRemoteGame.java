@@ -23,6 +23,8 @@ public interface IRemoteGame extends Remote {
 
   public String disconnectClient() throws RemoteException;
 
+  public void removeClient(IClient client) throws RemoteException;
+
   public String startNewGame(ArrayList<String> clientPlayList) throws RemoteException;
 
   public ArrayList<IClient> getAllClientList() throws RemoteException;
@@ -32,8 +34,10 @@ public interface IRemoteGame extends Remote {
   public ArrayList<IClient> getAllPlayerList() throws RemoteException;
 
   public Boolean isLoginValid(String username) throws RemoteException;
-  
+
   public Boolean isLoginValid(String username, String password) throws RemoteException;
+
+  public boolean isClientLoggedIn(String username) throws RemoteException;
 
   public void appendJsonClient(String username, String password, String firstName, String lastName)
       throws RemoteException;

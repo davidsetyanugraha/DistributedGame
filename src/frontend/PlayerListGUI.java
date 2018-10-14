@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import javax.swing.Box;
@@ -30,7 +32,7 @@ public class PlayerListGUI extends JFrame implements ActionListener {
   JList inviteList, playerList;
   DefaultListModel players, invited;
   JButton buttonin, buttonout, submit, back;
-  private Client client;
+  private IClient client;
   private IRemoteGame remoteGame;
 
   /**
@@ -104,6 +106,55 @@ public class PlayerListGUI extends JFrame implements ActionListener {
 
     bottomPanel.add(back);
     contentPane.add(bottomPanel, BorderLayout.SOUTH);
+    
+    this.addWindowListener(new WindowListener() {
+		@Override
+		public void windowOpened(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			// TODO Auto-generated method stub
+			try {
+				client.exitGame();
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+    });
   }
 
   public JPanel createDualListBox() throws RemoteException {
@@ -115,7 +166,10 @@ public class PlayerListGUI extends JFrame implements ActionListener {
 
     // choose the player(s), ex index 0 and 1, choose all
     for (IClient client : clientList) {
-      clientStringList.add(client.getUniqueName());
+        if ((client.getUniqueName()).equals(this.client.getUniqueName())!=true) {
+        	clientStringList.add(client.getUniqueName());
+        }
+    	
     }
 
     String[] onlinePlayers = clientStringList.toArray(new String[0]);
@@ -186,7 +240,9 @@ public class PlayerListGUI extends JFrame implements ActionListener {
     players = new DefaultListModel();
 
     for (int i = 0; i < onlinePlayers.length; i++) {
+    
       players.addElement(onlinePlayers[i]);
+      
     }
 
     playerList = new JList(players);
@@ -257,7 +313,12 @@ public class PlayerListGUI extends JFrame implements ActionListener {
       if (invited.isEmpty() != true) {
         // TODO submit user that is invited to backend
         ArrayList<String> clientPlayListName = new ArrayList<String>();
-
+        try {
+			clientPlayListName.add(this.client.getUniqueName());
+		} catch (RemoteException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
         for (int j = 0; j < invited.getSize(); j++) {
           String invt = (String) invited.get(j);
           clientPlayListName.add(invt);

@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import org.json.JSONException;
 
+import backend.IRemoteGame;
+
 public interface IClient extends Remote {
 
   public final int STATE_WAIT = 0;
@@ -28,11 +30,16 @@ public interface IClient extends Remote {
   void renderBoardSystem() throws RemoteException;
 
   void getGeneralMessage(final String message) throws RemoteException;
-
+  
   String getUniqueName() throws RemoteException;
+  
+  public ArrayList<IClient> getAllClientList() throws RemoteException;
 
   Boolean isLoginValid(String username) throws RemoteException, JSONException;
 
+  public void createNewGame(IRemoteGame remoteGame, ArrayList<String> clientPlayList)
+	      throws RemoteException;
+  
   void createNewBoard() throws RemoteException;
 
   void appendJsonLetter(int x, int y, String ch) throws RemoteException;
@@ -40,6 +47,8 @@ public interface IClient extends Remote {
   public void performVoting() throws RemoteException;
 
   public void changeStateIntoWait() throws RemoteException;
+  
+  public void exitGame() throws RemoteException;
 
   public int getCurrentState() throws RemoteException;
 

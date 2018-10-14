@@ -7,6 +7,8 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import frontend.Client;
 import frontend.IClient;
 
 public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
@@ -334,6 +336,11 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     isGameRunning = false;
     return "Success";
   }
+  
+  public void removeClient(IClient client) throws RemoteException {
+	clients.remove(client);
+	return;
+  }
 
   /*
    * Update the player turn on the Json String
@@ -589,6 +596,18 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     }
 
     return false;
+  }
+  
+  @Override
+  public boolean isClientLoggedIn(String username) throws RemoteException {
+	  
+	  for (int i = 0; i <clients.size() ; i++) {
+		  if (clients.get(i).getUniqueName().equals(username)) {
+			  return true;
+		  }
+	  }
+	  
+	  return false;
   }
 
   @Override

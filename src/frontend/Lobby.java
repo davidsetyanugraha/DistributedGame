@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,8 +19,8 @@ import backend.IRemoteGame;
 public class Lobby extends JFrame {
 
   private JPanel contentPane;
-  private Client client;
-
+  private IClient client;
+  
   public Lobby(Client client, IRemoteGame remoteGame) throws RemoteException {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 800, 800);
@@ -96,5 +98,56 @@ public class Lobby extends JFrame {
     lblUsername.setFont(new Font("Verdana", Font.PLAIN, 26));
     lblUsername.setForeground(Color.ORANGE);
     contentPane.add(lblUsername);
+    
+    this.addWindowListener(new WindowListener() {
+		@Override
+		public void windowOpened(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			// TODO Auto-generated method stub
+			try {
+				client.exitGame();
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+    });
   }
+ 
+
 }
