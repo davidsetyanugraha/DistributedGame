@@ -8,6 +8,10 @@ import java.awt.LayoutManager2;
 import java.util.HashMap;
 
 /**
+ * Author: Camick, R. (2008).
+ * Reference From: Layout Manager Library code: Relative Layout.
+ * Retrieved from https://tips4java.wordpress.com/2008/11/02/relative-layout/
+ * 
  * The <code>RelativeLayout</code> class is a layout manager that lays out a container's components
  * on the specified X or Y axis.
  *
