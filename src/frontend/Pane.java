@@ -203,6 +203,11 @@ public class Pane extends JPanel {
       }
     };
     // initial
+    // RelativeLayout():
+    // Author: Camick, R. (2008).
+    // Reference From: Layout Manager Library
+    // Retrieved from https://tips4java.wordpress.com/2008/11/02/relative-layout/
+    // Used to instead LayoutManager and GridLayout
     RelativeLayout rl = new RelativeLayout(RelativeLayout.Y_AXIS);
     rl.setRoundingPolicy(RelativeLayout.FIRST);
     rl.setFill(true);
