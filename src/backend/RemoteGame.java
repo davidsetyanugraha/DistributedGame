@@ -265,11 +265,9 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     } catch (JSONException e) {
       e.printStackTrace();
-    } // JSON Object to store the json file
-
+    }
 
     return words;
-
   }
 
   private String lookUpXAxis(char[][] letterArray, int x, int y) {

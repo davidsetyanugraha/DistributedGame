@@ -324,6 +324,5 @@ public class PlayerListGUI extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(null, "Another game is running please wait until it is done");
       }
     }
-
   }
 }
