@@ -21,7 +21,7 @@ public class Lobby extends JFrame {
 
   private JPanel contentPane;
   private IClient client;
-  
+
   public Lobby(Client client, IRemoteGame remoteGame) throws RemoteException {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 800, 800);
@@ -47,31 +47,33 @@ public class Lobby extends JFrame {
       btnCreateNewGame.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // Showing the board
-          Boolean isGameRunning=false;
+          Boolean isGameRunning = false;
           try {
-			isGameRunning=remoteGame.isGameRunning();
-		  } catch (RemoteException e2) {
-			  JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
-						"Error", JOptionPane.PLAIN_MESSAGE);
-				System.exit(0);
-		  }
-          if(!isGameRunning) {
-        	  dispose();
-              try {
-                Boolean isInviteActive = true;
-                PlayerListGUI playerListGui = new PlayerListGUI(client, remoteGame, isInviteActive);
-                playerListGui.setVisible(true);
-              } catch (RemoteException e1) {
-            	  JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
-							"Error", JOptionPane.PLAIN_MESSAGE);
-					System.exit(0);
-              }
+            isGameRunning = remoteGame.isGameRunning();
+          } catch (RemoteException e2) {
+            JOptionPane.showMessageDialog(null,
+                "Server is down try again later, exiting the game...", "Error",
+                JOptionPane.PLAIN_MESSAGE);
+            System.exit(0);
           }
-          else {
-        	  JOptionPane.showMessageDialog(null, "Another game is running please wait until it is done",
-						"Error", JOptionPane.PLAIN_MESSAGE);
+          if (!isGameRunning) {
+            dispose();
+            try {
+              Boolean isInviteActive = true;
+              PlayerListGUI playerListGui = new PlayerListGUI(client, remoteGame, isInviteActive);
+              playerListGui.setVisible(true);
+            } catch (RemoteException e1) {
+              JOptionPane.showMessageDialog(null,
+                  "Server is down try again later, exiting the game...", "Error",
+                  JOptionPane.PLAIN_MESSAGE);
+              System.exit(0);
+            }
+          } else {
+            JOptionPane.showMessageDialog(null,
+                "Another game is running please wait until it is done", "Error",
+                JOptionPane.PLAIN_MESSAGE);
           }
-          
+
         }
       });
     }
@@ -93,9 +95,9 @@ public class Lobby extends JFrame {
           PlayerListGUI playerListGui = new PlayerListGUI(client, remoteGame, isInviteActive);
           playerListGui.setVisible(true);
         } catch (RemoteException e) {
-        	JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
-					"Error", JOptionPane.PLAIN_MESSAGE);
-			System.exit(0);
+          JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+              "Error", JOptionPane.PLAIN_MESSAGE);
+          System.exit(0);
         }
 
         dispose();
@@ -116,57 +118,37 @@ public class Lobby extends JFrame {
     lblUsername.setFont(new Font("Verdana", Font.PLAIN, 26));
     lblUsername.setForeground(Color.ORANGE);
     contentPane.add(lblUsername);
-    
+
     this.addWindowListener(new WindowListener() {
-		@Override
-		public void windowOpened(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowOpened(WindowEvent e) {}
 
-		@Override
-		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowClosed(WindowEvent e) {}
 
-		@Override
-		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowIconified(WindowEvent e) {}
 
-		@Override
-		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowDeiconified(WindowEvent e) {}
 
-		@Override
-		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowActivated(WindowEvent e) {}
 
-		@Override
-		public void windowDeactivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowDeactivated(WindowEvent e) {}
 
-		@Override
-		public void windowClosing(WindowEvent e) {
-			// TODO Auto-generated method stub
-			try {
-				client.exitGame();
-			} catch (RemoteException e1) {
-				JOptionPane.showMessageDialog(null, "Error: "+e1,
-						"Error", JOptionPane.PLAIN_MESSAGE);
-				System.exit(0);
-			}
-		}
+      @Override
+      public void windowClosing(WindowEvent e) {
+        try {
+          client.exitGame();
+        } catch (RemoteException e1) {
+          JOptionPane.showMessageDialog(null, "Error: " + e1, "Error", JOptionPane.PLAIN_MESSAGE);
+          System.exit(0);
+        }
+      }
     });
   }
- 
+
 
 }

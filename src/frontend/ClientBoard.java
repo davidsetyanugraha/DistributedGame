@@ -184,7 +184,6 @@ public class ClientBoard {
         try {
           client.exit();
         } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
           e1.printStackTrace();
         }
       }

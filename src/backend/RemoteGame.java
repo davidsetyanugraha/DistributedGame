@@ -245,7 +245,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
         eachLetter = letterObject.getJSONObject(i);
         x = eachLetter.getInt("x");
         y = eachLetter.getInt("y");
-        letterArray[x][y] = eachLetter.getString("ch").charAt(0); // Any Better Option?
+        letterArray[x][y] = eachLetter.getString("ch").charAt(0);
       }
 
       String tempX = lookUpXAxis(letterArray, x, y);

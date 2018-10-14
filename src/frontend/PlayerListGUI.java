@@ -100,9 +100,9 @@ public class PlayerListGUI extends JFrame implements ActionListener {
           Lobby lobby = new Lobby(client, remoteGame);
           lobby.setVisible(true);
         } catch (RemoteException e1) {
-        	JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
-					"Error", JOptionPane.PLAIN_MESSAGE);
-			System.exit(0);
+          JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+              "Error", JOptionPane.PLAIN_MESSAGE);
+          System.exit(0);
         }
       }
     });
@@ -111,53 +111,33 @@ public class PlayerListGUI extends JFrame implements ActionListener {
     contentPane.add(bottomPanel, BorderLayout.SOUTH);
 
     this.addWindowListener(new WindowListener() {
-		@Override
-		public void windowOpened(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowOpened(WindowEvent e) {}
 
-		@Override
-		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowClosed(WindowEvent e) {}
 
-		@Override
-		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowIconified(WindowEvent e) {}
 
-		@Override
-		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowDeiconified(WindowEvent e) {}
 
-		@Override
-		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowActivated(WindowEvent e) {}
 
-		@Override
-		public void windowDeactivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowDeactivated(WindowEvent e) {}
 
-		@Override
-		public void windowClosing(WindowEvent e) {
-			// TODO Auto-generated method stub
-			try {
-				client.exitGame();
-			} catch (RemoteException e1) {
-				JOptionPane.showMessageDialog(null, "Error: "+e1,
-						"Error", JOptionPane.PLAIN_MESSAGE);
-				System.exit(0);
-			}
-		}
+      @Override
+      public void windowClosing(WindowEvent e) {
+        try {
+          client.exitGame();
+        } catch (RemoteException e1) {
+          JOptionPane.showMessageDialog(null, "Error: " + e1, "Error", JOptionPane.PLAIN_MESSAGE);
+          System.exit(0);
+        }
+      }
     });
   }
 
@@ -313,21 +293,20 @@ public class PlayerListGUI extends JFrame implements ActionListener {
     } else if (e.getSource() == submit) {
       Boolean isGameRunning = false;
       try {
-		isGameRunning=remoteGame.isGameRunning();
-	  } catch (RemoteException e3) {
-		  JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
-					"Error", JOptionPane.PLAIN_MESSAGE);
-		  System.exit(0);
-	  }
+        isGameRunning = remoteGame.isGameRunning();
+      } catch (RemoteException e3) {
+        JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+            "Error", JOptionPane.PLAIN_MESSAGE);
+        System.exit(0);
+      }
       if (!isGameRunning) {
         ArrayList<String> clientPlayListName = new ArrayList<String>();
         try {
-			clientPlayListName.add(this.client.getUniqueName());
-		} catch (RemoteException e2) {
-			JOptionPane.showMessageDialog(null, "Error: "+e2,
-					"Error", JOptionPane.PLAIN_MESSAGE);
-			System.exit(0);
-		}
+          clientPlayListName.add(this.client.getUniqueName());
+        } catch (RemoteException e2) {
+          JOptionPane.showMessageDialog(null, "Error: " + e2, "Error", JOptionPane.PLAIN_MESSAGE);
+          System.exit(0);
+        }
         for (int j = 0; j < invited.getSize(); j++) {
           String invt = (String) invited.get(j);
           clientPlayListName.add(invt);
@@ -337,13 +316,12 @@ public class PlayerListGUI extends JFrame implements ActionListener {
           dispose();
           client.createNewGame(remoteGame, clientPlayListName);
         } catch (RemoteException e1) {
-        	JOptionPane.showMessageDialog(null, "Problem creating a game",
-					"Error", JOptionPane.PLAIN_MESSAGE);
-			System.exit(0);
+          JOptionPane.showMessageDialog(null, "Problem creating a game", "Error",
+              JOptionPane.PLAIN_MESSAGE);
+          System.exit(0);
         }
       } else {
         JOptionPane.showMessageDialog(null, "Another game is running please wait until it is done");
-        // TODO no one is invited show gameboard, playing alone
       }
     }
 
