@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
@@ -46,15 +47,29 @@ public class Lobby extends JFrame {
       btnCreateNewGame.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // Showing the board
-          dispose();
+          Boolean isGameRunning=false;
           try {
-            Boolean isInviteActive = true;
-            PlayerListGUI playerListGui = new PlayerListGUI(client, remoteGame, isInviteActive);
-            playerListGui.setVisible(true);
-          } catch (RemoteException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+			isGameRunning=remoteGame.isGameRunning();
+		  } catch (RemoteException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		  }
+          if(!isGameRunning) {
+        	  dispose();
+              try {
+                Boolean isInviteActive = true;
+                PlayerListGUI playerListGui = new PlayerListGUI(client, remoteGame, isInviteActive);
+                playerListGui.setVisible(true);
+              } catch (RemoteException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+              }
           }
+          else {
+        	  JOptionPane.showMessageDialog(null, "Another game is running please wait until it is done",
+						"Error", JOptionPane.PLAIN_MESSAGE);
+          }
+          
         }
       });
     }

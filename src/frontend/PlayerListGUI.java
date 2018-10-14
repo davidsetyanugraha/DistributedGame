@@ -310,7 +310,14 @@ public class PlayerListGUI extends JFrame implements ActionListener {
         invited.remove(toindex[i]);
       }
     } else if (e.getSource() == submit) {
-      if (invited.isEmpty() != true) {
+      Boolean isGameRunning=false;
+      try {
+		isGameRunning=remoteGame.isGameRunning();
+	  } catch (RemoteException e3) {
+		// TODO Auto-generated catch block
+	    e3.printStackTrace();
+	  }
+      if (!isGameRunning) {
         // TODO submit user that is invited to backend
         ArrayList<String> clientPlayListName = new ArrayList<String>();
         try {
@@ -332,7 +339,7 @@ public class PlayerListGUI extends JFrame implements ActionListener {
           e1.printStackTrace();
         }
       } else {
-        JOptionPane.showMessageDialog(null, "invite list is empty, playing solo...");
+        JOptionPane.showMessageDialog(null, "Another game is running please wait until it is done");
         // TODO no one is invited show gameboard, playing alone
       }
     }
