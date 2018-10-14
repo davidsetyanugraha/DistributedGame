@@ -20,7 +20,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   private int index_current_player = 0;
   private String json;
   private ArrayList<String> currentWords;
-  private String[] clientPlayList;
   private boolean isGameRunning = false;
 
   public RemoteGame() throws RemoteException, JSONException {
@@ -126,14 +125,10 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     index_current_player++;
     if (index_current_player >= players.size())
       index_current_player = 0;
-    System.out.println(index_current_player + "nextplayername="
-        + players.get(index_current_player).getUniqueName());
     return players.get(index_current_player).getUniqueName();
   }
 
   public String startNewGame(ArrayList<String> clientPlayList) throws RemoteException {
-    System.out.println("New Game started! it contains");
-
     try {
       appendJsonPlayer(clientPlayList);
       this.players = extractPlayers();
@@ -162,7 +157,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     for (int i = 0; i < playerArray.length(); i++) {
       playerObject = playerArray.getJSONObject(i);
-      System.out.println(i + " = " + playerObject.get("username"));
       sortedClientPlayList2.add((String) playerObject.get("username"));
     }
 
@@ -172,7 +166,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   private ArrayList<IClient> extractPlayers() throws RemoteException, JSONException {
     ArrayList<String> sortedClientPlayList2 = this.orderClientPlayList();
     ArrayList<IClient> players = new ArrayList<>();
-    int i = 0;
+
     for (String playerName : sortedClientPlayList2) {
       for (IClient client : clients) {
         if (client.getUniqueName().equals(playerName)) {
@@ -186,10 +180,8 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   }
 
   public synchronized String registerGameClient(IClient client) throws RemoteException {
-    String response = "success";
-
     this.clients.add(client);
-    return response;
+    return this.json;
   }
 
   public String broadcastNewLetter(String json) {
@@ -223,7 +215,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   public String performVoting(String json) {
     try {
       this.currentWords = extractWords(json);
-      System.out.println("Current Words: " + currentWords.toString());
       int i = 0;
       // tell others about voting system
       while (i < players.size()) {
@@ -262,18 +253,13 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
       if ((tempX.length() == 1) && (tempY.length() == 1)) {
         words.add(tempX);
-        // System.out.println("Word1 = " + words.get(0));
       } else if ((tempX.length() > 1) && (tempY.length() == 1)) {
         words.add(tempX);
-        // System.out.println("Word1 = " + words[0]);
       } else if ((tempX.length() == 1) && (tempY.length() > 1)) {
         words.add(tempY);
-        // System.out.println("Word1 = " + words[0]);
       } else if ((tempX.length() > 1) && (tempY.length() > 1)) {
         words.add(tempX);
         words.add(tempY);
-        // System.out.println("Word1 = " + words[0]);
-        // System.out.println("Word2 = " + words[1]);
       }
 
 
@@ -314,7 +300,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     }
 
     return word;
-
   }
 
   private String lookUpYAxis(char[][] letterArray, int x, int y) {
@@ -350,7 +335,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
   public String disconnectClient() throws RemoteException {
     isGameRunning = false;
-    return "Success";
+    return this.json;
   }
 
   public void removeClient(IClient client) throws RemoteException {
@@ -388,7 +373,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       jsonObject.put("player", newPlayerArray);
 
       this.json = jsonObject.toString();
-      System.out.println("update turn json" + this.json.toString());
+      System.out.println("Update turn JSON: " + this.json.toString());
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -402,18 +387,15 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
    */
   public void updateScore(String name, int newScore) {
     try {
-      System.out.println("update bro");
       JSONObject jsonObject = new JSONObject(json); // JSON Object to store the json file
       JSONArray playerArray = jsonObject.getJSONArray("player");
       JSONObject playerObject; // JSON Object to store a player's JSON details
 
       int playerSize = playerArray.length();
       for (int i = 0; i < playerSize; i++) {
-        System.out.println("playerarray");
         playerObject = playerArray.getJSONObject(i);
         if (playerObject.get("username").equals(name)) {
           int finalScore = playerObject.getInt("score") + newScore;
-          System.out.println("FINAL SCORE:" + finalScore);
           playerObject.put("score", finalScore);
           break;
         }
@@ -421,8 +403,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
       jsonObject.put("player", playerArray);
       this.json = jsonObject.toString();
-      System.out.println("after update score");
-      System.out.println(this.json.toString());
+      System.out.println("Final JSON after update: " + this.json.toString());
 
     } catch (JSONException e) {
       e.printStackTrace();
@@ -435,9 +416,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
    * Calculate score from each word (1 letter = 1 score)
    */
   private int calculateScore(String word) {
-    int score = word.length();
-
-    return score;
+    return word.length();
   }
 
   @Override
@@ -446,14 +425,10 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     vote_count.put(name, vote_count.get(name) + 1);
 
     if (word.equals(currentWords.get(0))) {
-      System.out.println("word 1 equals");
-      // this.vote_count_word1 = this.vote_count_word1 + 1;
       if (accept) {
         this.accept_count_word1 = this.accept_count_word1 + 1;
       }
     } else {
-      System.out.println("word 2 equals");
-      // this.vote_count_word2 = this.vote_count_word2 + 1;
       if (accept) {
         this.accept_count_word2 = this.accept_count_word2 + 1;
       }
@@ -461,13 +436,10 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
     int idVoter;
     try {
-      System.out.println("vote count get name:" + vote_count.get(name));
       if (vote_count.get(name) == currentWords.size()) {
-        // one player has voted all word(s)
-        System.out.println("one player has voted all word(s), his name is " + name);
+        System.out.println("One player has voted all word(s), his name is " + name);
 
         idVoter = this.getId(name);
-        System.out.println("idVoter:" + idVoter);
         players.get(idVoter).changeStateIntoVotingWait(accept);
         players.get(idVoter).renderBoardSystem();
         vote_count.put(name, 0);
@@ -475,16 +447,14 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
       if (this.accept_count_word1 == players.size()) { // everyone has voted accept word 1, update
                                                        // score
-        System.out.println("calculate score word 1");
+
         int wordScore = calculateScore(currentWords.get(0));
-        System.out.println("update score word1 " + wordScore);
         updateScore(players.get(index_current_player).getUniqueName(), wordScore);
         this.accept_count_word1 = 0;
       }
 
       if (this.accept_count_word2 == players.size()) { // everyone has voted accept word 2, update
                                                        // score
-        System.out.println("calculate score word 2");
         int wordScore = calculateScore(currentWords.get(1));
         updateScore(players.get(index_current_player).getUniqueName(), wordScore);
         this.accept_count_word2 = 0;
@@ -498,7 +468,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       }
 
       if (count_update_turn == players.size()) {// if everyone has voted
-        System.out.println("update turn");
         if (players.size() > 1)
           updateTurn(getNextPlayerName());
 
@@ -516,7 +485,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       e.printStackTrace();
     }
 
-    return "success";
+    return this.json;
   }
 
   private int getId(String name) throws JSONException, RemoteException {
@@ -547,6 +516,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     if (this.count_pass_player == players.size()) {
       endGame();
     } else {
+
       // tell others about pass message
       i = 0;
       while (i < players.size()) {
@@ -563,17 +533,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       players.get(i++).renderBoardSystem();
     }
 
-    return "success";
-  }
-
-  @Override
-  public String broadcastGeneralMessage(String message) throws RemoteException {
-    int i = 0;
-    while (i < clients.size()) {
-      clients.get(i++).getGeneralMessage(message);
-    }
-
-    return "success";
+    return this.json;
   }
 
   @Override
@@ -633,7 +593,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
       jsonObject.put("word", newWordArray);
 
       this.json = jsonObject.toString();
-      System.out.println("Reset json" + this.json.toString());
+      System.out.println("Reset JSON: " + this.json.toString());
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -645,6 +605,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   public Boolean isUsernameExisted(String username) throws RemoteException {
     if (!json.isEmpty()) {
       JSONObject jsonObject;
+
       try {
         jsonObject = new JSONObject(json);
         JSONArray playerArray = jsonObject.getJSONArray("client");

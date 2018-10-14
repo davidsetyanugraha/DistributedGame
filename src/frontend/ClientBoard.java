@@ -50,12 +50,11 @@ public class ClientBoard {
   private static JMenuItem displayScoreMenu;
 
   public ClientBoard(IClient client) {
-	  
+
     this.client = client;
     try {
       initialize();
     } catch (RemoteException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
@@ -68,56 +67,37 @@ public class ClientBoard {
     this.frmClient = new JFrame();
 
     this.frmClient.addWindowListener(new WindowListener() {
-		@Override
-		public void windowOpened(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowOpened(WindowEvent e) {}
 
-		@Override
-		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowClosed(WindowEvent e) {}
 
-		@Override
-		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowIconified(WindowEvent e) {}
 
-		@Override
-		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowDeiconified(WindowEvent e) {}
 
-		@Override
-		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowActivated(WindowEvent e) {}
 
-		@Override
-		public void windowDeactivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowDeactivated(WindowEvent e) {}
 
-		@Override
-		public void windowClosing(WindowEvent e) {
-			// TODO Auto-generated method stub
-			try {
-				client.exitGame();
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+      @Override
+      public void windowClosing(WindowEvent e) {
+
+        try {
+          client.exitGame();
+        } catch (RemoteException e1) {
+          e1.printStackTrace();
+        }
+      }
     });
-    
+
     this.frmClient
-        .setTitle("Scrabble Game - DSCraftsman, PlayerName: " + this.client.getUniqueName());
+        .setTitle("Scrabble Game - DSCraftsman, Player Name: " + this.client.getUniqueName());
     this.frmClient.setBounds(100, 100, 800, 800);
     this.frmClient.setDefaultCloseOperation(3);
 
@@ -178,7 +158,6 @@ public class ClientBoard {
     toolbarCon.gridy = 0;
     toolbarCon.anchor = 17;
 
-    // TODO Pane board
     this.backPanel = new Pane(this, this.client);
 
     // another window
@@ -224,7 +203,7 @@ public class ClientBoard {
     gbc_listPanel.weightx = 2.0D;
     gbc_listPanel.gridx = 9;
     gbc_listPanel.gridy = 1;
-    
+
     // this.frmClient.getContentPane().add(this.userListPanel, gbc_listPanel);
   }
 

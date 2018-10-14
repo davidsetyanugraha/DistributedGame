@@ -92,7 +92,6 @@ public class End extends JFrame {
           Lobby lobby = new Lobby(client, remoteGame);
           lobby.setVisible(true);
         } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
           e1.printStackTrace();
         }
       }
@@ -100,54 +99,34 @@ public class End extends JFrame {
 
     bottomPanel.add(back);
     contentPane.add(bottomPanel, BorderLayout.SOUTH);
-    
+
     this.addWindowListener(new WindowListener() {
-		@Override
-		public void windowOpened(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowOpened(WindowEvent e) {}
 
-		@Override
-		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowClosed(WindowEvent e) {}
 
-		@Override
-		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowIconified(WindowEvent e) {}
 
-		@Override
-		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowDeiconified(WindowEvent e) {}
 
-		@Override
-		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowActivated(WindowEvent e) {}
 
-		@Override
-		public void windowDeactivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+      @Override
+      public void windowDeactivated(WindowEvent e) {}
 
-		@Override
-		public void windowClosing(WindowEvent e) {
-			// TODO Auto-generated method stub
-			try {
-				client.exitGame();
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+      @Override
+      public void windowClosing(WindowEvent e) {
+        try {
+          client.exitGame();
+        } catch (RemoteException e1) {
+          e1.printStackTrace();
+        }
+      }
     });
   }
 

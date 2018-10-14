@@ -27,8 +27,6 @@ public interface IClient extends Remote {
 
   void renderBoardSystem() throws RemoteException;
 
-  void getGeneralMessage(final String message) throws RemoteException;
-
   String getUniqueName() throws RemoteException;
 
   public ArrayList<IClient> getAllClientList() throws RemoteException;

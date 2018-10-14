@@ -1,4 +1,4 @@
-/*adapted from https://www.macs.hw.ac.uk/cs/java-swing-guidebook/?name=JList&page=3*/
+/* adapted from https://www.macs.hw.ac.uk/cs/java-swing-guidebook/?name=JList&page=3 */
 
 package frontend;
 
@@ -109,7 +109,7 @@ public class PlayerListGUI extends JFrame implements ActionListener {
 
     bottomPanel.add(back);
     contentPane.add(bottomPanel, BorderLayout.SOUTH);
-    
+
     this.addWindowListener(new WindowListener() {
 		@Override
 		public void windowOpened(WindowEvent e) {
@@ -162,18 +162,16 @@ public class PlayerListGUI extends JFrame implements ActionListener {
   }
 
   public JPanel createDualListBox() throws RemoteException {
-    // TODO temporary data will be swapped by real player list from backend
     ArrayList<IClient> clientList = client.getAllClientList();
 
     ArrayList<String> clientStringList = new ArrayList<>();
-    int idx = 0;
 
     // choose the player(s), ex index 0 and 1, choose all
     for (IClient client : clientList) {
-        if ((client.getUniqueName()).equals(this.client.getUniqueName())!=true) {
-        	clientStringList.add(client.getUniqueName());
-        }
-    	
+      if ((client.getUniqueName()).equals(this.client.getUniqueName()) != true) {
+        clientStringList.add(client.getUniqueName());
+      }
+
     }
 
     String[] onlinePlayers = clientStringList.toArray(new String[0]);
@@ -228,7 +226,6 @@ public class PlayerListGUI extends JFrame implements ActionListener {
   }
 
   public JPanel createSingleListBox() throws RemoteException {
-    // TODO temporary data will be swapped by real player list from backend
     ArrayList<IClient> clientList = client.getAllClientList();
 
     ArrayList<String> clientStringList = new ArrayList<>();
@@ -244,9 +241,9 @@ public class PlayerListGUI extends JFrame implements ActionListener {
     players = new DefaultListModel();
 
     for (int i = 0; i < onlinePlayers.length; i++) {
-    
+
       players.addElement(onlinePlayers[i]);
-      
+
     }
 
     playerList = new JList(players);
@@ -314,7 +311,7 @@ public class PlayerListGUI extends JFrame implements ActionListener {
         invited.remove(toindex[i]);
       }
     } else if (e.getSource() == submit) {
-      Boolean isGameRunning=false;
+      Boolean isGameRunning = false;
       try {
 		isGameRunning=remoteGame.isGameRunning();
 	  } catch (RemoteException e3) {
@@ -323,7 +320,6 @@ public class PlayerListGUI extends JFrame implements ActionListener {
 		  System.exit(0);
 	  }
       if (!isGameRunning) {
-        // TODO submit user that is invited to backend
         ArrayList<String> clientPlayListName = new ArrayList<String>();
         try {
 			clientPlayListName.add(this.client.getUniqueName());

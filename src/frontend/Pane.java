@@ -123,7 +123,6 @@ public class Pane extends JPanel {
           client.vote(true, votingWords.get(0));
           hideVotingYesAndNoVote1();
         } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
           e1.printStackTrace();
         }
       }
@@ -138,7 +137,6 @@ public class Pane extends JPanel {
           client.vote(false, votingWords.get(0));
           hideVotingYesAndNoVote1();
         } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
           e1.printStackTrace();
         }
       }
@@ -157,7 +155,6 @@ public class Pane extends JPanel {
           client.vote(true, votingWords.get(1));
           hideVotingYesAndNoVote2();
         } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
           e1.printStackTrace();
         }
       }
@@ -172,7 +169,6 @@ public class Pane extends JPanel {
           client.vote(false, votingWords.get(1));
           hideVotingYesAndNoVote2();
         } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
           e1.printStackTrace();
         }
       }

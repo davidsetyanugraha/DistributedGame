@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-
 import javax.swing.JOptionPane;
 
 public class Server {
@@ -18,8 +17,9 @@ public class Server {
 
       System.out.println("Game Server is ready!");
     } catch (Exception e) {
-    	JOptionPane.showMessageDialog(null, "Port not available, try reconnecting with different port number",
-				"Error", JOptionPane.PLAIN_MESSAGE);
+      JOptionPane.showMessageDialog(null,
+          "Port not available, try reconnecting with different port number", "Error",
+          JOptionPane.PLAIN_MESSAGE);
     }
   }
 }

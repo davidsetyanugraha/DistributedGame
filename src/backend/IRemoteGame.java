@@ -11,8 +11,6 @@ public interface IRemoteGame extends Remote {
 
   public String getJsonString() throws RemoteException;
 
-  public String broadcastGeneralMessage(String message) throws RemoteException;
-
   public String performVoting(String json) throws RemoteException;
 
   public String broadcastNewLetter(String json) throws RemoteException;
