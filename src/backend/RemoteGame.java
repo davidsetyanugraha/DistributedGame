@@ -610,4 +610,10 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
     return;
 
   }
+
+@Override
+public Boolean isLoginValid(String username) throws RemoteException {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
