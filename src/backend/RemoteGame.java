@@ -569,7 +569,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
   }
 
   @Override
-  public Boolean isLoginValid(String username) throws RemoteException {
+  public Boolean isLoginValid(String username, String password) throws RemoteException {
     if (!json.isEmpty()) {
       JSONObject jsonObject;
       try {
@@ -579,7 +579,7 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
         for (int i = 0; i < playerArray.length(); i++) {
           playerObject = playerArray.getJSONObject(i);
-          if (playerObject.get("username").equals(username)) {
+          if (playerObject.get("username").equals(username)&&playerObject.get("password").equals(password)) {
             return true;
           }
         }

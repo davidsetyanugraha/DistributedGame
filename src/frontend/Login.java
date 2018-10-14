@@ -102,10 +102,12 @@ public class Login extends JFrame {
       @Override
       public void mouseClicked(MouseEvent e) {
         // when button login is pressed
+    	  char [] pass = passwordArea.getPassword();
+    	  String passString = new String (pass);
         try {
           // when button login is pressed, check the username and password
           // client can join the remoteGame if the validation is okay.
-          if (remoteGame.isLoginValid(userNameArea.getText())) {
+          if (remoteGame.isLoginValid(userNameArea.getText(), passString)) {
             Client client = new Client(userNameArea.getText());
             client.joinClientList(remoteGame);
             // dispose login frame
@@ -115,7 +117,7 @@ public class Login extends JFrame {
             lobby.setVisible(true);
           } else {
             // TODO add error windows
-            JOptionPane.showMessageDialog(null, "Username not valid. Please retype again", "Error",
+            JOptionPane.showMessageDialog(null, "Username or password not valid. Please retype again", "Error",
                 JOptionPane.PLAIN_MESSAGE);
           }
 
