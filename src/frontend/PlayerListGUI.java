@@ -1,3 +1,5 @@
+/*adapted from https://www.macs.hw.ac.uk/cs/java-swing-guidebook/?name=JList&page=3*/
+
 package frontend;
 
 import java.awt.BorderLayout;
