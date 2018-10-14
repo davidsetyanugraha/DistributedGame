@@ -100,8 +100,9 @@ public class PlayerListGUI extends JFrame implements ActionListener {
           Lobby lobby = new Lobby(client, remoteGame);
           lobby.setVisible(true);
         } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
+        	JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+					"Error", JOptionPane.PLAIN_MESSAGE);
+			System.exit(0);
         }
       }
     });
@@ -152,8 +153,9 @@ public class PlayerListGUI extends JFrame implements ActionListener {
 			try {
 				client.exitGame();
 			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error: "+e1,
+						"Error", JOptionPane.PLAIN_MESSAGE);
+				System.exit(0);
 			}
 		}
     });
@@ -316,8 +318,9 @@ public class PlayerListGUI extends JFrame implements ActionListener {
       try {
 		isGameRunning=remoteGame.isGameRunning();
 	  } catch (RemoteException e3) {
-		// TODO Auto-generated catch block
-	    e3.printStackTrace();
+		  JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+					"Error", JOptionPane.PLAIN_MESSAGE);
+		  System.exit(0);
 	  }
       if (!isGameRunning) {
         // TODO submit user that is invited to backend
@@ -325,8 +328,9 @@ public class PlayerListGUI extends JFrame implements ActionListener {
         try {
 			clientPlayListName.add(this.client.getUniqueName());
 		} catch (RemoteException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error: "+e2,
+					"Error", JOptionPane.PLAIN_MESSAGE);
+			System.exit(0);
 		}
         for (int j = 0; j < invited.getSize(); j++) {
           String invt = (String) invited.get(j);
@@ -337,8 +341,9 @@ public class PlayerListGUI extends JFrame implements ActionListener {
           dispose();
           client.createNewGame(remoteGame, clientPlayListName);
         } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
+        	JOptionPane.showMessageDialog(null, "Problem creating a game",
+					"Error", JOptionPane.PLAIN_MESSAGE);
+			System.exit(0);
         }
       } else {
         JOptionPane.showMessageDialog(null, "Another game is running please wait until it is done");

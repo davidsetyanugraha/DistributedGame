@@ -51,8 +51,9 @@ public class Lobby extends JFrame {
           try {
 			isGameRunning=remoteGame.isGameRunning();
 		  } catch (RemoteException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			  JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+						"Error", JOptionPane.PLAIN_MESSAGE);
+				System.exit(0);
 		  }
           if(!isGameRunning) {
         	  dispose();
@@ -61,8 +62,9 @@ public class Lobby extends JFrame {
                 PlayerListGUI playerListGui = new PlayerListGUI(client, remoteGame, isInviteActive);
                 playerListGui.setVisible(true);
               } catch (RemoteException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+            	  JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+							"Error", JOptionPane.PLAIN_MESSAGE);
+					System.exit(0);
               }
           }
           else {
@@ -91,8 +93,9 @@ public class Lobby extends JFrame {
           PlayerListGUI playerListGui = new PlayerListGUI(client, remoteGame, isInviteActive);
           playerListGui.setVisible(true);
         } catch (RemoteException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        	JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+					"Error", JOptionPane.PLAIN_MESSAGE);
+			System.exit(0);
         }
 
         dispose();
@@ -157,8 +160,9 @@ public class Lobby extends JFrame {
 			try {
 				client.exitGame();
 			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error: "+e1,
+						"Error", JOptionPane.PLAIN_MESSAGE);
+				System.exit(0);
 			}
 		}
     });

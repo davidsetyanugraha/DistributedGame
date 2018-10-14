@@ -159,7 +159,9 @@ public class Register extends JFrame {
 							remoteGame.appendJsonClient(getUserName(), getPass(), getFirstName(), getLastName());
 						}
 					} catch (RemoteException e1) {
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+								"Error", JOptionPane.PLAIN_MESSAGE);
+						System.exit(0);
 					}
 
 				} else {

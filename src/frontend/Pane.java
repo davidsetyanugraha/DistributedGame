@@ -84,8 +84,9 @@ public class Pane extends JPanel {
           try {
             client.performVoting();
           } catch (RemoteException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        	JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+						"Error", JOptionPane.PLAIN_MESSAGE);
+			System.exit(0);
           }
 
           characterNum = NO_INPUT;
@@ -104,8 +105,9 @@ public class Pane extends JPanel {
         try {
           client.pass();
         } catch (RemoteException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
+          JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+					"Error", JOptionPane.PLAIN_MESSAGE);
+	      System.exit(0);
         }
       }
     });
@@ -273,7 +275,9 @@ public class Pane extends JPanel {
               try {
                 client.appendJsonLetter(coordX, coordY, input);
               } catch (RemoteException e1) {
-                e1.printStackTrace();
+            	JOptionPane.showMessageDialog(null, "Server is down try again later, exiting the game...",
+							"Error", JOptionPane.PLAIN_MESSAGE);
+				System.exit(0);
               }
             }
             // set input
